@@ -30,7 +30,10 @@ public class RootActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_root_weather);
         fragmentManager = getSupportFragmentManager();
         setupToolbarAndDrawer();
-        openWeatherFragment();
+        FragmentUtils.openFragment(
+                WeatherFragment.newInstance(),
+                fragmentManager,
+                FragmentTag.WEATHER);
     }
 
     private void setupToolbarAndDrawer() {
