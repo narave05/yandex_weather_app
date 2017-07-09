@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:paddingTop="24dp">
-
+    android:paddingTop="@dimen/header_top_padding">
 
     <ImageView
         android:layout_width="wrap_content"

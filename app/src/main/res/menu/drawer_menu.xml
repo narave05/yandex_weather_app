@@ -5,7 +5,7 @@
             android:id="@+id/home"
             android:checked="true"
             android:icon="@drawable/weather_partlycloudy"
-            android:title="@string/home" />
+            android:title="@string/weather" />
         <item
             android:id="@+id/settings_item"
             android:icon="@drawable/settings"
