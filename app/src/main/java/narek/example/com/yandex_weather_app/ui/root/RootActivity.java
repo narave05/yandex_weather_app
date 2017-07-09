@@ -21,10 +21,8 @@ import narek.example.com.yandex_weather_app.utils.FragmentUtils;
 
 public class RootActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "RootActivity";
-
-    private DrawerLayout navigationDrawer;
     private FragmentManager fragmentManager;
+    private DrawerLayout navigationDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +37,8 @@ public class RootActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationDrawer = (DrawerLayout) findViewById(R.id.drawer_container);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
                 navigationDrawer,
