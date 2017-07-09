@@ -30,10 +30,7 @@ public class RootActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_root_weather);
         fragmentManager = getSupportFragmentManager();
         setupToolbarAndDrawer();
-        FragmentUtils.openFragment(
-                WeatherFragment.newInstance(),
-                fragmentManager,
-                FragmentTag.WEATHER);
+        openWeatherFragmentWhitOutBackStack();
     }
 
     private void setupToolbarAndDrawer() {
@@ -53,6 +50,13 @@ public class RootActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void openWeatherFragmentWhitOutBackStack(){
+        FragmentUtils.openFragment(
+                WeatherFragment.newInstance(),
+                fragmentManager,
+                FragmentTag.WEATHER);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
@@ -70,7 +74,6 @@ public class RootActivity extends AppCompatActivity implements NavigationView.On
         navigationDrawer.closeDrawer(Gravity.START);
         return false;
     }
-
 
     private void openAboutUsFragment() {
         FragmentUtils.openFragment(
