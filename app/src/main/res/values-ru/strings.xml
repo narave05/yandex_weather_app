@@ -10,4 +10,9 @@
 
     <string name="about_extra">Обратная связь՝ \n\nEmail: narave05@gmail.com \nТел: +79260566244
     </string>
+    <string name="pressure">ДАВЛЕНИЕ</string>
+    <string name="wind">ВЕТЕР</string>
+    <string name="humidity">ВЛАЖНОСТЬ</string>
+    <string name="m_s">м/с</string>
+    <string name="h_pa">гПа</string>
 </resources>

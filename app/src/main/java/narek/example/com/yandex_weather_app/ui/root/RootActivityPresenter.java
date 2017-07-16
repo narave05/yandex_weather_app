@@ -7,7 +7,6 @@ import narek.example.com.yandex_weather_app.ui.base.MvpBasePresenter;
 @InjectViewState
 public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
 
-
     public void init() {
         getViewState().setupToolbarAndDrawer();
         getViewState().openWeatherFragment();
