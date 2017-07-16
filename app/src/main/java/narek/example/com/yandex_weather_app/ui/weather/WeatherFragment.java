@@ -2,25 +2,22 @@ package narek.example.com.yandex_weather_app.ui.weather;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import narek.example.com.yandex_weather_app.R;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
-public class WeatherFragment extends Fragment {
+import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
+
+public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView {
+
+    @InjectPresenter
+    WeatherFragmentPresenter presenter;
 
     public static WeatherFragment newInstance() {
-        WeatherFragment fragment = new WeatherFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        return new WeatherFragment();
     }
 
     @Override

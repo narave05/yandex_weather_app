@@ -18,7 +18,7 @@ public class FragmentUtils {
                                     boolean whitBackStack) {
         manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragment, tag.toString());
+        fragmentTransaction.add(R.id.container, fragment, tag.toString());
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         if (whitBackStack)
             fragmentTransaction.addToBackStack(tag.toString());

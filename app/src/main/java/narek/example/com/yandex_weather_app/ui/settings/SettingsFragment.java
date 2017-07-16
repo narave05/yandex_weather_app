@@ -2,25 +2,22 @@ package narek.example.com.yandex_weather_app.ui.settings;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import narek.example.com.yandex_weather_app.R;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
-public class SettingsFragment extends Fragment {
+import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
+
+public class SettingsFragment extends MvpBaseFragment implements SettingsFragmentView {
+
+    @InjectPresenter
+    SettingsFragmentPresenter presenter;
 
     public static SettingsFragment newInstance() {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        return new SettingsFragment();
     }
 
     @Override

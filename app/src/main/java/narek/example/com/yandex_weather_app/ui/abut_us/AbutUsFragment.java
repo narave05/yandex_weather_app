@@ -2,23 +2,22 @@ package narek.example.com.yandex_weather_app.ui.abut_us;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import narek.example.com.yandex_weather_app.R;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
-public class AbutUsFragment extends Fragment {
+import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
+
+public class AbutUsFragment extends MvpBaseFragment implements AbutUsFragmentView{
+
+    @InjectPresenter
+    AbutUsFragmentPresenter presenter;
 
     public static AbutUsFragment newInstance() {
-        AbutUsFragment fragment = new AbutUsFragment();
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        return new AbutUsFragment();
     }
 
     @Override

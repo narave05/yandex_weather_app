@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">Yandex weather</string>
-    <string name="settings">Настройки</string>
-    <string name="about_us">О приложении</string>
+    <string name="app_name">Weather</string>
+    <string name="settings">Settings</string>
+    <string name="about_us">About us</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="weather">Погода</string>
+    <string name="weather">Weather</string>
     <string name="header_image">Header image</string>
-    <string name="about_text"> Программа для погоды. Создан в учебных целях</string>
+    <string name="about_text">App for weather.Created for training purposes</string>
 
-    <string name="about_extra">Обратная связь՝ \n\nEmail: narave05@gmail.com \nТел: +79260566244
+    <string name="about_extra">Feedback՝ \n\nEmail: narave05@gmail.com \nTel: +79260566244
     </string>
 </resources>
