@@ -17,6 +17,7 @@ import butterknife.Unbinder;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
+import narek.example.com.yandex_weather_app.ui.widget.WeatherImageView;
 
 public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView {
 
@@ -27,7 +28,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     TextView cityName;
 
     @BindView(R.id.weather_img)
-    ImageView weatherImg;
+    WeatherImageView weatherImg;
 
     @BindView(R.id.temperature_tv)
     TextView temperature;
@@ -58,7 +59,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     public void showWeather(Weather weather) {
         Log.e("test", "showWeather: " + weather.getCity().getName());
         cityName.setText(weather.getCity().getName().toUpperCase());
-        //weatherImg
+        weatherImg.setWeatherImage(weather.getConditionCode());
         temperature.setText(String.valueOf((int)weather.getTemperature()));
         Log.e("hPa", "showWeather: " + ((int)weather.getPressure()) + " " + getString(R.string.h_pa));
         pressure.setText(String.valueOf((int)weather.getPressure()) + " " + getString(R.string.h_pa));

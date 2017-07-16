@@ -37,6 +37,8 @@ public class RepositoryImpl implements Repository {
                 weatherDataRes.main.temp,
                 weatherDataRes.main.pressure,
                 weatherDataRes.main.humidity,
-                weatherDataRes.windRes.speed);
+                weatherDataRes.windRes.speed,
+                weatherDataRes.weatherRes.get(0).id,
+                weatherDataRes.dt);
     }
 }

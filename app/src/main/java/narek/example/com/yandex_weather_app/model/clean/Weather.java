@@ -11,17 +11,19 @@ public class Weather {
     private float pressure;
     private float humidity;
     private float windSpeed;
+    private int conditionCode;
 
     private String pattern = "EE HH:mm";
     private SimpleDateFormat format;
 
-    public Weather(City city, float temperature, float pressure, float humidity, float windSpeed) {
+    public Weather(City city, float temperature, float pressure, float humidity, float windSpeed, int conditionCode, long millis) {
         this.city = city;
-        this.date = new Date();
+        this.date =  new Date(millis * 1000);;
         this.temperature = temperature;
         this.pressure = pressure;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
+        this.conditionCode = conditionCode;
         format = new SimpleDateFormat(pattern);
     }
 
@@ -47,5 +49,9 @@ public class Weather {
 
     public float getWindSpeed() {
         return windSpeed;
+    }
+
+    public int getConditionCode() {
+        return conditionCode;
     }
 }
