@@ -23,5 +23,4 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
     void onAboutUsItemClick() {
         getViewState().openAboutUsFragment();
     }
-
 }

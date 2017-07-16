@@ -13,6 +13,20 @@ import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
 
 public class RepositoryImpl implements Repository {
 
+    private static RepositoryImpl instance;
+
+    public static RepositoryImpl getInstance() {
+        if (instance == null) {
+            synchronized (RepositoryImpl.class) {
+                instance = new RepositoryImpl();
+            }
+        }
+        return instance;
+    }
+
+    private RepositoryImpl() {
+    }
+
     private WeatherApi api = new WeatherApi();
 
     @Override
@@ -22,7 +36,6 @@ public class RepositoryImpl implements Repository {
                 .map(new Function<WeatherDataRes, Weather>() {
                     @Override
                     public Weather apply(@NonNull WeatherDataRes weatherDataRes) throws Exception {
-                        Log.e("getWeatherData", "apply: " + String.valueOf(weatherDataRes == null));
                         return weatherResConvertToWeatherClean(weatherDataRes);
                     }
                 });

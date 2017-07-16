@@ -9,4 +9,6 @@ import narek.example.com.yandex_weather_app.ui.base.MvpBaseView;
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface WeatherFragmentView extends MvpBaseView {
     void showWeather(Weather weather);
+
+    void hideSwipeRefresh();
 }

@@ -2,24 +2,25 @@ package narek.example.com.yandex_weather_app.ui.weather;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.ui.widget.WeatherImageView;
 
-public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView {
+
+public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView,
+        SwipeRefreshLayout.OnRefreshListener {
 
     @InjectPresenter
     WeatherFragmentPresenter presenter;
@@ -45,6 +46,9 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @BindView(R.id.humidity_tv)
     TextView humidity;
 
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     public static WeatherFragment newInstance() {
         return new WeatherFragment();
     }
@@ -56,15 +60,34 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        Log.e("FR", "WeatherFragment created  ");
+    }
+
+    @Override
     public void showWeather(Weather weather) {
-        Log.e("test", "showWeather: " + weather.getCity().getName());
+
         cityName.setText(weather.getCity().getName().toUpperCase());
         weatherImg.setWeatherImage(weather.getConditionCode());
-        temperature.setText(String.valueOf((int)weather.getTemperature()));
-        Log.e("hPa", "showWeather: " + ((int)weather.getPressure()) + " " + getString(R.string.h_pa));
-        pressure.setText(String.valueOf((int)weather.getPressure()) + " " + getString(R.string.h_pa));
-        humidity.setText(String.valueOf((int)weather.getHumidity()) + " %");
-        windSpeed.setText(String.valueOf((int)weather.getWindSpeed()) + " " + getString(R.string.m_s));
+        temperature.setText(String.valueOf((int) weather.getTemperature()));
+        pressure.setText(String.valueOf((int) weather.getPressure()) + " " + getString(R.string.h_pa));
+        humidity.setText(String.valueOf((int) weather.getHumidity()) + " %");
+        windSpeed.setText(String.valueOf((int) weather.getWindSpeed()) + " " + getString(R.string.m_s));
         weatherUpdateDate.setText(weather.getDateString().toUpperCase());
     }
+
+    @Override
+    public void hideSwipeRefresh() {
+        if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.loadWeather();
+    }
+
 }

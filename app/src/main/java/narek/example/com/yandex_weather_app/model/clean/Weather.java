@@ -1,9 +1,11 @@
 package narek.example.com.yandex_weather_app.model.clean;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-public class Weather {
+public class Weather implements Serializable {
 
     private final City city;
     private final Date date;
@@ -18,13 +20,13 @@ public class Weather {
 
     public Weather(City city, float temperature, float pressure, float humidity, float windSpeed, int conditionCode, long millis) {
         this.city = city;
-        this.date =  new Date(millis * 1000);;
+        this.date = new Date(millis * 1000);
         this.temperature = temperature;
         this.pressure = pressure;
         this.humidity = humidity;
         this.windSpeed = windSpeed;
         this.conditionCode = conditionCode;
-        format = new SimpleDateFormat(pattern);
+        format = new SimpleDateFormat(pattern, Locale.getDefault());
     }
 
     public City getCity() {
@@ -53,5 +55,20 @@ public class Weather {
 
     public int getConditionCode() {
         return conditionCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Weather{" +
+                "city=" + city +
+                ", date=" + date +
+                ", temperature=" + temperature +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", windSpeed=" + windSpeed +
+                ", conditionCode=" + conditionCode +
+                ", pattern='" + pattern + '\'' +
+                ", format=" + format +
+                '}';
     }
 }

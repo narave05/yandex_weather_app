@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
@@ -28,7 +27,6 @@ public class RootActivity extends MvpBaseActivity
     @InjectPresenter
     RootActivityPresenter presenter;
 
-
     private FragmentManager fragmentManager;
     private DrawerLayout navigationDrawer;
 
@@ -37,7 +35,6 @@ public class RootActivity extends MvpBaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root_weather);
         fragmentManager = getSupportFragmentManager();
-        Log.e("fff", "onCreate: " + savedInstanceState );
         if (savedInstanceState == null) {
             presenter.init();
         }
@@ -113,4 +110,5 @@ public class RootActivity extends MvpBaseActivity
             super.onBackPressed();
         }
     }
+
 }

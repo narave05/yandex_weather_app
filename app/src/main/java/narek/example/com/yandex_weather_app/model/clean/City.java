@@ -1,6 +1,8 @@
 package narek.example.com.yandex_weather_app.model.clean;
 
-public class City {
+import java.io.Serializable;
+
+public class City implements Serializable{
     private final String name;
     private final float lon;
     private final float lat;
