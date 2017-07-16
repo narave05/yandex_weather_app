@@ -2,6 +2,7 @@ package narek.example.com.yandex_weather_app.ui.weather;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
 
 public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView {
@@ -26,4 +28,8 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
+    @Override
+    public void showWeather(Weather weather) {
+        Log.e("test", "showWeather: " + weather.getCity().getName() );
+    }
 }

@@ -23,6 +23,7 @@ public class FragmentUtils {
         if (whitBackStack)
             fragmentTransaction.addToBackStack(tag.toString());
         fragmentTransaction.commit();
+
     }
 
     public static boolean isFragmentExist(FragmentManager manager, FragmentTag tag) {
