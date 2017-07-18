@@ -57,12 +57,14 @@ public class RepositoryImpl implements Repository {
         City city = new City(weatherDataRes.name,
                 weatherDataRes.coordRes.lon,
                 weatherDataRes.coordRes.lat);
-        return new Weather(city,
-                weatherDataRes.main.temp,
-                weatherDataRes.main.pressure,
-                weatherDataRes.main.humidity,
-                weatherDataRes.windRes.speed,
-                weatherDataRes.weatherRes.get(0).id,
-                weatherDataRes.dt);
+        return new Weather.WeatherBuilder()
+                .city(city)
+                .temperature(weatherDataRes.main.temp)
+                .pressure(weatherDataRes.main.pressure)
+                .humidity(weatherDataRes.main.humidity)
+                .windSpeed(weatherDataRes.windRes.speed)
+                .conditionCode(weatherDataRes.weatherRes.get(0).id)
+                .weatherUpdateDate(weatherDataRes.dt)
+                .createWeather();
     }
 }
