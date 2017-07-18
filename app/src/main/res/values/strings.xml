@@ -15,4 +15,5 @@
     <string name="humidity">HUMIDITY</string>
     <string name="m_s">m/s</string>
     <string name="h_pa">hPa</string>
+    <string name="Interval_is">Update interval is %d hours</string>
 </resources>

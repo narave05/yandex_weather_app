@@ -15,7 +15,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import narek.example.com.yandex_weather_app.R;
-import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
 import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.utils.CustomSeekBarChangeListener;
 
@@ -30,8 +29,6 @@ public class SettingsFragment extends MvpBaseFragment implements SettingsFragmen
     @BindView(R.id.interval_seek_bar)
     SeekBar intervalSeekBar;
 
-    private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
-
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
@@ -45,16 +42,22 @@ public class SettingsFragment extends MvpBaseFragment implements SettingsFragmen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int currentInterval = preferenceHelper.getIntervalHoursInSeconds() / 3600;
-        intervalTextView.setText(String.format(Locale.getDefault(), getString(R.string.Interval_is), currentInterval));
-        intervalSeekBar.setProgress(currentInterval);
+        presenter.init();
         intervalSeekBar.setOnSeekBarChangeListener(new CustomSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress++;
-                preferenceHelper.saveUpdateInterval(progress);
-                intervalTextView.setText(String.format(Locale.getDefault(), getString(R.string.Interval_is), progress));
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                presenter.onCurrentIntervalChanged(seekBar.getProgress());
             }
         });
+    }
+
+    @Override
+    public void setProgressText(int currentInterval) {
+        intervalTextView.setText(String.format(Locale.getDefault(), getString(R.string.Interval_is), currentInterval));
+    }
+
+    @Override
+    public void updatedProgress(int currentInterval) {
+        intervalSeekBar.setProgress(currentInterval);
     }
 }

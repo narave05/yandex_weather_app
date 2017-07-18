@@ -63,7 +63,6 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(this);
-        Log.e("FR", "WeatherFragment created  ");
     }
 
     @Override

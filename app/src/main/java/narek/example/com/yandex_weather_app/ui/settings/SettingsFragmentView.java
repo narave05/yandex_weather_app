@@ -7,4 +7,7 @@ import narek.example.com.yandex_weather_app.ui.base.MvpBaseView;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface SettingsFragmentView extends MvpBaseView {
+    void setProgressText(int currentInterval);
+
+    void updatedProgress(int currentInterval);
 }

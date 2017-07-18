@@ -54,5 +54,7 @@ dependencies {
     //android-job
     compile 'com.evernote:android-job:1.1.11'
 
+    compile 'com.google.android.gms:play-services-gcm:11.0.2'
+
     testCompile 'junit:junit:4.12'
 }
