@@ -7,7 +7,16 @@
     <string name="weather">Погода</string>
     <string name="header_image">Header image</string>
     <string name="about_text"> Программа для погоды. Создан в учебных целях</string>
-
     <string name="about_extra">Обратная связь՝ \n\nEmail: narave05@gmail.com \nТел: +79260566244
     </string>
+    <string name="pressure">ДАВЛЕНИЕ</string>
+    <string name="wind">ВЕТЕР</string>
+    <string name="humidity">ВЛАЖНОСТЬ</string>
+    <string name="m_s">м/с</string>
+    <string name="h_pa">гПа</string>
+    <string name="Interval_is">Интервал обновления %d часов</string>
+    <string name="data_not_updated">Данные не обновлены</string>
+    <string name="abut_us_title">Обратная связь</string>
+    <string name="settings_title">Настройки</string>
+    <string name="weather_title">Погода</string>
 </resources>

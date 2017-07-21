@@ -10,4 +10,14 @@
 
     <string name="about_extra">Feedback՝ \n\nEmail: narave05@gmail.com \nTel: +79260566244
     </string>
+    <string name="pressure">PRESSURE</string>
+    <string name="wind">WIND</string>
+    <string name="humidity">HUMIDITY</string>
+    <string name="m_s">m/s</string>
+    <string name="h_pa">hPa</string>
+    <string name="Interval_is">Update interval is %d hours</string>
+    <string name="data_not_updated">Data not updated</string>
+    <string name="abut_us_title">Abut us</string>
+    <string name="settings_title">Settings</string>
+    <string name="weather_title">Weather</string>
 </resources>
