@@ -1,4 +1,4 @@
-package narek.example.com.yandex_weather_app.ui.base;
+package narek.example.com.yandex_weather_app.ui._common.base;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;

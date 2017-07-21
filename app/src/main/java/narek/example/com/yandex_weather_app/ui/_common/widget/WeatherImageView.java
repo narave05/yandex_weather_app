@@ -1,4 +1,4 @@
-package narek.example.com.yandex_weather_app.ui.widget;
+package narek.example.com.yandex_weather_app.ui._common.widget;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

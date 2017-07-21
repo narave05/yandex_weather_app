@@ -1,6 +1,5 @@
-package narek.example.com.yandex_weather_app.ui.base;
+package narek.example.com.yandex_weather_app.ui._common.base;
 
-import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 
@@ -19,12 +18,6 @@ public abstract class MvpBaseActivity extends MvpAppCompatActivity
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         unbinder = ButterKnife.bind(this);
-    }
-
-    @CallSuper
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @CallSuper

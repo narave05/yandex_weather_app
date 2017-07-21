@@ -2,21 +2,23 @@ package narek.example.com.yandex_weather_app.ui.weather;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import butterknife.BindView;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
-import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
-import narek.example.com.yandex_weather_app.ui.widget.WeatherImageView;
+import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
+import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
 
 
 public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView,
@@ -66,7 +68,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     }
 
     @Override
-    public void showWeather(Weather weather) {
+    public void showWeather(@NonNull Weather weather) {
 
         cityName.setText(weather.getCity().getName().toUpperCase());
         weatherImg.setWeatherImage(weather.getConditionCode());
@@ -75,6 +77,13 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
         humidity.setText(String.valueOf((int) weather.getHumidity()) + " %");
         windSpeed.setText(String.valueOf((int) weather.getWindSpeed()) + " " + getString(R.string.m_s));
         weatherUpdateDate.setText(weather.getDateString().toUpperCase());
+    }
+
+    @Override
+    public void showError(@StringRes int message) {
+        if (getActivity() != null) {
+            Toast.makeText(getActivity(), getString(message), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

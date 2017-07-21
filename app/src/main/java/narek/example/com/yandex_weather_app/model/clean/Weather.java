@@ -1,12 +1,17 @@
 package narek.example.com.yandex_weather_app.model.clean;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+
+import narek.example.com.yandex_weather_app.model.mapper.TimeMapper;
 
 public class Weather implements Serializable {
 
+    private static final float K = 273.15f;
+
+    private TimeMapper timeMapper = new TimeMapper();
     private final City city;
     private final Date date;
     private final float temperature;
@@ -15,10 +20,9 @@ public class Weather implements Serializable {
     private final float windSpeed;
     private final int conditionCode;
 
-    private String pattern = "EE HH:mm";
-    private SimpleDateFormat format;
 
-    private Weather(City city, float temperature, float pressure, float humidity, float windSpeed, int conditionCode, Date date) {
+    private Weather(City city, float temperature, float pressure, float humidity, float windSpeed,
+                    int conditionCode, Date date) {
         this.city = city;
         this.date = date;
         this.temperature = temperature;
@@ -26,19 +30,24 @@ public class Weather implements Serializable {
         this.humidity = humidity;
         this.windSpeed = windSpeed;
         this.conditionCode = conditionCode;
-        format = new SimpleDateFormat(pattern, Locale.getDefault());
     }
 
+    @NonNull
     public City getCity() {
         return city;
     }
 
+    @NonNull
     public String getDateString() {
-        return format.format(date);
+        return timeMapper.transformToString(date);
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public float getTemperature() {
-        return temperature - 273.15f;
+        return temperature - K;
     }
 
     public float getPressure() {
@@ -67,8 +76,6 @@ public class Weather implements Serializable {
                 ", humidity=" + humidity +
                 ", windSpeed=" + windSpeed +
                 ", conditionCode=" + conditionCode +
-                ", pattern='" + pattern + '\'' +
-                ", format=" + format +
                 '}';
     }
 

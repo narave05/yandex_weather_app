@@ -6,15 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-
 import narek.example.com.yandex_weather_app.R;
-import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
+import narek.example.com.yandex_weather_app.ui._common.dummy.DummyFragment;
 
-public class AbutUsFragment extends MvpBaseFragment implements AbutUsFragmentView{
-
-    @InjectPresenter
-    AbutUsFragmentPresenter presenter;
+public class AbutUsFragment extends DummyFragment {
 
     public static AbutUsFragment newInstance() {
         return new AbutUsFragment();
@@ -25,5 +20,4 @@ public class AbutUsFragment extends MvpBaseFragment implements AbutUsFragmentVie
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_abut_us, container, false);
     }
-
 }

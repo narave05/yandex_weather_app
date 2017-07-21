@@ -33,7 +33,7 @@
                 android:textStyle="bold" />
 
 
-            <narek.example.com.yandex_weather_app.ui.widget.WeatherImageView
+            <narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView
                 android:id="@+id/weather_img"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintLeft_toLeftOf="parent"

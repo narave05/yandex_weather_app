@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.RepositoryImpl;
-import narek.example.com.yandex_weather_app.ui.base.MvpBasePresenter;
+import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 
 @InjectViewState
 public class SettingsFragmentPresenter extends MvpBasePresenter<SettingsFragmentView> {
@@ -19,8 +19,10 @@ public class SettingsFragmentPresenter extends MvpBasePresenter<SettingsFragment
 
     void onCurrentIntervalChanged(int progress) {
         int currentUpdateInterval = progress + 1;
-        getViewState().setProgressText(currentUpdateInterval);
         repository.saveUpdateInterval(currentUpdateInterval);
     }
 
+    void onCurrentProgressChanged(int progress) {
+        getViewState().setProgressText(progress + 1);
+    }
 }

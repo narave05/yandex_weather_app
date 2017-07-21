@@ -15,8 +15,8 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import narek.example.com.yandex_weather_app.R;
-import narek.example.com.yandex_weather_app.ui.base.MvpBaseFragment;
-import narek.example.com.yandex_weather_app.utils.CustomSeekBarChangeListener;
+import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
+import narek.example.com.yandex_weather_app.util.CustomSeekBarChangeListener;
 
 public class SettingsFragment extends MvpBaseFragment implements SettingsFragmentView {
 
@@ -44,6 +44,11 @@ public class SettingsFragment extends MvpBaseFragment implements SettingsFragmen
         super.onViewCreated(view, savedInstanceState);
         presenter.init();
         intervalSeekBar.setOnSeekBarChangeListener(new CustomSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                presenter.onCurrentProgressChanged(seekBar.getProgress());
+            }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 presenter.onCurrentIntervalChanged(seekBar.getProgress());

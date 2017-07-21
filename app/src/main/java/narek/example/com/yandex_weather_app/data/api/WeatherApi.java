@@ -2,7 +2,7 @@ package narek.example.com.yandex_weather_app.data.api;
 
 import io.reactivex.Single;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
-import narek.example.com.yandex_weather_app.utils.AppConfig;
+import narek.example.com.yandex_weather_app.util.AppConfig;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

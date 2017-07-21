@@ -1,4 +1,4 @@
-package narek.example.com.yandex_weather_app.utils;
+package narek.example.com.yandex_weather_app.util;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,14 +16,23 @@ public class FragmentUtils {
                                     FragmentManager manager,
                                     FragmentTag tag,
                                     boolean whitBackStack) {
-        manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.add(R.id.container, fragment, tag.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        if (whitBackStack)
-            fragmentTransaction.addToBackStack(tag.toString());
-        fragmentTransaction.commit();
+        if (!isFragmentExist(manager, tag)) {
+            fragmentTransaction.add(R.id.container, fragment, tag.toString());
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            if (whitBackStack)
+                fragmentTransaction.addToBackStack(tag.toString());
+            fragmentTransaction.commit();
+        } else {
+            Fragment activeFragment = manager.findFragmentByTag(tag.toString());
+            for (Fragment fragment1 : manager.getFragments()) {
+                if (fragment1 != null)
+                    fragmentTransaction.hide(fragment1);
+            }
+            fragmentTransaction.show(activeFragment);
+            fragmentTransaction.commit();
 
+        }
     }
 
     public static boolean isFragmentExist(FragmentManager manager, FragmentTag tag) {
