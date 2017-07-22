@@ -79,4 +79,15 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         unlockDrawerAndChengeIcon();
         getViewState().setToolBarTitle(R.string.weather_title);
     }
+
+    public void onFindSityItemClick() {
+        navigateToFindCityFragment();
+    }
+
+    private void navigateToFindCityFragment() {
+        currentFragmentTag = FragmentTag.FIND;
+        lockDrawerAndChangeIcon();
+        getViewState().openFindCityFragment();
+        getViewState().setToolBarTitle(R.string.find_city);
+    }
 }

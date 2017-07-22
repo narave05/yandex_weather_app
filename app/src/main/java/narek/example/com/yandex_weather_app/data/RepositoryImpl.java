@@ -6,10 +6,10 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
-import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
+import narek.example.com.yandex_weather_app.util.Const;
 
 public class RepositoryImpl implements Repository {
 
@@ -33,7 +33,8 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public Single<Weather> getWeatherData() {
-        return api.callWeatherDataByCityName("moscow,ru")
+        return api.callWeatherDataByCityCoords(Double.parseDouble(preferenceHelper.getCityLat()),
+                Double.parseDouble(preferenceHelper.getCityLon()))
                 .subscribeOn(Schedulers.io())
                 .map(new Function<WeatherDataRes, Weather>() {
                     @Override

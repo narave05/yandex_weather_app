@@ -4,7 +4,8 @@ public enum FragmentTag {
 
     WEATHER("Weather"),
     SETTINGS("Settings"),
-    ABOUT("About");
+    ABOUT("About"),
+    FIND("Find");
 
     String name;
 

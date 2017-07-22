@@ -2,10 +2,13 @@ package narek.example.com.yandex_weather_app.ui.abut_us;
 
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import butterknife.BindView;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.ui._common.dummy.DummyFragment;
 

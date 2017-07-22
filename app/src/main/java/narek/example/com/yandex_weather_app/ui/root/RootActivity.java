@@ -20,6 +20,7 @@ import butterknife.BindView;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseActivity;
 import narek.example.com.yandex_weather_app.ui.abut_us.AbutUsFragment;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 import narek.example.com.yandex_weather_app.ui.settings.SettingsFragment;
 import narek.example.com.yandex_weather_app.ui.weather.WeatherFragment;
 import narek.example.com.yandex_weather_app.util.FragmentTag;
@@ -83,6 +84,9 @@ public class RootActivity extends MvpBaseActivity
             case R.id.about_us_item:
                 presenter.onAboutUsItemClick();
                 break;
+            case R.id.find_city_item:
+                presenter.onFindSityItemClick();
+                break;
         }
         navigationDrawer.closeDrawer(Gravity.START);
         return false;
@@ -94,6 +98,15 @@ public class RootActivity extends MvpBaseActivity
                 AbutUsFragment.newInstance(),
                 fragmentManager,
                 FragmentTag.ABOUT,
+                true);
+    }
+
+    @Override
+    public void openFindCityFragment() {
+        FragmentUtils.openFragment(
+                FindCityFragment.newInstance(),
+                fragmentManager,
+                FragmentTag.FIND,
                 true);
     }
 

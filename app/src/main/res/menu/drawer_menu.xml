@@ -12,6 +12,11 @@
             android:checkable="false"
             android:title="@string/settings" />
         <item
+            android:id="@+id/find_city_item"
+            android:icon="@drawable/ic_youtube_searched_for_black_24dp"
+            android:checkable="false"
+            android:title="@string/find_city" />
+        <item
             android:id="@+id/about_us_item"
             android:icon="@drawable/alert_circle"
             android:checkable="false"
