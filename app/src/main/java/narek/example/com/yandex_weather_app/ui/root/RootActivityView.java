@@ -29,4 +29,6 @@ public interface RootActivityView extends MvpBaseView {
     void changeToolbarIconToHamburger();
 
     void setToolBarTitle(@StringRes int titleId);
+
+    void hideKeyBoard();
 }

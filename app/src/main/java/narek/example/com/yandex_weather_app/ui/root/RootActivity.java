@@ -1,5 +1,6 @@
 package narek.example.com.yandex_weather_app.ui.root;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
@@ -85,7 +87,7 @@ public class RootActivity extends MvpBaseActivity
                 presenter.onAboutUsItemClick();
                 break;
             case R.id.find_city_item:
-                presenter.onFindSityItemClick();
+                presenter.onFindCityItemClick();
                 break;
         }
         navigationDrawer.closeDrawer(Gravity.START);
@@ -178,10 +180,19 @@ public class RootActivity extends MvpBaseActivity
     }
 
     @Override
+    public void hideKeyBoard() {
+
+        InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+
+    }
+
+    @Override
     public void onBackPressed() {
         presenter.onBackPressed();
 
         super.onBackPressed();
     }
+
 
 }

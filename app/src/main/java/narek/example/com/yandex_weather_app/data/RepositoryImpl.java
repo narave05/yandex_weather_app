@@ -1,19 +1,25 @@
 package narek.example.com.yandex_weather_app.data;
 
+import java.util.List;
+
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import narek.example.com.yandex_weather_app.data.api.PlacesApi;
 import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
+import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
+import narek.example.com.yandex_weather_app.model.mapper.CityMapper;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
+import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
-import narek.example.com.yandex_weather_app.util.Const;
 
 public class RepositoryImpl implements Repository {
 
     private WeatherApi api = new WeatherApi();
+    private PlacesApi placesApi = new PlacesApi();
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
 
     private static RepositoryImpl instance;
@@ -40,6 +46,18 @@ public class RepositoryImpl implements Repository {
                     @Override
                     public Weather apply(@NonNull WeatherDataRes weatherDataRes) throws Exception {
                         return new WeatherMapper().transform(weatherDataRes);
+                    }
+                });
+    }
+
+    @Override
+    public Single<List<SuggestCity>> getPlacesSuggestion(String text) {
+        return placesApi.callPlacesSuggestions(text)
+                .subscribeOn(Schedulers.io())
+                .map(new Function<PlacesResponse, List<SuggestCity>>() {
+                    @Override
+                    public List<SuggestCity> apply(@NonNull PlacesResponse placesResponse) throws Exception {
+                        return new CityMapper().buildCity(placesResponse);
                     }
                 });
     }

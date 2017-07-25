@@ -20,8 +20,8 @@ public class PlacesApi {
     PlacesApi.PlacesRestService placesRestService = RestServiceGenerator.createService(PlacesApi.PlacesRestService.class,
             AppConfig.BASE_URL_API_PLACES);
 
-    public Single<PlacesResponse> callPlacesSuggestions(String cityName, String language) {
-        return placesRestService.callPlacesByName( cityName, types, language, AppConfig.API_KEY_PLACES);
+    public Single<PlacesResponse> callPlacesSuggestions(String cityName) {
+        return placesRestService.callPlacesByName( cityName, types, AppConfig.API_KEY_PLACES);
     }
     public Single<CoordsResponse> callCordsByCityId(String coords) {
         return placesRestService.callCoordsByCityId(coords, AppConfig.API_KEY_PLACES);
@@ -30,10 +30,10 @@ public class PlacesApi {
     interface PlacesRestService {
         @GET("autocomplete/json")
         Single<PlacesResponse> callPlacesByName(@Query("input") String input, @Query("types") String types,
-                                                @Query("language") String language, @Query("api_key") String api_key);
+                                                @Query("key") String key);
 
         @GET("details/json")
-        Single<CoordsResponse> callCoordsByCityId(@Query("placeid") String placeid, @Query("api_key") String api_key);
+        Single<CoordsResponse> callCoordsByCityId(@Query("placeid") String placeid, @Query("key") String key);
     }
 
 }

@@ -27,6 +27,9 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
             case ABOUT:
                 navigateToAboutAs();
                 break;
+            case FIND:
+                navigateToFindCityFragment();
+                break;
         }
 
     }
@@ -78,9 +81,10 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         navigateToHome();
         unlockDrawerAndChengeIcon();
         getViewState().setToolBarTitle(R.string.weather_title);
+        getViewState().hideKeyBoard();
     }
 
-    public void onFindSityItemClick() {
+    public void onFindCityItemClick() {
         navigateToFindCityFragment();
     }
 
