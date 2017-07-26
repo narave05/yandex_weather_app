@@ -7,10 +7,12 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
@@ -23,6 +25,18 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
     WeatherFragmentPresenter() {
         showWeatherFromStorage();
         loadWeather();
+        subscribeToRxBus();
+    }
+
+    private void subscribeToRxBus() {
+        App.getRxBus().getEvents().subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                if (o instanceof Coords) {
+                    loadWeather();
+                }
+            }
+        });
     }
 
     public void loadWeather() {

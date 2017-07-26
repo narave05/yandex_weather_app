@@ -1,6 +1,7 @@
 package narek.example.com.yandex_weather_app.data;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
@@ -80,6 +81,20 @@ public class RepositoryImpl implements Repository {
     @Override
     public int getCurrentUpdateInterval() {
         return preferenceHelper.getIntervalHoursInSeconds() / 3600;
+    }
+
+    @Override
+    public void saveCityCoords(double lat, double lon) {
+        preferenceHelper.saveCityLat(String.valueOf(lat));
+        preferenceHelper.saveCityLon(String.valueOf(lon));
+    }
+
+    @Override
+    public Coords getCityCoords() {
+        return new Coords.CoordsBuilder()
+                .lat(Double.parseDouble(preferenceHelper.getCityLat()))
+                .lon(Double.parseDouble(preferenceHelper.getCityLon()))
+                .buildCoords();
     }
 
     @Override

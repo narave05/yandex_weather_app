@@ -19,5 +19,9 @@ public interface Repository {
 
     int getCurrentUpdateInterval();
 
+    void saveCityCoords(double lat, double lon);
+
+    Coords getCityCoords();
+
     void saveUpdateInterval(int currentInterval);
 }

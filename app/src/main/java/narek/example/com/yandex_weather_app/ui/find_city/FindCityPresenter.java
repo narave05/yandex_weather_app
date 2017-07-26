@@ -18,11 +18,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
+import narek.example.com.yandex_weather_app.model.clean.CoordsModel;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.CityMapper;
@@ -35,6 +37,7 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
     private Repository repository = RepositoryImpl.getInstance();
     private final int timeout = 400;
+
 
     public void initKeyBoard() {
         getViewState().openKeyBoard();
@@ -94,8 +97,8 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
                             .subscribe(new Consumer<Coords>() {
                                 @Override
                                 public void accept(@NonNull Coords coords) throws Exception {
-                                    Observable.just(coords)
-                                    .subscribe();
+                                    repository.saveCityCoords(coords.getLat(), coords.getLon());
+                                    new CoordsModel().setCoords(coords);
                                 }
                             }, new Consumer<Throwable>() {
                                 @Override
