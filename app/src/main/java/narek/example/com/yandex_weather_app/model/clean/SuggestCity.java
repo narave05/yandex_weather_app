@@ -23,6 +23,7 @@ public class SuggestCity {
     public String getCityId() {
         return cityId;
     }
+
     public static class CityBuilder {
         private String cityName;
         private String country;

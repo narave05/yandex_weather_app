@@ -1,18 +1,17 @@
 package narek.example.com.yandex_weather_app.ui.find_city;
 
-/*
- * @author <a href="mailto: alyonamalchikhina@gmail.com">Alena Malchikhina</a>
- * @since 0.1
- */
-
 
 import com.arellomobile.mvp.InjectViewState;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -23,6 +22,7 @@ import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.CityMapper;
@@ -34,19 +34,21 @@ import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
     private Repository repository = RepositoryImpl.getInstance();
+    private final int timeout = 400;
 
     public void initKeyBoard() {
         getViewState().openKeyBoard();
     }
 
     public void editTextChanged(Observable<CharSequence> observable){
+
         observable.filter(new Predicate<CharSequence>() {
             @Override
             public boolean test(@NonNull CharSequence charSequence) throws Exception {
                 return charSequence.length() > 0;
             }
         })
-                .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .debounce(timeout, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .map(new Function<CharSequence, String>() {
                     @Override
                     public String apply(@NonNull CharSequence charSequence) throws Exception {
@@ -82,4 +84,30 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
         }
     }
+    public void callForCoords(final String cityId){
+        if (NetworkStatusChecker.isNetworkAvailable()) {
+            compositeDisposable.add(
+                    repository.callForCityCoords(cityId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+
+                            .subscribe(new Consumer<Coords>() {
+                                @Override
+                                public void accept(@NonNull Coords coords) throws Exception {
+                                    Observable.just(coords)
+                                    .subscribe();
+                                }
+                            }, new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    getViewState().showError(R.string.data_not_updated);
+                                }
+                            })
+            );
+        } else {
+            getViewState().showError(R.string.data_not_updated);
+
+        }
+    }
+
 }

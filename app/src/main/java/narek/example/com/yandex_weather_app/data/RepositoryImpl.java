@@ -9,10 +9,13 @@ import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.data.api.PlacesApi;
 import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.CityMapper;
+import narek.example.com.yandex_weather_app.model.mapper.CoordsMapper;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
+import narek.example.com.yandex_weather_app.model.rest.CoordsResponse;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
 
@@ -58,6 +61,18 @@ public class RepositoryImpl implements Repository {
                     @Override
                     public List<SuggestCity> apply(@NonNull PlacesResponse placesResponse) throws Exception {
                         return new CityMapper().buildCity(placesResponse);
+                    }
+                });
+    }
+
+    @Override
+    public Single<Coords> callForCityCoords(String cityId) {
+        return placesApi.callCordsByCityId(cityId)
+                .subscribeOn(Schedulers.io())
+                .map(new Function<CoordsResponse, Coords>() {
+                    @Override
+                    public Coords apply(@NonNull CoordsResponse coordsResponse) throws Exception {
+                        return new CoordsMapper().builCoords(coordsResponse);
                     }
                 });
     }
