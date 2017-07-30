@@ -17,6 +17,7 @@ import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
 @RunWith(MockitoJUnitRunner.class)
 public class SharedPreferensesTest {
 
+    public static final int EXPECTED = 7200;
     PreferenceHelper preferenceHelper;
     Context mockedContext;
 
@@ -36,8 +37,8 @@ public class SharedPreferensesTest {
         SharedPreferences mockedSharedPreference = Mockito.mock(SharedPreferences.class);
         Mockito.when(mockedContext.getSharedPreferences(Mockito.anyString(), Mockito.anyInt())).thenReturn(mockedSharedPreference);
         Mockito.when(mockedSharedPreference.contains(Mockito.anyString())).thenReturn(true);
-        Mockito.when(mockedSharedPreference.getInt(Mockito.anyString(), Mockito.anyInt())).thenReturn(7200);
-        Assert.assertEquals(7200, preferenceHelper.getIntervalHoursInSeconds());
+        Mockito.when(mockedSharedPreference.getInt(Mockito.anyString(), Mockito.anyInt())).thenReturn(EXPECTED);
+        Assert.assertEquals(EXPECTED, preferenceHelper.getIntervalHoursInSeconds());
     }
 
     @Test
@@ -45,6 +46,6 @@ public class SharedPreferensesTest {
         SharedPreferences mockedSharedPreference = Mockito.mock(SharedPreferences.class);
         Mockito.when(mockedContext.getSharedPreferences(Mockito.anyString(), Mockito.anyInt())).thenReturn(mockedSharedPreference);
         Mockito.when(mockedSharedPreference.contains(Mockito.anyString())).thenReturn(false);
-        Assert.assertEquals(7200, preferenceHelper.getIntervalHoursInSeconds());
+        Assert.assertEquals(EXPECTED, preferenceHelper.getIntervalHoursInSeconds());
     }
 }
