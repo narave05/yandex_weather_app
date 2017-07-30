@@ -40,4 +40,27 @@ public class Coords {
             return new Coords(lat, lon);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coords)) return false;
+
+        Coords coords = (Coords) o;
+
+        if (Double.compare(coords.lat, lat) != 0) return false;
+        return Double.compare(coords.lon, lon) == 0;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(lat);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(lon);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

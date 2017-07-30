@@ -3,6 +3,8 @@ package narek.example.com.yandex_weather_app.data;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -26,20 +28,9 @@ public class RepositoryImpl implements Repository {
     private PlacesApi placesApi = new PlacesApi();
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
 
-    private static RepositoryImpl instance;
-
-    public static RepositoryImpl getInstance() {
-        if (instance == null) {
-            synchronized (RepositoryImpl.class) {
-                instance = new RepositoryImpl();
-            }
-        }
-        return instance;
+    @Inject
+    public RepositoryImpl() {
     }
-
-    private RepositoryImpl() {
-    }
-
 
     @Override
     public Single<Weather> getWeatherData() {

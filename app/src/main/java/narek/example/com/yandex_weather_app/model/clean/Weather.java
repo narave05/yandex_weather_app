@@ -10,6 +10,7 @@ import narek.example.com.yandex_weather_app.model.mapper.TimeMapper;
 public class Weather implements Serializable {
 
     private static final float K = 273.15f;
+    public static final int NOT_MILLIS = 1000;
 
     private TimeMapper timeMapper = new TimeMapper();
     private final City city;
@@ -117,7 +118,7 @@ public class Weather implements Serializable {
         }
 
         public WeatherBuilder weatherUpdateDate(long millis) {
-            this.date = new Date(millis * 1000);
+            this.date = new Date(millis * NOT_MILLIS);
             return this;
         }
 
@@ -129,5 +130,32 @@ public class Weather implements Serializable {
         public Weather createWeather() {
             return new Weather(city, temperature, pressure, humidity, windSpeed, conditionCode, date);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Weather)) return false;
+
+        Weather weather = (Weather) o;
+
+        if (Float.compare(weather.temperature, temperature) != 0) return false;
+        if (Float.compare(weather.pressure, pressure) != 0) return false;
+        if (Float.compare(weather.humidity, humidity) != 0) return false;
+        if (Float.compare(weather.windSpeed, windSpeed) != 0) return false;
+        if (!city.equals(weather.city)) return false;
+        return date != null ? date.equals(weather.date) : weather.date == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = city.hashCode();
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (temperature != +0.0f ? Float.floatToIntBits(temperature) : 0);
+        result = 31 * result + (pressure != +0.0f ? Float.floatToIntBits(pressure) : 0);
+        result = 31 * result + (humidity != +0.0f ? Float.floatToIntBits(humidity) : 0);
+        result = 31 * result + (windSpeed != +0.0f ? Float.floatToIntBits(windSpeed) : 0);
+        return result;
     }
 }

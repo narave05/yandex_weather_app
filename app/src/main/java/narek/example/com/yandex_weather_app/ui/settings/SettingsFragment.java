@@ -10,10 +10,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.Locale;
 
 import butterknife.BindView;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.util.CustomSeekBarChangeListener;
@@ -22,6 +24,11 @@ public class SettingsFragment extends MvpBaseFragment implements SettingsFragmen
 
     @InjectPresenter
     SettingsFragmentPresenter presenter;
+
+    @ProvidePresenter
+    public SettingsFragmentPresenter providePresenter(){
+        return presenter = App.getInstance().getAppComponent().provideSettingsPresenter();
+    }
 
     @BindView(R.id.interval)
     TextView intervalTextView;
