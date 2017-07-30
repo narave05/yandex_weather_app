@@ -12,13 +12,13 @@ import narek.example.com.yandex_weather_app.util.Const;
 public class PreferenceHelper {
 
     private static final Object lock = new Object();
-    private static final String CITY_LAT = "CITY_LAT";
-    private static final String CITY_LON = "CITY_LON";
-    private static final String MOSCOW_LON = String.valueOf(Const.moscowLon);
-    private static final String MOSCOW_LAT = String.valueOf(Const.moscowLat);
+    public static final String CITY_LAT = "CITY_LAT";
+    public static final String CITY_LON = "CITY_LON";
+    public static final String MOSCOW_LON = String.valueOf(Const.moscowLon);
+    public static final String MOSCOW_LAT = String.valueOf(Const.moscowLat);
 
     private static PreferenceHelper instance;
-    private static final String INTERVAL_KEY = "INTERVAL_KEY";
+    public static final String INTERVAL_KEY = "INTERVAL_KEY";
     private SharedPreferences preferences = App.getInstance().getPreferences();
     private SharedPreferences.Editor editor = preferences.edit();
 

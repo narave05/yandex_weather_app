@@ -13,8 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
@@ -26,6 +28,11 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
 
     @InjectPresenter
     WeatherFragmentPresenter presenter;
+
+    @ProvidePresenter
+    public WeatherFragmentPresenter providePresenter(){
+        return presenter = App.getInstance().getAppComponent().provideWeatherPresenter();
+    }
 
     @BindView(R.id.city_name_tv)
     TextView cityName;

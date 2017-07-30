@@ -15,11 +15,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.List;
 
 import butterknife.BindView;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.adapter.OnItemClickListener;
 import narek.example.com.yandex_weather_app.adapter.SuggestionAdapter;
@@ -33,6 +35,11 @@ public class FindCityFragment extends MvpBaseFragment implements FindCityFragmen
     private SuggestionAdapter suggestionAdapter;
     @InjectPresenter
     FindCityPresenter presenter;
+
+    @ProvidePresenter
+    public FindCityPresenter providePresenter(){
+        return presenter = App.getInstance().getAppComponent().provideFindCityPresenter();
+    }
 
     public static FindCityFragment newInstance() {
         return new FindCityFragment();

@@ -8,6 +8,8 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.google.android.gms.gcm.TaskParams;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -20,8 +22,13 @@ import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 public class WeatherTask extends GcmTaskService {
 
-    private Repository repository = RepositoryImpl.getInstance();
+    private Repository repository;
     private Disposable disposable;
+
+    @Inject
+    public WeatherTask(Repository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public int onRunTask(TaskParams taskParams) {
@@ -47,7 +54,7 @@ public class WeatherTask extends GcmTaskService {
 
     }
 
-    public static void schedule(Context context, long updateInterval) {
+    public  void schedule(Context context, long updateInterval) {
         GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);
 
         PeriodicTask periodicTask = new PeriodicTask.Builder()

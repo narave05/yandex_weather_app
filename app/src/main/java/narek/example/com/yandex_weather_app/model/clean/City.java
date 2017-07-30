@@ -32,4 +32,25 @@ public class City implements Serializable{
     public float getLatitude() {
         return lat;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof City)) return false;
+
+        City city = (City) o;
+
+        if (Float.compare(city.lon, lon) != 0) return false;
+        if (Float.compare(city.lat, lat) != 0) return false;
+        return name.equals(city.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (lon != +0.0f ? Float.floatToIntBits(lon) : 0);
+        result = 31 * result + (lat != +0.0f ? Float.floatToIntBits(lat) : 0);
+        return result;
+    }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,15 +37,19 @@ import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 @InjectViewState
 public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
-    private Repository repository = RepositoryImpl.getInstance();
+    private Repository repository;
     private final int timeout = 400;
 
+    @Inject
+    public FindCityPresenter(Repository repository) {
+        this.repository = repository;
+    }
 
     public void initKeyBoard() {
         getViewState().openKeyBoard();
     }
 
-    public void editTextChanged(Observable<CharSequence> observable){
+    void editTextChanged(Observable<CharSequence> observable){
 
         observable.filter(new Predicate<CharSequence>() {
             @Override
@@ -87,7 +93,7 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
         }
     }
-    public void callForCoords(final String cityId){
+    void callForCoords(final String cityId){
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
                     repository.callForCityCoords(cityId)

@@ -2,6 +2,8 @@ package narek.example.com.yandex_weather_app.ui.weather;
 
 import com.arellomobile.mvp.InjectViewState;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
@@ -20,9 +22,13 @@ import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 @InjectViewState
 public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentView> {
 
-    private Repository repository = RepositoryImpl.getInstance();
+    private Repository repository;
 
-    WeatherFragmentPresenter() {
+    @Inject
+    public WeatherFragmentPresenter(Repository repository) {
+
+        this.repository = repository;
+
         showWeatherFromStorage();
         loadWeather();
         subscribeToRxBus();
@@ -39,7 +45,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
         });
     }
 
-    public void loadWeather() {
+    void loadWeather() {
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
                     repository.getWeatherData()

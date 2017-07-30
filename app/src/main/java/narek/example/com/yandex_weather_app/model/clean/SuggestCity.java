@@ -47,6 +47,24 @@ public class SuggestCity {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SuggestCity)) return false;
 
+        SuggestCity city = (SuggestCity) o;
 
+        if (cityName != null ? !cityName.equals(city.cityName) : city.cityName != null) return false;
+        if (country != null ? !country.equals(city.country) : city.country != null) return false;
+        return cityId != null ? cityId.equals(city.cityId) : city.cityId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cityName != null ? cityName.hashCode() : 0;
+        result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        return result;
+    }
 }
