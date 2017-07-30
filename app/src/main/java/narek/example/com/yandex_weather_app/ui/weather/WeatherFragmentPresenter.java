@@ -25,7 +25,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
     private Repository repository;
 
     @Inject
-    WeatherFragmentPresenter(Repository repository) {
+    public WeatherFragmentPresenter(Repository repository) {
 
         this.repository = repository;
 
@@ -45,7 +45,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
         });
     }
 
-    public void loadWeather() {
+    void loadWeather() {
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
                     repository.getWeatherData()

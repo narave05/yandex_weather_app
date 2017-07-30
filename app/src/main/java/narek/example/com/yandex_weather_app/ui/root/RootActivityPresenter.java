@@ -50,7 +50,7 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         });
     }
 
-    void onHomeItemClick() {
+    public void onHomeItemClick() {
         navigateToHome();
     }
 
@@ -66,7 +66,7 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         getViewState().unlockDrawer();
     }
 
-    void onSettingsItemClick() {
+    public void onSettingsItemClick() {
         navigateToSettings();
     }
 
@@ -82,7 +82,7 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         getViewState().changeToolbarIconToArrow();
     }
 
-    void onAboutUsItemClick() {
+    public void onAboutUsItemClick() {
         navigateToAboutAs();
     }
 
@@ -93,7 +93,7 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         getViewState().setToolBarTitle(R.string.abut_us_title);
     }
 
-    void onBackPressed() {
+    public void onBackPressed() {
         navigateToHome();
         unlockDrawerAndChengeIcon();
         getViewState().setToolBarTitle(R.string.weather_title);

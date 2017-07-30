@@ -49,7 +49,7 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
         getViewState().openKeyBoard();
     }
 
-    public void editTextChanged(Observable<CharSequence> observable){
+    void editTextChanged(Observable<CharSequence> observable){
 
         observable.filter(new Predicate<CharSequence>() {
             @Override
@@ -93,7 +93,7 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
         }
     }
-    public void callForCoords(final String cityId){
+    void callForCoords(final String cityId){
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
                     repository.callForCityCoords(cityId)
