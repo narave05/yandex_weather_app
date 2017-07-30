@@ -1,5 +1,6 @@
 package narek.example.com.yandex_weather_app.ui.root;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
@@ -20,6 +22,7 @@ import butterknife.BindView;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseActivity;
 import narek.example.com.yandex_weather_app.ui.abut_us.AbutUsFragment;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 import narek.example.com.yandex_weather_app.ui.settings.SettingsFragment;
 import narek.example.com.yandex_weather_app.ui.weather.WeatherFragment;
 import narek.example.com.yandex_weather_app.util.FragmentTag;
@@ -83,6 +86,9 @@ public class RootActivity extends MvpBaseActivity
             case R.id.about_us_item:
                 presenter.onAboutUsItemClick();
                 break;
+            case R.id.find_city_item:
+                presenter.onFindCityItemClick();
+                break;
         }
         navigationDrawer.closeDrawer(Gravity.START);
         return false;
@@ -94,6 +100,15 @@ public class RootActivity extends MvpBaseActivity
                 AbutUsFragment.newInstance(),
                 fragmentManager,
                 FragmentTag.ABOUT,
+                true);
+    }
+
+    @Override
+    public void openFindCityFragment() {
+        FragmentUtils.openFragment(
+                FindCityFragment.newInstance(),
+                fragmentManager,
+                FragmentTag.FIND,
                 true);
     }
 
@@ -165,10 +180,19 @@ public class RootActivity extends MvpBaseActivity
     }
 
     @Override
+    public void hideKeyBoard() {
+
+        InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+
+    }
+
+    @Override
     public void onBackPressed() {
         presenter.onBackPressed();
 
         super.onBackPressed();
     }
+
 
 }

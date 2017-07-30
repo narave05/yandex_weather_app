@@ -14,6 +14,8 @@ public interface RootActivityView extends MvpBaseView {
 
     void openAboutUsFragment();
 
+    void openFindCityFragment();
+
     void openSettingsFragment();
 
     void openWeatherFragment();
@@ -27,4 +29,6 @@ public interface RootActivityView extends MvpBaseView {
     void changeToolbarIconToHamburger();
 
     void setToolBarTitle(@StringRes int titleId);
+
+    void hideKeyBoard();
 }

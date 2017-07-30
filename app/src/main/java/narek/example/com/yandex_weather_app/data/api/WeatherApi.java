@@ -8,16 +8,16 @@ import retrofit2.http.Query;
 
 public class WeatherApi {
 
-    WeatherRestService weatherRestService = RestServiceGenerator.createService(WeatherRestService.class,
+    private WeatherRestService weatherRestService = RestServiceGenerator.createService(WeatherRestService.class,
             AppConfig.BASE_URL);
 
-    public Single<WeatherDataRes> callWeatherDataByCityName(String cityName) {
-        return weatherRestService.callWeatherDataByCityName(AppConfig.API_ID, cityName);
+    public Single<WeatherDataRes> callWeatherDataByCityCoords(double cityLat, double cityLon) {
+        return weatherRestService.callWeatherDataByCityCoords(AppConfig.API_ID, cityLat, cityLon);
     }
 
     private interface WeatherRestService {
         @GET("weather")
-        Single<WeatherDataRes> callWeatherDataByCityName(@Query("appid") String id,
-                                                         @Query("q") String param);
+        Single<WeatherDataRes> callWeatherDataByCityCoords(@Query("appid") String id,
+                                                           @Query("lat") double lat, @Query("lon") double lon);
     }
 }
