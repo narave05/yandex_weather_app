@@ -80,7 +80,7 @@ public class Weather implements Serializable {
                 '}';
     }
 
-    public static class WeatherBuilder {
+    public static class WeatherEntityBuilder {
         private City city;
         private Date date;
         private float temperature;
@@ -89,40 +89,40 @@ public class Weather implements Serializable {
         private float windSpeed;
         private int conditionCode;
 
-        public WeatherBuilder() {
+        public WeatherEntityBuilder() {
         }
 
-        public WeatherBuilder temperature(float temperature) {
+        public WeatherEntityBuilder temperature(float temperature) {
             this.temperature = temperature;
             return this;
         }
 
-        public WeatherBuilder pressure(float pressure) {
+        public WeatherEntityBuilder pressure(float pressure) {
             this.pressure = pressure;
             return this;
         }
 
-        public WeatherBuilder humidity(float humidity) {
+        public WeatherEntityBuilder humidity(float humidity) {
             this.humidity = humidity;
             return this;
         }
 
-        public WeatherBuilder windSpeed(float windSpeed) {
+        public WeatherEntityBuilder windSpeed(float windSpeed) {
             this.windSpeed = windSpeed;
             return this;
         }
 
-        public WeatherBuilder conditionCode(int conditionCode) {
+        public WeatherEntityBuilder conditionCode(int conditionCode) {
             this.conditionCode = conditionCode;
             return this;
         }
 
-        public WeatherBuilder weatherUpdateDate(long millis) {
+        public WeatherEntityBuilder weatherUpdateDate(long millis) {
             this.date = new Date(millis * NOT_MILLIS);
             return this;
         }
 
-        public WeatherBuilder city(City city) {
+        public WeatherEntityBuilder city(City city) {
             this.city = city;
             return this;
         }

@@ -3,34 +3,23 @@ package narek.example.com.yandex_weather_app.ui.find_city;
 
 import com.arellomobile.mvp.InjectViewState;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
-import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
-import narek.example.com.yandex_weather_app.data.RepositoryImpl;
-import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.CoordsModel;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
-import narek.example.com.yandex_weather_app.model.clean.Weather;
-import narek.example.com.yandex_weather_app.model.mapper.CityMapper;
-import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 
