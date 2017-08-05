@@ -1,5 +1,7 @@
 package narek.example.com.yandex_weather_app.data;
 
+import android.arch.persistence.room.Room;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import narek.example.com.yandex_weather_app.data.api.PlacesApi;
 import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
 import narek.example.com.yandex_weather_app.db.AppDatabase;
+import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
@@ -32,10 +35,12 @@ public class RepositoryImpl implements Repository {
     private WeatherApi api = new WeatherApi();
     private PlacesApi placesApi = new PlacesApi();
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
-    private AppDatabase db = App.getAppDatabase();
+    private final AppDatabase db;
 
     @Inject
     public RepositoryImpl() {
+        db = Room.databaseBuilder(App.getInstance(),
+                AppDatabase.class, "database-name").build();
     }
 
     @Override
@@ -46,7 +51,9 @@ public class RepositoryImpl implements Repository {
                 .map(new Function<WeatherDataRes, Weather>() {
                     @Override
                     public Weather apply(@NonNull WeatherDataRes weatherDataRes) throws Exception {
-                        return new WeatherMapper().transform(weatherDataRes);
+                        Weather weather = new WeatherMapper().transform(weatherDataRes);
+                        setCity(weather.getCity());
+                        return weather;
                     }
                 });
     }
@@ -103,7 +110,12 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void setCity(City city) {
-        db.cityDao().insertCity(new CityEntityFromCityModelMapper().transformCityModelFromCityEntity(city));
+        CityEntity cityEntity = new CityEntity();
+        cityEntity.setActive(true);
+        cityEntity.setCityName(city.getName());
+        cityEntity.setCoords(city.getCoords());
+        cityEntity.setCityPlaceId(city.getCityPlaceId());
+        db.cityDao().insertCity(cityEntity);
     }
 
     @Override
@@ -113,7 +125,7 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void setWeather(Weather weather) {
-        db.weatherDao().insertWeather(new WeatherEntityFromWeatherModelMapper().transformWeatherEntityFromWeatherModel(weather));
+        db.weatherDao().insertWeather();
     }
 
     @Override

@@ -13,7 +13,7 @@ import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 public class WeatherEntityFromWeatherModelMapper {
 
-    @NonNull
+    /*@NonNull
     public WeatherEntity transformWeatherEntityFromWeatherModel(@NonNull Weather weather) {
         List<CityEntity> cityEntityList = new ArrayList<>();
         cityEntityList.add(new CityEntity.CityEntityBuilder()
@@ -34,5 +34,5 @@ public class WeatherEntityFromWeatherModelMapper {
                 .weatherUpdateDate(weather.getDate().getTime())
                 .createWeatherEntity();
 
-    }
+    }*/
 }

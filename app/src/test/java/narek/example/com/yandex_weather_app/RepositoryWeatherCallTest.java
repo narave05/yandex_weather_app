@@ -14,6 +14,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.TestObserver;
 import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.model.clean.City;
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
@@ -36,7 +37,14 @@ public class RepositoryWeatherCallTest {
         Gson json = new Gson();
         weatherDataRes = json.fromJson(jsonWeather, WeatherDataRes.class);
         weather = new Weather.WeatherEntityBuilder()
-                .city(new City(weatherDataRes.name, weatherDataRes.coordRes.lon, weatherDataRes.coordRes.lat))
+                .city(new City.CityBuilder()
+                .name(weatherDataRes.name)
+                .cityPlaceId("")
+                .coords(new Coords.CoordsBuilder()
+                .lat(weatherDataRes.coordRes.lat)
+                .lon(weatherDataRes.coordRes.lon)
+                .buildCoords())
+                .createCity())
                 .temperature(weatherDataRes.main.temp)
                 .pressure(weatherDataRes.main.pressure)
                 .humidity(weatherDataRes.main.humidity)

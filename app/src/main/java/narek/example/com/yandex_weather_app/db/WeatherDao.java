@@ -19,10 +19,10 @@ public interface WeatherDao {
     @Delete
     public void deleteWeather(WeatherEntity... weathers);
 
-    @Query("SELECT * FROM WeatherEntity WHERE cityId IS city_id")
-    public List<WeatherEntity> loadWeather(String city_id);
+    @Query("SELECT * FROM weather WHERE city_id IS :cityId")
+    WeatherEntity loadWeather(String cityId);
 
-    @Query("SELECT * FROM WeatherEntity")
+    @Query("SELECT * FROM weather")
     public List<WeatherEntity> loadAll();
 
 }

@@ -20,6 +20,6 @@ public interface CityDao {
     @Update
     public void updateCurrentCity(CityEntity city);
 
-    @Query("SELECT * from CityEntity WHERE isActive IS 1")
+    @Query("SELECT * from city WHERE is_active IS 1")
     public CityEntity loadCity();
 }

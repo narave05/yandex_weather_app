@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 
-@Entity(tableName = "City", indices = {@Index(value = {"city_name"}, unique = true)})
+@Entity(tableName = "city", indices = {@Index(value = {"city_name", "city_place_id"}, unique = true)})
 
 public class CityEntity {
 
@@ -19,17 +19,21 @@ public class CityEntity {
     @ColumnInfo(name = "city_name")
     private String cityName;
 
+    @ColumnInfo(name = "city_place_id")
+    private String cityPlaceId;
+
     @Embedded
     private Coords coords;
 
     @ColumnInfo(name = "is_active")
     private boolean isActive;
 
+    public String getCityPlaceId() {
+        return cityPlaceId;
+    }
 
-    public CityEntity(String cityName, Coords coords, boolean isActive) {
-        this.cityName = cityName;
-        this.coords = coords;
-        this.isActive = isActive;
+    public void setCityPlaceId(String cityPlaceId) {
+        this.cityPlaceId = cityPlaceId;
     }
 
     public int getCityId() {
@@ -62,32 +66,5 @@ public class CityEntity {
 
     public void setCoords(Coords coords) {
         this.coords = coords;
-    }
-
-    public static class CityEntityBuilder{
-
-        private int cityId;
-        private String cityName;
-        private Coords coords;
-        private boolean isActive;
-
-        public CityEntityBuilder cityEntityName(String cityEntityName){
-            cityName = cityEntityName;
-            return this;
-        }
-
-        public CityEntityBuilder cityEntityCoords(Coords coords) {
-            this.coords = coords;
-            return this;
-        }
-
-        public CityEntityBuilder isActive(boolean isActive) {
-            this.isActive = isActive;
-            return this;
-        }
-
-        public CityEntity createCityEntity() {
-            return new CityEntity(cityName, coords, isActive);
-        }
     }
 }

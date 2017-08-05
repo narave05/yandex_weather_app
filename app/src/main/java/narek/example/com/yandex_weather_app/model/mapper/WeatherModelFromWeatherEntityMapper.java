@@ -8,7 +8,7 @@ import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 public class WeatherModelFromWeatherEntityMapper {
-    @NonNull
+    /*@NonNull
     public Weather transformWeatherModelFromWeatherEntity(WeatherEntity weatherEntity){
         City city = new City.CityBuilder()
                 .name(weatherEntity.getCityEntity().get(0).getCityName())
@@ -24,5 +24,5 @@ public class WeatherModelFromWeatherEntityMapper {
                 .conditionCode(weatherEntity.getConditionCode())
                 .pressure(weatherEntity.getPressure())
                 .createWeather();
-    }
+    }*/
 }

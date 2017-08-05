@@ -11,11 +11,14 @@ import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
 public class WeatherMapper implements Serializable {
     @NonNull
     public Weather transform(@NonNull WeatherDataRes weatherDataRes) {
-        City city = new City(weatherDataRes.name,
-                new Coords.CoordsBuilder()
-                .lat(weatherDataRes.coordRes.lat)
-                .lon(weatherDataRes.coordRes.lat)
-                .buildCoords());
+        City city = new City.CityBuilder()
+                .name(weatherDataRes.name)
+                .cityPlaceId("")
+                .coords(new Coords.CoordsBuilder()
+                        .lat(weatherDataRes.coordRes.lat)
+                        .lon(weatherDataRes.coordRes.lon)
+                        .buildCoords())
+                .createCity();
         return new Weather.WeatherEntityBuilder()
                 .city(city)
                 .temperature(weatherDataRes.main.temp)

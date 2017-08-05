@@ -25,5 +25,4 @@ public class CitySuggestionMapper implements Serializable {
         }
         return list;
     }
-
 }

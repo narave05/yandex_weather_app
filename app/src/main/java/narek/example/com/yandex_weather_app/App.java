@@ -12,6 +12,8 @@ import narek.example.com.yandex_weather_app.data.scheduler.WeatherTask;
 
 import narek.example.com.yandex_weather_app.db.AppDatabase;
 import narek.example.com.yandex_weather_app.di.AppComponent;
+
+import narek.example.com.yandex_weather_app.di.AppModule;
 import narek.example.com.yandex_weather_app.di.DaggerAppComponent;
 import narek.example.com.yandex_weather_app.util.RxBus;
 
@@ -35,7 +37,7 @@ public class App extends Application {
         appComponent = buildAppComponent();
         weatherTask = appComponent.provideWeatherTask();
         weatherTask.schedule(this, PreferenceHelper.getInstance().getIntervalHoursInSeconds());
-        appDatabase = appComponent.provideDb();
+        appDatabase = getAppComponent().provideDb();
     }
 
     public static AppDatabase getAppDatabase() {
@@ -61,6 +63,7 @@ public class App extends Application {
 
     private AppComponent buildAppComponent() {
         return DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
                 .build();
     }
 

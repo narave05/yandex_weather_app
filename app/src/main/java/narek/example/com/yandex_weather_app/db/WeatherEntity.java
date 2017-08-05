@@ -3,13 +3,15 @@ package narek.example.com.yandex_weather_app.db;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Relation;
 
 import java.util.Date;
-import java.util.List;
 
-@Entity(tableName = "Weather")
+
+@Entity(tableName = "weather", indices = {@Index(value = {"weather_id"}, unique = true)},
+        foreignKeys = @ForeignKey(entity = CityEntity.class, parentColumns = "city_id", childColumns = "id"))
 
 public class WeatherEntity {
 
@@ -21,6 +23,9 @@ public class WeatherEntity {
 
     @ColumnInfo(name = "city_name")
     private String cityName;
+
+    @ColumnInfo(name = "weather_id")
+    private String weatherId;
 
     @Embedded
     private Date date;
@@ -40,16 +45,20 @@ public class WeatherEntity {
     public WeatherEntity() {
     }
 
-    public WeatherEntity(String cityName, Date date, float temperature, float pressure,
-                         float humidity, float windSpeed, int conditionCode) {
+    public int getCityId() {
+        return cityId;
+    }
 
-        this.cityName = cityName;
-        this.date = date;
-        this.temperature = temperature;
-        this.pressure = pressure;
-        this.humidity = humidity;
-        this.windSpeed = windSpeed;
-        this.conditionCode = conditionCode;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getWeatherId() {
+        return weatherId;
+    }
+
+    public void setWeatherId(String weatherId) {
+        this.weatherId = weatherId;
     }
 
     public int getId() {
@@ -114,72 +123,5 @@ public class WeatherEntity {
 
     public void setConditionCode(int conditionCode) {
         this.conditionCode = conditionCode;
-    }
-
-
-    public static class WeatherEntityBuilder {
-
-        private static final int NOT_MILLIS = 1000;
-        private int id;
-        private List<CityEntity> cityEntity;
-        private String cityName;
-        private Date date;
-        private float temperature;
-        private float pressure;
-        private float humidity;
-        private float windSpeed;
-        private int conditionCode;
-
-        public WeatherEntityBuilder() {
-        }
-
-        public WeatherEntity.WeatherEntityBuilder id(int id) {
-            this.id = id;
-            return this;
-        }
-        public WeatherEntity.WeatherEntityBuilder temperature(float temperature) {
-            this.temperature = temperature;
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder cityName(String cityName) {
-            this.cityName = cityName;
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder pressure(float pressure) {
-            this.pressure = pressure;
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder humidity(float humidity) {
-            this.humidity = humidity;
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder windSpeed(float windSpeed) {
-            this.windSpeed = windSpeed;
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder conditionCode(int conditionCode) {
-            this.conditionCode = conditionCode;
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder weatherUpdateDate(long millis) {
-            this.date = new Date(millis * NOT_MILLIS);
-            return this;
-        }
-
-        public WeatherEntity.WeatherEntityBuilder city(List<CityEntity> cityEntity) {
-            this.cityEntity = cityEntity;
-            return this;
-        }
-
-
-        public WeatherEntity createWeatherEntity() {
-            return new WeatherEntity(id, cityEntity, cityName, date, temperature, pressure, humidity, windSpeed, conditionCode);
-        }
     }
 }
