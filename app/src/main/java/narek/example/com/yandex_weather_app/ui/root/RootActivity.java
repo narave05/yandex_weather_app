@@ -17,12 +17,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseActivity;
 import narek.example.com.yandex_weather_app.ui.abut_us.AbutUsFragment;
 import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityPresenter;
 import narek.example.com.yandex_weather_app.ui.settings.SettingsFragment;
 import narek.example.com.yandex_weather_app.ui.weather.WeatherFragment;
 import narek.example.com.yandex_weather_app.util.FragmentTag;
@@ -34,6 +37,11 @@ public class RootActivity extends MvpBaseActivity
 
     @InjectPresenter
     RootActivityPresenter presenter;
+
+    @ProvidePresenter
+    public RootActivityPresenter providePresenter(){
+        return presenter = App.getInstance().getAppComponent().provideRootActivityPresenter();
+    }
 
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
@@ -47,6 +55,9 @@ public class RootActivity extends MvpBaseActivity
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle toggle;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,12 @@ public class RootActivity extends MvpBaseActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.init();
     }
 
@@ -181,10 +198,8 @@ public class RootActivity extends MvpBaseActivity
 
     @Override
     public void hideKeyBoard() {
-
-        InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-
+            InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override

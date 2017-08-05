@@ -10,20 +10,11 @@ public class City implements Serializable {
 
     private final String name;
     private Coords coords;
-    private String cityPlaceId;
 
-    public String getCityPlaceId() {
-        return cityPlaceId;
-    }
 
-    public void setCityPlaceId(String cityPlaceId) {
-        this.cityPlaceId = cityPlaceId;
-    }
-
-    public City(String name, Coords coords, String cityPlaceId) {
+    public City(String name, Coords coords) {
         this.name = name == null ? Const.EMPTY_STRING : name;
         this.coords = coords;
-        this.cityPlaceId = cityPlaceId;
     }
 
 
@@ -46,8 +37,7 @@ public class City implements Serializable {
         City city = (City) o;
 
         if (name != null ? !name.equals(city.name) : city.name != null) return false;
-        if (coords != null ? !coords.equals(city.coords) : city.coords != null) return false;
-        return cityPlaceId != null ? cityPlaceId.equals(city.cityPlaceId) : city.cityPlaceId == null;
+        return coords != null ? coords.equals(city.coords) : city.coords == null;
 
     }
 
@@ -55,14 +45,12 @@ public class City implements Serializable {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (coords != null ? coords.hashCode() : 0);
-        result = 31 * result + (cityPlaceId != null ? cityPlaceId.hashCode() : 0);
         return result;
     }
 
     public static class CityBuilder{
         private String name;
         private Coords coords;
-        private String cityPlaceId;
 
         public CityBuilder() {
         }
@@ -77,13 +65,8 @@ public class City implements Serializable {
             return this;
         }
 
-        public CityBuilder cityPlaceId(String cityPlaceId) {
-            this.cityPlaceId = cityPlaceId;
-            return this;
-        }
-
         public City createCity(){
-            return new City(name, coords, cityPlaceId);
+            return new City(name, coords);
         }
     }
 

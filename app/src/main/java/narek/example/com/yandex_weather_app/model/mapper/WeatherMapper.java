@@ -13,7 +13,6 @@ public class WeatherMapper implements Serializable {
     public Weather transform(@NonNull WeatherDataRes weatherDataRes) {
         City city = new City.CityBuilder()
                 .name(weatherDataRes.name)
-                .cityPlaceId("")
                 .coords(new Coords.CoordsBuilder()
                         .lat(weatherDataRes.coordRes.lat)
                         .lon(weatherDataRes.coordRes.lon)

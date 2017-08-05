@@ -92,7 +92,7 @@ public class FindCityFragment extends MvpBaseFragment implements FindCityFragmen
         return new SuggestionAdapter(cityList, new OnItemClickListener() {
             @Override
             public void onItemClick(Object item, int layoutPosition) {
-                presenter.callForCoords(cityList.get(layoutPosition).getCityId());
+                presenter.callForCoords(cityList.get(layoutPosition));
             }
         });
     }

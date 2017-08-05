@@ -3,6 +3,7 @@ package narek.example.com.yandex_weather_app.di;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.util.Log;
 
 import javax.inject.Singleton;
 
@@ -37,6 +38,7 @@ public class AppModule {
     @Provides
     @Singleton
     public AppDatabase buildDb(Context context){
+        Log.d(this.getClass().getName(), "buildDb: OK");
         return Room.databaseBuilder(context, AppDatabase.class, "weather_db").build();
     }
 }

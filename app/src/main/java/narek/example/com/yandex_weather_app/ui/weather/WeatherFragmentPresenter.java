@@ -4,17 +4,16 @@ import com.arellomobile.mvp.InjectViewState;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
-import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
-import narek.example.com.yandex_weather_app.model.clean.Coords;
+import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
@@ -26,23 +25,20 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
 
     @Inject
     public WeatherFragmentPresenter(Repository repository) {
-
         this.repository = repository;
-
-        showWeatherFromStorage();
-        loadWeather();
-        subscribeToRxBus();
+        getCityFromDb();
     }
 
-    private void subscribeToRxBus() {
-        App.getRxBus().getEvents().subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(@NonNull Object o) throws Exception {
-                if (o instanceof Coords) {
-                    loadWeather();
-                }
-            }
-        });
+    public void getCityFromDb(){
+        compositeDisposable.add(repository.getCityFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CityEntity>() {
+                    @Override
+                    public void accept(@NonNull CityEntity cityEntity) throws Exception {
+                        loadWeather();
+                    }
+                }));
     }
 
     void loadWeather() {
@@ -54,7 +50,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                             .doAfterSuccess(new Consumer<Weather>() {
                                 @Override
                                 public void accept(@NonNull Weather weather) throws Exception {
-                                    WeatherStorage.save(weather);
+                                   //TODO save weather in db
                                 }
                             })
                             .subscribe(new Consumer<Weather>() {
@@ -71,17 +67,11 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                                 }
                             })
             );
+
         } else {
             getViewState().hideSwipeRefresh();
             getViewState().showError(R.string.data_not_updated);
 
-        }
-    }
-
-    private void showWeatherFromStorage() {
-        if (WeatherStorage.hasSavedWeather()) {
-            Weather weather = WeatherStorage.read();
-            sendWeatherData(weather);
         }
     }
 

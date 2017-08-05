@@ -1,13 +1,17 @@
 package narek.example.com.yandex_weather_app.data;
 
-import android.arch.persistence.room.Room;
+import android.util.Log;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.App;
@@ -16,14 +20,13 @@ import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
 import narek.example.com.yandex_weather_app.db.AppDatabase;
 import narek.example.com.yandex_weather_app.db.CityEntity;
+import narek.example.com.yandex_weather_app.db.WeatherEntity;
 import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
-import narek.example.com.yandex_weather_app.model.mapper.CityEntityFromCityModelMapper;
 import narek.example.com.yandex_weather_app.model.mapper.CitySuggestionMapper;
 import narek.example.com.yandex_weather_app.model.mapper.CoordsMapper;
-import narek.example.com.yandex_weather_app.model.mapper.WeatherEntityFromWeatherModelMapper;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
 import narek.example.com.yandex_weather_app.model.rest.CoordsResponse;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
@@ -36,11 +39,11 @@ public class RepositoryImpl implements Repository {
     private PlacesApi placesApi = new PlacesApi();
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
     private final AppDatabase db;
+    private CityEntity cityEntity;
 
     @Inject
     public RepositoryImpl() {
-        db = Room.databaseBuilder(App.getInstance(),
-                AppDatabase.class, "database-name").build();
+        db = App.getInstance().getAppComponent().provideDb();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class RepositoryImpl implements Repository {
                     @Override
                     public Weather apply(@NonNull WeatherDataRes weatherDataRes) throws Exception {
                         Weather weather = new WeatherMapper().transform(weatherDataRes);
-                        setCity(weather.getCity());
+                        //setCityInDb(weather.getCity());
                         return weather;
                     }
                 });
@@ -82,25 +85,9 @@ public class RepositoryImpl implements Repository {
                 });
     }
 
-
-
     @Override
     public int getCurrentUpdateInterval() {
         return preferenceHelper.getIntervalHoursInSeconds() / SEC;
-    }
-
-    @Override
-    public void saveCityCoords(double lat, double lon) {
-        preferenceHelper.saveCityLat(String.valueOf(lat));
-        preferenceHelper.saveCityLon(String.valueOf(lon));
-    }
-
-    @Override
-    public Coords getCityCoords() {
-        return new Coords.CoordsBuilder()
-                .lat(Double.parseDouble(preferenceHelper.getCityLat()))
-                .lon(Double.parseDouble(preferenceHelper.getCityLon()))
-                .buildCoords();
     }
 
     @Override
@@ -109,23 +96,36 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public void setCity(City city) {
-        CityEntity cityEntity = new CityEntity();
+    public void setCityInDb(City city) {
+        cityEntity = new CityEntity();
         cityEntity.setActive(true);
         cityEntity.setCityName(city.getName());
         cityEntity.setCoords(city.getCoords());
-        cityEntity.setCityPlaceId(city.getCityPlaceId());
-        db.cityDao().insertCity(cityEntity);
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                db.cityDao().insertCity(cityEntity);
+                db.cityDao().updateCurrentCity(cityEntity.getCityName(), cityEntity.isActive(), cityEntity.getCoords().getLat(),
+                        cityEntity.getCoords().getLon());
+                Log.d(this.getClass().getName(), "run: insert is done");
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        .subscribe();
     }
 
     @Override
-    public City getCity() {
-        return null;
+    public Flowable<CityEntity> getCityFromDb() {
+        return db.cityDao().loadCity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public void setWeather(Weather weather) {
-        db.weatherDao().insertWeather();
+        db.weatherDao().insertWeather(new WeatherEntity());
     }
 
     @Override
@@ -140,7 +140,11 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public void deleteCity(City city) {
-
+        CityEntity cityEntity = new CityEntity();
+        cityEntity.setCityName(city.getName());
+        cityEntity.setCoords(city.getCoords());
+        cityEntity.setActive(false);
+        db.cityDao().deleteCity(cityEntity);
     }
 
     @Override

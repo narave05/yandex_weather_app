@@ -22,8 +22,12 @@ import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 public class WeatherTask extends GcmTaskService {
 
+    public static final long FLEX = 30L;
     private Repository repository;
     private Disposable disposable;
+
+    public WeatherTask() {
+    }
 
     @Inject
     public WeatherTask(Repository repository) {
@@ -61,7 +65,7 @@ public class WeatherTask extends GcmTaskService {
                 .setService(WeatherTask.class)
                 .setUpdateCurrent(true)
                 .setPeriod(updateInterval)
-                .setFlex(30L)
+                .setFlex(FLEX)
                 .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
                 .setRequiresCharging(false)
                 .setPersisted(true)

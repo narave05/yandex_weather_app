@@ -27,6 +27,9 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 }
 
 ext.supportLibVersion = '25.3.1'

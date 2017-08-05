@@ -39,7 +39,6 @@ public class RepositoryWeatherCallTest {
         weather = new Weather.WeatherEntityBuilder()
                 .city(new City.CityBuilder()
                 .name(weatherDataRes.name)
-                .cityPlaceId("")
                 .coords(new Coords.CoordsBuilder()
                 .lat(weatherDataRes.coordRes.lat)
                 .lon(weatherDataRes.coordRes.lon)

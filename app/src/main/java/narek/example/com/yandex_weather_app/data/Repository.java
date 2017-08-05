@@ -2,8 +2,10 @@ package narek.example.com.yandex_weather_app.data;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
@@ -20,15 +22,11 @@ public interface Repository {
 
     int getCurrentUpdateInterval();
 
-    void saveCityCoords(double lat, double lon);
-
-    Coords getCityCoords();
-
     void saveUpdateInterval(int currentInterval);
 
-    void setCity(City city);
+    void setCityInDb(City city);
 
-    City getCity();
+    Flowable<CityEntity> getCityFromDb();
 
     void setWeather(Weather weather);
 
