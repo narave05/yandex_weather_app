@@ -41,9 +41,6 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
             case ABOUT:
                 navigateToAboutAs();
                 break;
-            case FIND:
-                navigateToFindCityFragment();
-                break;
         }
     }
 
@@ -107,16 +104,5 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         unlockDrawerAndChengeIcon();
         getViewState().setToolBarTitle(R.string.weather_title);
         getViewState().hideKeyBoard();
-    }
-
-    public void onFindCityItemClick() {
-        navigateToFindCityFragment();
-    }
-
-    private void navigateToFindCityFragment() {
-        currentFragmentTag = FragmentTag.FIND;
-        lockDrawerAndChangeIcon();
-        getViewState().openFindCityFragment();
-        getViewState().setToolBarTitle(R.string.find_city);
     }
 }

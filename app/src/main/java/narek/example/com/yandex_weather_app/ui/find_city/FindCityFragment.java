@@ -1,19 +1,25 @@
 package narek.example.com.yandex_weather_app.ui.find_city;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
@@ -21,6 +27,8 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.adapter.OnItemClickListener;
@@ -28,13 +36,14 @@ import narek.example.com.yandex_weather_app.adapter.SuggestionAdapter;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 
-public class FindCityFragment extends MvpBaseFragment implements FindCityFragmentView{
+public class FindCityFragment extends MvpAppCompatDialogFragment implements FindCityFragmentView{
 
     @BindView(R.id.find_city_ed)EditText findViewEt;
     @BindView(R.id.recycle_view_cities)RecyclerView recyclerView;
-    private SuggestionAdapter suggestionAdapter;
+
     @InjectPresenter
     FindCityPresenter presenter;
+    protected Unbinder unbinder;
 
     @ProvidePresenter
     public FindCityPresenter providePresenter(){
@@ -43,7 +52,9 @@ public class FindCityFragment extends MvpBaseFragment implements FindCityFragmen
 
     public static FindCityFragment newInstance() {
         return new FindCityFragment();
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,14 +66,28 @@ public class FindCityFragment extends MvpBaseFragment implements FindCityFragmen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
         presenter.initKeyBoard();
         presenter.editTextChanged(RxTextView.textChanges(findViewEt));
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(this.getClass().getName(), "onResume: i am here");
+    }
+
+    @Override
     public void openKeyBoard() {
-        InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        /*InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);*/
     }
 
     @Override
@@ -83,8 +108,8 @@ public class FindCityFragment extends MvpBaseFragment implements FindCityFragmen
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        /*DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);*/
     }
 
     private SuggestionAdapter setSuggestionAdapter(final List<SuggestCity> cityList) {
@@ -95,5 +120,13 @@ public class FindCityFragment extends MvpBaseFragment implements FindCityFragmen
                 presenter.callForCoords(cityList.get(layoutPosition));
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 }

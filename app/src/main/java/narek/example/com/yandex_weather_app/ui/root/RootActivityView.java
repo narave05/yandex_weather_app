@@ -14,7 +14,7 @@ public interface RootActivityView extends MvpBaseView {
 
     void openAboutUsFragment();
 
-    void openFindCityFragment();
+
 
     void openSettingsFragment();
 

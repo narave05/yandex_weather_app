@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 
 
 public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView,
@@ -101,8 +105,14 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     }
 
     @Override
+    public void showDialogCitySuggest() {
+        FindCityFragment.newInstance().show(getChildFragmentManager(), null);
+    }
+
+    @Override
     public void onRefresh() {
-        presenter.loadWeather();
+        //presenter.loadWeather();
+        //TODO: you must write here another loadWeather method which will go only to the internet
     }
 
 }

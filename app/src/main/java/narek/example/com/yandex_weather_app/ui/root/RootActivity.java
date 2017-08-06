@@ -55,9 +55,6 @@ public class RootActivity extends MvpBaseActivity
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle toggle;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +100,9 @@ public class RootActivity extends MvpBaseActivity
             case R.id.about_us_item:
                 presenter.onAboutUsItemClick();
                 break;
-            case R.id.find_city_item:
+           /* case R.id.find_city_item:
                 presenter.onFindCityItemClick();
-                break;
+                break;*/
         }
         navigationDrawer.closeDrawer(Gravity.START);
         return false;
@@ -120,14 +117,14 @@ public class RootActivity extends MvpBaseActivity
                 true);
     }
 
-    @Override
+   /* @Override
     public void openFindCityFragment() {
         FragmentUtils.openFragment(
                 FindCityFragment.newInstance(),
                 fragmentManager,
                 FragmentTag.FIND,
                 true);
-    }
+    }*/
 
     @Override
     public void openSettingsFragment() {

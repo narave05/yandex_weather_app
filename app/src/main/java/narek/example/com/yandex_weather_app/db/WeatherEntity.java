@@ -9,23 +9,25 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
 
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 
-@Entity(tableName = "weather", indices = {@Index(value = {"weather_id"}, unique = true)},
-        foreignKeys = @ForeignKey(entity = CityEntity.class, parentColumns = "city_id", childColumns = "id"))
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+
+@Entity(tableName = "weather", indices = {@Index(value = {"id", "city_name"}, unique = true)},
+        foreignKeys = @ForeignKey(onDelete=CASCADE, entity = CityEntity.class, parentColumns = "city_id", childColumns = "id"))
 
 public class WeatherEntity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "city_id")
-    private int cityId;
+    private double lat;
+
+    private double lon;
 
     @ColumnInfo(name = "city_name")
     private String cityName;
-
-    @ColumnInfo(name = "weather_id")
-    private String weatherId;
 
     @Embedded
     private Date date;
@@ -45,20 +47,20 @@ public class WeatherEntity {
     public WeatherEntity() {
     }
 
-    public int getCityId() {
-        return cityId;
+    public double getLat() {
+        return lat;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public String getWeatherId() {
-        return weatherId;
+    public double getLon() {
+        return lon;
     }
 
-    public void setWeatherId(String weatherId) {
-        this.weatherId = weatherId;
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 
     public int getId() {

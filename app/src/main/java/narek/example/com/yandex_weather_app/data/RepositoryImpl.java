@@ -12,6 +12,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.App;
@@ -25,9 +26,12 @@ import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
+import narek.example.com.yandex_weather_app.model.mapper.CityModelToCityEntityConverter;
 import narek.example.com.yandex_weather_app.model.mapper.CitySuggestionMapper;
 import narek.example.com.yandex_weather_app.model.mapper.CoordsMapper;
+import narek.example.com.yandex_weather_app.model.mapper.WeatherEntityToWeatherModelConverter;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
+import narek.example.com.yandex_weather_app.model.mapper.WeatherModelToWeatherEntityConverter;
 import narek.example.com.yandex_weather_app.model.rest.CoordsResponse;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
@@ -40,6 +44,7 @@ public class RepositoryImpl implements Repository {
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
     private final AppDatabase db;
     private CityEntity cityEntity;
+    private WeatherEntity weatherEntity;
 
     @Inject
     public RepositoryImpl() {
@@ -47,16 +52,39 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Single<Weather> getWeatherData() {
-        return api.callWeatherDataByCityCoords(Double.parseDouble(preferenceHelper.getCityLat()),
-                Double.parseDouble(preferenceHelper.getCityLon()))
+    public Single<Weather> getWeatherData(final CityEntity cityEntity) {
+        return db.weatherDao().loadWeather(cityEntity.getLat(), cityEntity.getLon())
+                .map(new Function<WeatherEntity, Weather>() {
+                    @Override
+                    public Weather apply(@NonNull WeatherEntity weatherEntity) throws Exception {
+                        return new WeatherEntityToWeatherModelConverter().makeWeatherFromWeatherEntity(weatherEntity);
+                    }
+                })
+                .concatWith(getWeatherSingleFromInternet(cityEntity))
+                .first(new Weather.WeatherEntityBuilder()
+                        .createWeather())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        getWeatherSingleFromInternet(cityEntity);
+                    }
+                });
+    }
+
+    private Single<Weather> getWeatherSingleFromInternet(CityEntity cityEntity) {
+        return api.callWeatherDataByCityCoords(cityEntity.getLat(), cityEntity.getLon())
                 .subscribeOn(Schedulers.io())
                 .map(new Function<WeatherDataRes, Weather>() {
                     @Override
                     public Weather apply(@NonNull WeatherDataRes weatherDataRes) throws Exception {
-                        Weather weather = new WeatherMapper().transform(weatherDataRes);
-                        //setCityInDb(weather.getCity());
-                        return weather;
+                        return new WeatherMapper().transform(weatherDataRes);
+                    }
+
+                })
+                .doOnSuccess(new Consumer<Weather>() {
+                    @Override
+                    public void accept(@NonNull Weather weather) throws Exception {
+                        db.weatherDao().insertWeather(new WeatherModelToWeatherEntityConverter().makeWeatherEntityFromWeather(weather));
                     }
                 });
     }
@@ -96,55 +124,102 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public void setCityInDb(City city) {
-        cityEntity = new CityEntity();
-        cityEntity.setActive(true);
-        cityEntity.setCityName(city.getName());
-        cityEntity.setCoords(city.getCoords());
+    public void setCityInDb(final City city) {
+        cityEntity = new CityModelToCityEntityConverter().makeCityFromCityEntity(city);
 
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 db.cityDao().insertCity(cityEntity);
-                db.cityDao().updateCurrentCity(cityEntity.getCityName(), cityEntity.isActive(), cityEntity.getCoords().getLat(),
-                        cityEntity.getCoords().getLon());
                 Log.d(this.getClass().getName(), "run: insert is done");
             }
         })
+                .concatWith(Completable.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        cityEntity = db.cityDao().getActiveCityEntity();
+                    }
+                }))
+
+                .concatWith(Completable.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        if (cityEntity != null) {
+                            db.cityDao().deactivateCity(cityEntity.getCityName());
+                        }
+
+                    }
+                }))
+                .concatWith(Completable.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+
+                        db.cityDao().updateCurrentCity(city.getName(), true, city.getCoords().getLat(),
+                                city.getCoords().getLon());
+
+                    }
+                }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-        .subscribe();
+                .subscribe();
+    }
+
+    @Override
+    //onError go to the internet
+    public Single<CityEntity> getActiveCityFromDb() {
+        return db.cityDao().getActiveSingleCity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Flowable<CityEntity> getCityFromDb() {
-        return db.cityDao().loadCity()
+        return db.cityDao().loadActiveFlowableCity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public void setWeather(Weather weather) {
-        db.weatherDao().insertWeather(new WeatherEntity());
+        weatherEntity = new WeatherModelToWeatherEntityConverter().makeWeatherEntityFromWeather(weather);
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                db.weatherDao().insertWeather(weatherEntity);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     @Override
-    public List<Weather> getAllWeather() {
-        return null;
+    public Flowable<List<WeatherEntity>> getAllWeather() {
+        return db.weatherDao().loadAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Weather getWeather(City city) {
-        return null;
+    public Single<WeatherEntity> getWeather(City city) {
+        return db.weatherDao().loadWeather(city.getCoords().getLat(), city.getCoords().getLon())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public void deleteCity(City city) {
-        CityEntity cityEntity = new CityEntity();
-        cityEntity.setCityName(city.getName());
-        cityEntity.setCoords(city.getCoords());
-        cityEntity.setActive(false);
-        db.cityDao().deleteCity(cityEntity);
+        cityEntity = new CityModelToCityEntityConverter().makeCityFromCityEntity(city);
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                db.cityDao().deleteCity(cityEntity.getCityName());
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     @Override

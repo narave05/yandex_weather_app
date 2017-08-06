@@ -36,7 +36,8 @@ public class WeatherTask extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-        disposable = repository.getWeatherData()
+        //TODO white another getWeather method only internet
+       /* disposable = repository.getWeatherData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Weather>() {
@@ -45,7 +46,7 @@ public class WeatherTask extends GcmTaskService {
                         WeatherStorage.save(weather);
 
                     }
-                });
+                });*/
         return GcmNetworkManager.RESULT_SUCCESS;
     }
 

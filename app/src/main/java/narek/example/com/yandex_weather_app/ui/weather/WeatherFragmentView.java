@@ -2,6 +2,8 @@ package narek.example.com.yandex_weather_app.ui.weather;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
@@ -19,4 +21,6 @@ public interface WeatherFragmentView extends MvpBaseView {
     void showError(@StringRes int message);
 
     void hideSwipeRefresh();
+
+    void showDialogCitySuggest();
 }

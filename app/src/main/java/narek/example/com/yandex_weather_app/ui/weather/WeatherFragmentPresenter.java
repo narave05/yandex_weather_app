@@ -16,6 +16,7 @@ import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
 import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 
 @InjectViewState
@@ -27,42 +28,51 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
     public WeatherFragmentPresenter(Repository repository) {
         this.repository = repository;
         getCityFromDb();
+        subscribeToNewCityFromDb();
     }
-
-    public void getCityFromDb(){
+    private void subscribeToNewCityFromDb() {
         compositeDisposable.add(repository.getCityFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<CityEntity>() {
                     @Override
                     public void accept(@NonNull CityEntity cityEntity) throws Exception {
-                        loadWeather();
+                        loadWeather(cityEntity);
                     }
                 }));
     }
+    public void getCityFromDb(){
+        compositeDisposable.add(repository.getActiveCityFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CityEntity>() {
+                               @Override
+                               public void accept(@NonNull CityEntity cityEntity) throws Exception {
+                                   loadWeather(cityEntity);
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                getViewState().showDialogCitySuggest();
+                            }
+                        }));
+    }
 
-    void loadWeather() {
+    void loadWeather(CityEntity cityEntity) {
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
-                    repository.getWeatherData()
+                    repository.getWeatherData(cityEntity)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .doAfterSuccess(new Consumer<Weather>() {
-                                @Override
-                                public void accept(@NonNull Weather weather) throws Exception {
-                                   //TODO save weather in db
-                                }
-                            })
                             .subscribe(new Consumer<Weather>() {
                                 @Override
                                 public void accept(@NonNull Weather weather) throws Exception {
                                     sendWeatherData(weather);
-                                    getViewState().hideSwipeRefresh();
                                 }
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
-                                    getViewState().hideSwipeRefresh();
                                     getViewState().showError(R.string.data_not_updated);
                                 }
                             })

@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 
-@Entity(tableName = "city", indices = {@Index(value = {"city_id", "city_name", "lat", "lon"}, unique = true)})
+@Entity(tableName = "city", indices = {@Index(value = {"lat", "lon", "city_id", "city_name"}, unique = true)})
 
 public class CityEntity {
 
@@ -19,8 +19,9 @@ public class CityEntity {
     @ColumnInfo(name = "city_name")
     private String cityName;
 
-    @Embedded
-    private Coords coords;
+    private double lat;
+
+    private double lon;
 
     @ColumnInfo(name = "is_active")
     private boolean isActive;
@@ -49,11 +50,19 @@ public class CityEntity {
         this.cityName = cityName;
     }
 
-    public Coords getCoords() {
-        return coords;
+    public double getLat() {
+        return lat;
     }
 
-    public void setCoords(Coords coords) {
-        this.coords = coords;
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 }

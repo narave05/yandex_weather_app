@@ -8,6 +8,10 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 @Dao
@@ -19,10 +23,10 @@ public interface WeatherDao {
     @Delete
     public void deleteWeather(WeatherEntity... weathers);
 
-    @Query("SELECT * FROM weather WHERE city_id IS :cityId")
-    WeatherEntity loadWeather(String cityId);
+    @Query("SELECT * FROM weather WHERE lat IS :lat AND lon IS :lon")
+    public Single<WeatherEntity> loadWeather(double lat, double lon);
 
     @Query("SELECT * FROM weather")
-    public List<WeatherEntity> loadAll();
+    public Flowable<List<WeatherEntity>> loadAll();
 
 }
