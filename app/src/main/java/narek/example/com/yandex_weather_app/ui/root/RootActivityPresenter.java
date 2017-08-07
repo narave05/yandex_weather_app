@@ -29,7 +29,6 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
     }
 
     void init() {
-        subscribeToNewCityFromDb();
         getViewState().setupToolbarAndDrawer();
         switch (currentFragmentTag) {
             case WEATHER:
@@ -42,18 +41,6 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
                 navigateToAboutAs();
                 break;
         }
-    }
-
-    private void subscribeToNewCityFromDb() {
-        compositeDisposable.add(repository.getCityFromDb()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<CityEntity>() {
-                    @Override
-                    public void accept(@NonNull CityEntity cityEntity) throws Exception {
-                        onBackPressed();
-                    }
-                }));
     }
 
     public void onHomeItemClick() {

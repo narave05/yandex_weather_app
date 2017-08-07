@@ -105,14 +105,18 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     }
 
     @Override
-    public void showDialogCitySuggest() {
-        FindCityFragment.newInstance().show(getChildFragmentManager(), null);
+    public void showDialogCitySuggest(DialogFragment dialogFragment) {
+        dialogFragment.show(getChildFragmentManager(), null);
+    }
+
+    @Override
+    public void dismissDialog(DialogFragment dialogFragment) {
+        dialogFragment.dismiss();
     }
 
     @Override
     public void onRefresh() {
-        //presenter.loadWeather();
-        //TODO: you must write here another loadWeather method which will go only to the internet
+        presenter.loadWeatherFromInternet();
     }
 
 }

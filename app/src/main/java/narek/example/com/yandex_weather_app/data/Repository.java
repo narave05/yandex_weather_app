@@ -17,6 +17,8 @@ public interface Repository {
 
     Single<Weather> getWeatherData(CityEntity cityEntity);
 
+    Single<Weather> getWeatherSingleFromInternet(CityEntity cityEntity);
+
     Single<List<SuggestCity>> getPlacesSuggestion(String text);
 
     Single<Coords> callForCityCoords(String cityId);
@@ -40,5 +42,7 @@ public interface Repository {
     void updateCity(City city);
 
     Single<CityEntity> getActiveCityFromDb();
+
+    CityEntity getActiveCityEntity();
 
 }

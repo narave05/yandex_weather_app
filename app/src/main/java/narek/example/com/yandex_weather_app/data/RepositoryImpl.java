@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
@@ -42,36 +43,44 @@ public class RepositoryImpl implements Repository {
     private WeatherApi api = new WeatherApi();
     private PlacesApi placesApi = new PlacesApi();
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
-    private final AppDatabase db;
+    private AppDatabase db;
     private CityEntity cityEntity;
     private WeatherEntity weatherEntity;
+    private CityEntity activeCityEntity;
 
-    @Inject
+
     public RepositoryImpl() {
         db = App.getInstance().getAppComponent().provideDb();
+        activeCityEntity = getActiveCityEntity();
     }
 
     @Override
     public Single<Weather> getWeatherData(final CityEntity cityEntity) {
         return db.weatherDao().loadWeather(cityEntity.getLat(), cityEntity.getLon())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<WeatherEntity, Weather>() {
                     @Override
                     public Weather apply(@NonNull WeatherEntity weatherEntity) throws Exception {
                         return new WeatherEntityToWeatherModelConverter().makeWeatherFromWeatherEntity(weatherEntity);
                     }
                 })
-                .concatWith(getWeatherSingleFromInternet(cityEntity))
-                .first(new Weather.WeatherEntityBuilder()
-                        .createWeather())
-                .doOnError(new Consumer<Throwable>() {
+                .onErrorResumeNext(new Single<Weather>() {
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        getWeatherSingleFromInternet(cityEntity);
+                    protected void subscribeActual(@NonNull SingleObserver<? super Weather> observer) {
+                        api.callWeatherDataByCityCoords(cityEntity.getLat(), cityEntity.getLon());
+                    }
+                })
+                .doOnSuccess(new Consumer<Weather>() {
+                    @Override
+                    public void accept(@NonNull Weather weather) throws Exception {
+                        db.weatherDao().insertWeather(new WeatherModelToWeatherEntityConverter().makeWeatherEntityFromWeather(weather));
                     }
                 });
     }
 
-    private Single<Weather> getWeatherSingleFromInternet(CityEntity cityEntity) {
+    @Override
+    public Single<Weather> getWeatherSingleFromInternet(CityEntity cityEntity) {
         return api.callWeatherDataByCityCoords(cityEntity.getLat(), cityEntity.getLon())
                 .subscribeOn(Schedulers.io())
                 .map(new Function<WeatherDataRes, Weather>() {
@@ -137,15 +146,8 @@ public class RepositoryImpl implements Repository {
                 .concatWith(Completable.fromAction(new Action() {
                     @Override
                     public void run() throws Exception {
-                        cityEntity = db.cityDao().getActiveCityEntity();
-                    }
-                }))
-
-                .concatWith(Completable.fromAction(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        if (cityEntity != null) {
-                            db.cityDao().deactivateCity(cityEntity.getCityName());
+                        if (activeCityEntity != null) {
+                            db.cityDao().deactivateCity(activeCityEntity.getCityName());
                         }
 
                     }
@@ -157,6 +159,12 @@ public class RepositoryImpl implements Repository {
                         db.cityDao().updateCurrentCity(city.getName(), true, city.getCoords().getLat(),
                                 city.getCoords().getLon());
 
+                    }
+                }))
+                .concatWith(Completable.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        activeCityEntity = getActiveCityEntity();
                     }
                 }))
                 .subscribeOn(Schedulers.io())
@@ -225,5 +233,17 @@ public class RepositoryImpl implements Repository {
     @Override
     public void updateCity(City city) {
 
+    }
+
+    @Override
+    public CityEntity getActiveCityEntity() {
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                activeCityEntity = db.cityDao().getActiveCityEntity();
+            }
+        });
+        return activeCityEntity;
     }
 }

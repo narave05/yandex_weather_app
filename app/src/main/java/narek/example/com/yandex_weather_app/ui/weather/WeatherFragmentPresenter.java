@@ -1,5 +1,7 @@
 package narek.example.com.yandex_weather_app.ui.weather;
 
+import android.support.v4.app.DialogFragment;
+
 import com.arellomobile.mvp.InjectViewState;
 
 import javax.inject.Inject;
@@ -23,6 +25,8 @@ import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentView> {
 
     private Repository repository;
+    private DialogFragment suggestDialog;
+    private CityEntity currentCityEntity;
 
     @Inject
     public WeatherFragmentPresenter(Repository repository) {
@@ -38,6 +42,9 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                     @Override
                     public void accept(@NonNull CityEntity cityEntity) throws Exception {
                         loadWeather(cityEntity);
+                        if (suggestDialog != null) {
+                            getViewState().dismissDialog(suggestDialog);
+                        }
                     }
                 }));
     }
@@ -48,13 +55,15 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                 .subscribe(new Consumer<CityEntity>() {
                                @Override
                                public void accept(@NonNull CityEntity cityEntity) throws Exception {
+                                   currentCityEntity = cityEntity;
                                    loadWeather(cityEntity);
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                getViewState().showDialogCitySuggest();
+                                suggestDialog = FindCityFragment.newInstance();
+                                getViewState().showDialogCitySuggest(suggestDialog);
                             }
                         }));
     }
@@ -88,6 +97,32 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
     private void sendWeatherData(@Nullable Weather weather) {
         if (weather != null) {
             getViewState().showWeather(weather);
+        }
+    }
+
+    public void loadWeatherFromInternet() {
+        if (NetworkStatusChecker.isNetworkAvailable()) {
+            compositeDisposable.add(
+                    repository.getWeatherSingleFromInternet(currentCityEntity)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Weather>() {
+                                @Override
+                                public void accept(@NonNull Weather weather) throws Exception {
+                                    getViewState().hideSwipeRefresh();
+                                    sendWeatherData(weather);
+                                }
+                            }, new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    getViewState().showError(R.string.data_not_updated);
+                                }
+                            })
+            );
+        } else {
+            getViewState().hideSwipeRefresh();
+            getViewState().showError(R.string.data_not_updated);
+
         }
     }
 }

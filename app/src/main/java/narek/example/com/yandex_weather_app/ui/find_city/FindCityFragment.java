@@ -108,8 +108,6 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
 
-        /*DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);*/
     }
 
     private SuggestionAdapter setSuggestionAdapter(final List<SuggestCity> cityList) {

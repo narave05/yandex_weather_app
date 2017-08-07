@@ -22,5 +22,7 @@ public interface WeatherFragmentView extends MvpBaseView {
 
     void hideSwipeRefresh();
 
-    void showDialogCitySuggest();
+    void showDialogCitySuggest(DialogFragment dialogFragment);
+
+    void dismissDialog(DialogFragment dialogFragment);
 }
