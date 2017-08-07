@@ -23,8 +23,8 @@ public interface WeatherDao {
     @Delete
     public void deleteWeather(WeatherEntity... weathers);
 
-    @Query("SELECT * FROM weather WHERE lat IS :lat AND lon IS :lon")
-    public Single<WeatherEntity> loadWeather(double lat, double lon);
+    @Query("SELECT * FROM weather WHERE city_id_in_weather IS :cityId")
+    public Single<WeatherEntity> loadWeather(int cityId);
 
     @Query("SELECT * FROM weather")
     public Flowable<List<WeatherEntity>> loadAll();

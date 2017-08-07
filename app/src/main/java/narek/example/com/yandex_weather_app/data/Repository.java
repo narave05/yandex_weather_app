@@ -43,6 +43,6 @@ public interface Repository {
 
     Single<CityEntity> getActiveCityFromDb();
 
-    CityEntity getActiveCityEntity();
+    void getActiveCityEntity();
 
 }

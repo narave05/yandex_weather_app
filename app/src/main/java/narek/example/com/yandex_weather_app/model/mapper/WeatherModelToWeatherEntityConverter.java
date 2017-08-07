@@ -8,8 +8,9 @@ import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 public class WeatherModelToWeatherEntityConverter {
 
-    public WeatherEntity makeWeatherEntityFromWeather(Weather weather){
+    public WeatherEntity makeWeatherEntityFromWeather(Weather weather, int cityId){
         WeatherEntity weatherEntity = new WeatherEntity();
+        weatherEntity.setCityId(cityId);
         weatherEntity.setLon(weather.getCity().getCoords().getLon());
         weatherEntity.setLat(weather.getCity().getCoords().getLat());
         weatherEntity.setWindSpeed(weather.getWindSpeed());

@@ -1,6 +1,7 @@
 package narek.example.com.yandex_weather_app.ui.weather;
 
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 
@@ -41,6 +42,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                 .subscribe(new Consumer<CityEntity>() {
                     @Override
                     public void accept(@NonNull CityEntity cityEntity) throws Exception {
+                        currentCityEntity = cityEntity;
                         loadWeather(cityEntity);
                         if (suggestDialog != null) {
                             getViewState().dismissDialog(suggestDialog);
@@ -82,7 +84,9 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
+                                    Log.d(WeatherFragmentPresenter.this.getClass().getName(), "accept: " + throwable.getMessage());
                                     getViewState().showError(R.string.data_not_updated);
+
                                 }
                             })
             );
@@ -116,6 +120,8 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
                                     getViewState().showError(R.string.data_not_updated);
+                                    getViewState().hideSwipeRefresh();
+
                                 }
                             })
             );
