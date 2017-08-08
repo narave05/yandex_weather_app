@@ -151,7 +151,6 @@ public class RepositoryImpl implements Repository {
                         if (activeCityEntity != null) {
                             db.cityDao().deactivateCity(activeCityEntity.getCityName());
                         }
-
                     }
                 }))
                 .concatWith(Completable.fromAction(new Action() {
