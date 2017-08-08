@@ -2,12 +2,12 @@ package narek.example.com.yandex_weather_app.data;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -21,20 +21,27 @@ import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
 import narek.example.com.yandex_weather_app.db.AppDatabase;
 import narek.example.com.yandex_weather_app.db.CityEntity;
+import narek.example.com.yandex_weather_app.db.ForecastEntity;
 import narek.example.com.yandex_weather_app.db.WeatherEntity;
 import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
+import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.CityModelToCityEntityConverter;
 import narek.example.com.yandex_weather_app.model.mapper.CitySuggestionMapper;
 import narek.example.com.yandex_weather_app.model.mapper.CoordsMapper;
+import narek.example.com.yandex_weather_app.model.mapper.ForecastEntityToForecastModelConverter;
+import narek.example.com.yandex_weather_app.model.mapper.ForecastMapper;
+import narek.example.com.yandex_weather_app.model.mapper.ForecastModelToEntityConverter;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherEntityToWeatherModelConverter;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherModelToWeatherEntityConverter;
 import narek.example.com.yandex_weather_app.model.rest.CoordsResponse;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
+import narek.example.com.yandex_weather_app.model.rest.forecast.ForecastRes;
+import narek.example.com.yandex_weather_app.model.rest.forecast.ListForecast;
 
 public class RepositoryImpl implements Repository {
 
@@ -68,20 +75,42 @@ public class RepositoryImpl implements Repository {
                 .onErrorResumeNext(new Function<Throwable, SingleSource<? extends Weather>>() {
                     @Override
                     public SingleSource<? extends Weather> apply(@NonNull Throwable throwable) throws Exception {
-                        return getWeatherSingleFromInternet(cityEntity)
-                                .doOnSuccess(new Consumer<Weather>() {
-                                    @Override
-                                    public void accept(@NonNull Weather weather) throws Exception {
-                                        db.weatherDao().insertWeather(new WeatherModelToWeatherEntityConverter()
-                                                .makeWeatherEntityFromWeather(weather, activeCityEntity.getCityId()));
-                                    }
-                                });
+                        return getWeatherSingleFromInternet(cityEntity);
                     }
                 });
     }
 
     @Override
-    public Single<Weather> getWeatherSingleFromInternet(CityEntity cityEntity) {
+    public Single<List<Forecasts>> getForecast(final CityEntity cityEntity) {
+        return db.forecastDao().loadForecast()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<List<ForecastEntity>, List<Forecasts>>() {
+                    @Override
+                    public List<Forecasts> apply(@NonNull List<ForecastEntity> forecastEntities) throws Exception {
+                        List<Forecasts> listForecasts = null;
+                        if (forecastEntities.size() != 0) {
+                            listForecasts = new ArrayList<Forecasts>();
+                        }
+                        for (int i = 0; i < forecastEntities.size(); i++) {
+
+                            listForecasts.add(new ForecastEntityToForecastModelConverter().createForecastFromEntity(forecastEntities.get(i)));
+                        }
+
+                        return listForecasts;
+                    }
+                })
+                .onErrorResumeNext(new Function<Throwable, SingleSource<? extends List<Forecasts>>>() {
+                    @Override
+                    public SingleSource<? extends List<Forecasts>> apply(@NonNull Throwable throwable) throws Exception {
+                        Log.d(RepositoryImpl.this.getClass().getName(), "accept: onErrorResumeNext forcast done");
+                        return getForecastFromInternet(cityEntity);
+                    }
+                });
+    }
+
+    @Override
+    public Single<Weather> getWeatherSingleFromInternet(final CityEntity cityEntity) {
         return api.callWeatherDataByCityCoords(cityEntity.getLat(), cityEntity.getLon())
                 .subscribeOn(Schedulers.io())
                 .map(new Function<WeatherDataRes, Weather>() {
@@ -89,13 +118,39 @@ public class RepositoryImpl implements Repository {
                     public Weather apply(@NonNull WeatherDataRes weatherDataRes) throws Exception {
                         return new WeatherMapper().transform(weatherDataRes);
                     }
-
-                })
-                .doOnSuccess(new Consumer<Weather>() {
+                }).doOnSuccess(new Consumer<Weather>() {
                     @Override
                     public void accept(@NonNull Weather weather) throws Exception {
-                        db.weatherDao().insertWeather(new WeatherModelToWeatherEntityConverter()
-                                .makeWeatherEntityFromWeather(weather, activeCityEntity.getCityId()));
+                        setWeather(weather);
+                    }
+                });
+    }
+
+    @Override
+    public Single<List<Forecasts>> getForecastFromInternet(CityEntity cityEntity) {
+        return api.getForecastFromApi(cityEntity.getLat(), cityEntity.getLon())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<ForecastRes, List<Forecasts>>() {
+                    @Override
+                    public List<Forecasts> apply(@NonNull ForecastRes forecastRes) throws Exception {
+                        List<Forecasts> list = new ArrayList<>();
+                        for (ListForecast lf : forecastRes.getList()) {
+                            list.add(new ForecastMapper().buildForecast(lf));
+                        }
+                        return list;
+                    }
+                })
+                .doOnSuccess(new Consumer<List<Forecasts>>() {
+                    @Override
+                    public void accept(@NonNull List<Forecasts> forecast) throws Exception {
+                        List<ForecastEntity> entityList = new ArrayList<>();
+                        for (Forecasts f : forecast) {
+                            entityList.add(new ForecastModelToEntityConverter()
+                                    .createForecastEntityFromModel(f, activeCityEntity.getCityId()));
+                        }
+                        insertForecastInDb(entityList);
+
                     }
                 });
     }
@@ -165,7 +220,7 @@ public class RepositoryImpl implements Repository {
                 .concatWith(Completable.fromAction(new Action() {
                     @Override
                     public void run() throws Exception {
-                       getActiveCityEntity();
+                        getActiveCityEntity();
                     }
                 }))
                 .subscribeOn(Schedulers.io())
@@ -174,7 +229,6 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    //onError go to the internet
     public Single<CityEntity> getActiveCityFromDb() {
         return db.cityDao().getActiveSingleCity()
                 .subscribeOn(Schedulers.io())
@@ -234,6 +288,18 @@ public class RepositoryImpl implements Repository {
     @Override
     public void updateCity(City city) {
 
+    }
+
+    @Override
+    public void insertForecastInDb(final List<ForecastEntity> list) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                db.forecastDao().insertForecast(list);
+            }
+        }).subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     @Override

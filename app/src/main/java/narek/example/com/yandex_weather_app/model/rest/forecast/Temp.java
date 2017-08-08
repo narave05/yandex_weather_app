@@ -3,7 +3,7 @@ package narek.example.com.yandex_weather_app.model.rest.forecast;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TempForecastRes {
+public class Temp {
 
     @SerializedName("day")
     @Expose
@@ -71,5 +71,4 @@ public class TempForecastRes {
     public void setMorn(double morn) {
         this.morn = morn;
     }
-
 }

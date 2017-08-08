@@ -15,7 +15,7 @@ public class Weather implements Serializable {
     private TimeMapper timeMapper = new TimeMapper();
     private final City city;
     private final Date date;
-    private final float temperature;
+    private float temperature;
     private final float pressure;
     private final float humidity;
     private final float windSpeed;
@@ -33,6 +33,10 @@ public class Weather implements Serializable {
         this.conditionCode = conditionCode;
     }
 
+    public void setTemperature(float temperature) {
+        this.temperature = temperature;
+    }
+
     @NonNull
     public City getCity() {
         return city;
@@ -48,7 +52,7 @@ public class Weather implements Serializable {
     }
 
     public float getTemperature() {
-        return temperature - K;
+        return temperature;
     }
 
     public float getPressure() {

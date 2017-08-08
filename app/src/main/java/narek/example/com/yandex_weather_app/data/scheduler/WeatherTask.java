@@ -15,6 +15,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
@@ -36,15 +37,33 @@ public class WeatherTask extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-        //TODO white another getWeather method only internet
-       /* disposable = repository.getWeatherData()
+        /*disposable = repository.getWeatherSingleFromInternet(currentCityEntity)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<Weather>() {
+                            @Override
+                            public void accept(@NonNull Weather weather) throws Exception {
+                                getViewState().hideSwipeRefresh();
+                                sendWeatherData(weather);
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                getViewState().showError(R.string.data_not_updated);
+                                getViewState().hideSwipeRefresh();
+
+                            }
+                        })
+        );
+
+        //TODO write another getWeather method only internet
+        disposable = repository.getWeatherData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Weather>() {
                     @Override
                     public void accept(@NonNull Weather weather) throws Exception {
                         WeatherStorage.save(weather);
-
                     }
                 });*/
         return GcmNetworkManager.RESULT_SUCCESS;

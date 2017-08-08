@@ -12,8 +12,8 @@ import narek.example.com.yandex_weather_app.data.scheduler.WeatherTask;
 import narek.example.com.yandex_weather_app.di.AppComponent;
 
 import narek.example.com.yandex_weather_app.di.AppModule;
-
 import narek.example.com.yandex_weather_app.di.DaggerAppComponent;
+
 
 public class App extends Application {
 

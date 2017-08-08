@@ -5,12 +5,14 @@ import android.arch.persistence.room.RoomDatabase;
 
 import javax.inject.Inject;
 
-@Database(entities = {CityEntity.class, WeatherEntity.class}, version = 1)
+@Database(entities = {CityEntity.class, WeatherEntity.class, ForecastEntity.class}, version = 1)
 
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CityDao cityDao();
 
     public abstract WeatherDao weatherDao();
+
+    public abstract ForecastDao forecastDao();
 
 }

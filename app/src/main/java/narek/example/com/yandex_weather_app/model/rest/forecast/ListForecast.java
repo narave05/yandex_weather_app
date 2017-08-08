@@ -10,9 +10,9 @@ public class ListForecast {
     @SerializedName("dt")
     @Expose
     private int dt;
-    @SerializedName("tempForecastRes")
+    @SerializedName("temp")
     @Expose
-    private TempForecastRes tempForecastRes;
+    private Temp temp;
     @SerializedName("pressure")
     @Expose
     private double pressure;
@@ -43,14 +43,13 @@ public class ListForecast {
         this.dt = dt;
     }
 
-    public TempForecastRes getTempForecastRes() {
-        return tempForecastRes;
+    public Temp getTemp() {
+        return temp;
     }
 
-    public void setTempForecastRes(TempForecastRes tempForecastRes) {
-        this.tempForecastRes = tempForecastRes;
+    public void setTemp(Temp temp) {
+        this.temp = temp;
     }
-
     public double getPressure() {
         return pressure;
     }
