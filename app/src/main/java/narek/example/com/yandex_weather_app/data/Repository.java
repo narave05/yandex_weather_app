@@ -50,4 +50,6 @@ public interface Repository {
     Single<List<Forecasts>> getForecastFromInternet(CityEntity cityEntity);
 
     void insertForecastInDb(List<ForecastEntity> list);
+
+
 }
