@@ -20,4 +20,5 @@
     <string name="settings_title">Настройки</string>
     <string name="weather_title">Погода</string>
     <string name="find_city">Найти город</string>
+    <string name="hi">Хей, Человек!</string>
 </resources>

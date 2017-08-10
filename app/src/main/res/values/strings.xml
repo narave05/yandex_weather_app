@@ -22,4 +22,5 @@
     <string name="weather_title">Weather</string>
     <string name="google_places_api_key">AIzaSyA1uUQBr0fdSgcUTFBhbfF4lWd8cO0ADyU</string>
     <string name="find_city">Find city</string>
+    <string name="hi">Hi, Human!</string>
 </resources>

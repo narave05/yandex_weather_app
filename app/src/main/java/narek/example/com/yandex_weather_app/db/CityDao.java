@@ -14,7 +14,7 @@ import io.reactivex.Single;
 @Dao
 public interface CityDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertCity(CityEntity... city);
 
     @Query("DELETE from city WHERE city_name IS :cityName")

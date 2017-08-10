@@ -49,13 +49,15 @@ public class WeatherTask extends GcmTaskService {
         switch (taskParams.getTag()) {
             case ScheduleTag.WEATHER_TASK:
 
-                getWeather(getActiveCityFromDb());
-
+                if (getActiveCityFromDb() != null) {
+                    getWeather(getActiveCityFromDb());
+                }
                 return GcmNetworkManager.RESULT_SUCCESS;
             case ScheduleTag.FORECAST_TASK:
 
-                getForecast(getActiveCityFromDb());
-
+                if (getActiveCityFromDb() != null) {
+                    getForecast(getActiveCityFromDb());
+                }
                 return GcmNetworkManager.RESULT_SUCCESS;
             default:
                 return GcmNetworkManager.RESULT_FAILURE;
@@ -81,7 +83,7 @@ public class WeatherTask extends GcmTaskService {
 
     CityEntity getActiveCityFromDb(){
         final CityEntity[] city = {null};
-        repository.getActiveCityFromDb()
+            repository.getActiveCityFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<CityEntity>() {

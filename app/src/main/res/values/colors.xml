@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1700FD</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FFCC00</color>
-    <color name="radYandex">#D2312C</color>
+    <color name="colorPrimary">#90d2d8</color>
+    <color name="colorPrimaryDark">#4B6A88</color>
+    <color name="colorAccent">#fffb37</color>
+    <color name="radYandex">#1700FD</color>
+    <color name="white">#ffff</color>
 </resources>

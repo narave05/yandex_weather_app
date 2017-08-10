@@ -100,9 +100,6 @@ public class RootActivity extends MvpBaseActivity
             case R.id.about_us_item:
                 presenter.onAboutUsItemClick();
                 break;
-           /* case R.id.find_city_item:
-                presenter.onFindCityItemClick();
-                break;*/
         }
         navigationDrawer.closeDrawer(Gravity.START);
         return false;
@@ -117,14 +114,6 @@ public class RootActivity extends MvpBaseActivity
                 true);
     }
 
-   /* @Override
-    public void openFindCityFragment() {
-        FragmentUtils.openFragment(
-                FindCityFragment.newInstance(),
-                fragmentManager,
-                FragmentTag.FIND,
-                true);
-    }*/
 
     @Override
     public void openSettingsFragment() {
@@ -205,6 +194,4 @@ public class RootActivity extends MvpBaseActivity
 
         super.onBackPressed();
     }
-
-
 }
