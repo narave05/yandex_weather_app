@@ -3,6 +3,7 @@ package narek.example.com.yandex_weather_app.model.clean;
 public class Forecasts {
     private long time;
     private double dayTemp;
+    private double nightTemp;
     private double pressure;
     private int humidity;
     private double speed;
@@ -11,9 +12,11 @@ public class Forecasts {
     private double rain;
     private int iconId;
 
-    public Forecasts(long time, double dayTemp, double pressure, int humidity, double speed, int degrees, int clouds, double rain, int iconId) {
+    public Forecasts(long time, double dayTemp, double nightTemp, double pressure, int humidity, double speed, int degrees, int clouds,
+                     double rain, int iconId) {
         this.time = time;
         this.dayTemp = dayTemp;
+        this.nightTemp = nightTemp;
         this.pressure = pressure;
         this.humidity = humidity;
         this.speed = speed;
@@ -99,6 +102,14 @@ public class Forecasts {
         return clouds;
     }
 
+    public double getNightTemp() {
+        return nightTemp;
+    }
+
+    public void setNightTemp(double nightTemp) {
+        this.nightTemp = nightTemp;
+    }
+
     public double getRain() {
         return rain;
     }
@@ -107,6 +118,7 @@ public class Forecasts {
 
         private long time;
         private double dayTemp;
+        private double nightTemp;
         private double pressure;
         private int humidity;
         private double speed;
@@ -124,6 +136,10 @@ public class Forecasts {
         }
         public ForecastsBuilder dayTemp(double dayTemp){
             this.dayTemp = dayTemp;
+            return this;
+        }
+        public ForecastsBuilder nightTemp(double nightTemp){
+            this.nightTemp = nightTemp;
             return this;
         }
         public ForecastsBuilder pressure(double pressure){
@@ -156,7 +172,7 @@ public class Forecasts {
         }
 
         public Forecasts createForecasts (){
-            return new Forecasts(time, dayTemp, pressure, humidity, speed, degrees, clouds, rain, iconId);
+            return new Forecasts(time, dayTemp, nightTemp, pressure, humidity, speed, degrees, clouds, rain, iconId);
         }
     }
 }

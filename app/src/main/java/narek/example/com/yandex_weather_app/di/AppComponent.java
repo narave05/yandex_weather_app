@@ -21,9 +21,10 @@ public interface AppComponent {
     WeatherFragmentPresenter provideWeatherPresenter();
     WeatherNestedPresenter provideWeatherNestedPresenter();
     CitiesNestedPresenter provideCitiesNestedPresenter();
-    WeatherTask provideWeatherTask();
     FindCityPresenter provideFindCityPresenter();
     RootActivityPresenter provideRootActivityPresenter();
     SettingsFragmentPresenter provideSettingsPresenter();
     AppDatabase provideDb();
+
+    void inject(WeatherTask weatherTask);
 }

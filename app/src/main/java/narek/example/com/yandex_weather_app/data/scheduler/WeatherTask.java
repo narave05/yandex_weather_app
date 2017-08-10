@@ -18,6 +18,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.RepositoryImpl;
@@ -32,15 +33,13 @@ public class WeatherTask extends GcmTaskService {
     public static final long FLEX = 30L;
     public static final int PERIOD = 86400;
     public static final int FLEX1 = 3600;
-    private Repository repository;
     private Disposable disposable;
 
-    public WeatherTask() {
-    }
-
     @Inject
-    public WeatherTask(Repository repository) {
-        this.repository = repository;
+    public Repository repository;
+
+    public WeatherTask() {
+        App.getInstance().getAppComponent().inject(this);
     }
 
     @Override
@@ -127,7 +126,8 @@ public class WeatherTask extends GcmTaskService {
         }
     }
 
-    public  void schedule(Context context, long updateInterval) {
+    public static void schedule(Context context, long updateInterval) {
+
         GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);
 
         PeriodicTask weatherTask = new PeriodicTask.Builder()

@@ -8,6 +8,7 @@ public class ForecastModelToEntityConverter {
     public ForecastEntity createForecastEntityFromModel(Forecasts forecast, int cityId) {
         ForecastEntity forecastEntity = new ForecastEntity();
         forecastEntity.setCityId(cityId);
+        forecastEntity.setNightTemp(forecast.getNightTemp());
         forecastEntity.setClouds(forecast.getClouds());
         forecastEntity.setDayTemp(forecast.getDayTemp());
         forecastEntity.setDegrees(forecast.getDegrees());

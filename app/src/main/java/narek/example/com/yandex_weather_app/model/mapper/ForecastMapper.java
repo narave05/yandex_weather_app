@@ -19,6 +19,7 @@ public class ForecastMapper {
                 .rain(listForecast.getRain())
                 .speed(listForecast.getSpeed())
                 .dayTemp(listForecast.getTemp().getDay())
+                .nightTemp(listForecast.getTemp().getNight())
                 .createForecasts();
     }
 }

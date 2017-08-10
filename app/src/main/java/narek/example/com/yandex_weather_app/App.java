@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 
 import com.facebook.stetho.Stetho;
 
+import javax.inject.Inject;
+
+import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.data.preferences.PreferenceHelper;
 import narek.example.com.yandex_weather_app.data.scheduler.WeatherTask;
 
@@ -21,7 +24,6 @@ public class App extends Application {
     private static App instance;
     private SharedPreferences preferences;
     private static AppComponent appComponent;
-    private WeatherTask weatherTask;
 
     @Override
     public void onCreate() {
@@ -30,8 +32,7 @@ public class App extends Application {
         instance = this;
         preferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         appComponent = buildAppComponent();
-        weatherTask = appComponent.provideWeatherTask();
-        weatherTask.schedule(this, PreferenceHelper.getInstance().getIntervalHoursInSeconds());
+        WeatherTask.schedule(this, PreferenceHelper.getInstance().getIntervalHoursInSeconds());
     }
 
     public static App getInstance() {

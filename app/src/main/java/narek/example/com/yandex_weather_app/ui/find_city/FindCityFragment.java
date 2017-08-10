@@ -4,6 +4,7 @@ package narek.example.com.yandex_weather_app.ui.find_city;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -43,7 +44,7 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
 
     @InjectPresenter
     FindCityPresenter presenter;
-    protected Unbinder unbinder;
+    Unbinder unbinder;
 
     @ProvidePresenter
     public FindCityPresenter providePresenter(){
@@ -72,22 +73,20 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         Log.d(this.getClass().getName(), "onResume: i am here");
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
     public void openKeyBoard() {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        /*InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);*/
     }
 
     @Override
@@ -119,7 +118,7 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
             }
         });
     }
-
+    @CallSuper
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -127,4 +126,5 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
             unbinder.unbind();
         }
     }
+
 }

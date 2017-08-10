@@ -1,21 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-              android:orientation="vertical"
-             android:background="@color/colorPrimary">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment">
+
 
     <EditText
         android:id="@+id/find_city_ed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/find_city"
+        android:hint="@string/add_city"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:focusable="true"
+        android:layout_alignParentTop="true"
         android:focusableInTouchMode="true"
         android:layout_marginLeft="8dp"
         android:imeOptions="flagNoExtractUi"/>
@@ -25,10 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp">
+        android:layout_below="@+id/find_city_ed"
+        android:layout_centerHorizontal="true">
 
     </android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+</RelativeLayout>

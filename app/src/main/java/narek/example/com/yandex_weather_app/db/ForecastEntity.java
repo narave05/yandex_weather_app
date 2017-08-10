@@ -20,6 +20,9 @@ public class ForecastEntity {
     @ColumnInfo(name = "day_temp")
     private double dayTemp;
 
+    @ColumnInfo(name = "night_temp")
+    private double nightTemp;
+
     private double pressure;
 
     private int humidity;
@@ -124,5 +127,13 @@ public class ForecastEntity {
 
     public void setIconId(int iconId) {
         this.iconId = iconId;
+    }
+
+    public double getNightTemp() {
+        return nightTemp;
+    }
+
+    public void setNightTemp(double nightTemp) {
+        this.nightTemp = nightTemp;
     }
 }

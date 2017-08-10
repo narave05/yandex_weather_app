@@ -6,7 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import narek.example.com.yandex_weather_app.adapter.ViewPagerAdapter;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 
 
 public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView, AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
@@ -74,6 +78,8 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @BindView(R.id.app_bar_weather)AppBarLayout appBarLayout;
 
     @BindView(R.id.alien_iv)ImageButton alienIb;
+    @BindView(R.id.container_city)
+    CoordinatorLayout coordinatorLayout;
 
 
     public static WeatherFragment newInstance() {
@@ -100,6 +106,23 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @Override
     public void setupViewPager(ViewPagerAdapter adapter) {
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void openCitiesFragment(DialogFragment suggestFragment) {
+        suggestFragment.show(getChildFragmentManager(), null);
+    }
+
+    @Override
+    public void closeCitiesFragment(DialogFragment suggestFragment) {
+        suggestFragment.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appBarLayout.setVisibility(View.VISIBLE);
+        alienIb.setVisibility(View.VISIBLE);
     }
 
     @Override

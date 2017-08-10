@@ -1,12 +1,11 @@
 package narek.example.com.yandex_weather_app.ui.weather;
 
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -19,13 +18,11 @@ import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.adapter.ViewPagerAdapter;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.db.CityEntity;
-import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 import narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment;
 import narek.example.com.yandex_weather_app.ui.weather.weather_nested.WeatherNestedFragment;
-import narek.example.com.yandex_weather_app.ui.weather.weather_nested.WeatherNestedPresenter;
 import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 import narek.example.com.yandex_weather_app.util.UnitsConverter;
 
@@ -34,7 +31,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
 
     private Repository repository;
     private UnitsConverter unitsConverter = new UnitsConverter();
-    private DialogFragment suggestDialog;
+    private DialogFragment suggestFragment;
     private CityEntity currentCityEntity;
 
 
@@ -52,6 +49,10 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                     @Override
                     public void accept(@NonNull CityEntity cityEntity) throws Exception {
                         currentCityEntity = cityEntity;
+                        if (suggestFragment != null) {
+                            getViewState().closeCitiesFragment(suggestFragment);
+                        }
+
                         loadWeather(cityEntity);
                     }
                 }));
@@ -64,14 +65,15 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                                @Override
                                public void accept(@NonNull CityEntity cityEntity) throws Exception {
                                    currentCityEntity = cityEntity;
-                                  //TODO: open weatherNestedFragment
+
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                suggestDialog = FindCityFragment.newInstance();
-                                //TODO: open citiesNestedFragment with suggest dialog
+                                suggestFragment = FindCityFragment.newInstance();
+                                getViewState().openCitiesFragment(suggestFragment);
+
                             }
                         }));
     }
@@ -132,7 +134,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
 
     private void sendWeatherData(@Nullable Weather weather) {
         if (weather != null) {
-            weather.setTemperature(unitsConverter.convertTemperature(weather.getTemperature()));
+            weather.setTemperature(Float.valueOf(unitsConverter.convertTemperature(weather.getTemperature())));
             getViewState().showWeather(weather);
         }
     }

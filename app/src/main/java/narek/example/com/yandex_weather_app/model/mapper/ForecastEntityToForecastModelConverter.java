@@ -10,6 +10,7 @@ public class ForecastEntityToForecastModelConverter {
     public Forecasts createForecastFromEntity(ForecastEntity entity){
         return new Forecasts.ForecastsBuilder()
                 .dayTemp(entity.getDayTemp())
+                .nightTemp(entity.getNightTemp())
                 .speed(entity.getSpeed())
                 .rain(entity.getRain())
                 .clouds(entity.getClouds())
