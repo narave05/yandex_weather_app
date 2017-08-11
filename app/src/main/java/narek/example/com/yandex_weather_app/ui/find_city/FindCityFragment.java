@@ -70,6 +70,7 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
         unbinder = ButterKnife.bind(this, view);
         presenter.initKeyBoard();
         presenter.editTextChanged(RxTextView.textChanges(findViewEt));
+
     }
 
     @Override

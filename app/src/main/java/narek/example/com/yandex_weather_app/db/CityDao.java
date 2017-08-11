@@ -7,6 +7,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.List;
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -17,8 +19,8 @@ public interface CityDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertCity(CityEntity... city);
 
-    @Query("DELETE from city WHERE city_name IS :cityName")
-    public void deleteCity(String cityName);
+    @Query("DELETE from city WHERE city_name IS :cityName AND lat IS :lat AND lon IS :lon")
+    public void deleteCity(String cityName, double lat, double lon);
 
     @Query("UPDATE city SET is_active = :isActive WHERE city_name IS :cityName AND lat IS :lat AND lon IS :lon")
     public void updateCurrentCity(String cityName, boolean isActive, double lat, double lon);
@@ -34,4 +36,7 @@ public interface CityDao {
 
     @Query("UPDATE city SET is_active = 0 WHERE city_name IS :cityName")
     public void deactivateCity(String cityName);
+
+    @Query("SELECT * from city")
+    public Flowable<List<CityEntity>> getAllCities();
 }

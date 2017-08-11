@@ -51,5 +51,9 @@ public interface Repository {
 
     void insertForecastInDb(List<ForecastEntity> list);
 
+    Flowable<List<City>> getAllCitiesFlowable();
+
+    void updateActiveCity(City city);
+
 
 }

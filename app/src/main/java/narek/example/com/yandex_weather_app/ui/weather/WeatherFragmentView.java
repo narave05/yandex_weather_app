@@ -24,9 +24,11 @@ public interface WeatherFragmentView extends MvpBaseView {
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showError(@StringRes int message);
 
-    void setupViewPager(ViewPagerAdapter adapter);
-
     void openCitiesFragment(DialogFragment suggestFragment);
 
     void closeCitiesFragment(DialogFragment suggestFragment);
+
+    void showForecast(List<Forecasts> forecast);
+
+    void hideSwipe();
 }

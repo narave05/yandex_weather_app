@@ -11,36 +11,37 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 
+import java.util.List;
+
 import butterknife.BindView;
 import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.adapter.ForecastRecyclerViewAdapter;
+import narek.example.com.yandex_weather_app.adapter.OnItemClickListener;
 import narek.example.com.yandex_weather_app.adapter.ViewPagerAdapter;
+import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
 import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 
 
-public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView, AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
-
-    private static final int PERCENTAGE_TO_ANIMATE_AVATAR = 20;
-    public static final int PERCENT = 100;
-    public static final int DURATION = 200;
-    public static final int VALUE = 0;
-    public static final int VALUE1 = 1;
-    private boolean mIsAvatarShown = true;
-    private int maxScrollSize;
+public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView, SwipeRefreshLayout.OnRefreshListener, AppBarLayout.OnOffsetChangedListener {
 
     @InjectPresenter
     WeatherFragmentPresenter presenter;
@@ -50,14 +51,11 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
         return presenter = App.getInstance().getAppComponent().provideWeatherPresenter();
     }
 
-    @BindView(R.id.pager)
-    ViewPager viewPager;
-
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
-
     @BindView(R.id.city_name_tv)
     TextView cityName;
+
+    @BindView(R.id.swipe_refresh)SwipeRefreshLayout
+    swipeRefreshLayout;
 
     @BindView(R.id.weatherImageView)
     WeatherImageView weatherImg;
@@ -65,11 +63,8 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @BindView(R.id.temperature_tv)
     TextView temperature;
 
-    @BindView(R.id.update_time_tv)
-    TextView weatherUpdateDate;
-
-    @BindView(R.id.umbrella_iv)
-    ImageView umbrellaIv;
+    @BindView(R.id.recycler_forecast)
+    RecyclerView recyclerView;
 
     @BindView(R.id.humidity_tv)TextView humidityTv;
 
@@ -77,10 +72,11 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
 
     @BindView(R.id.app_bar_weather)AppBarLayout appBarLayout;
 
-    @BindView(R.id.alien_iv)ImageButton alienIb;
     @BindView(R.id.container_city)
     CoordinatorLayout coordinatorLayout;
 
+    @BindView(R.id.relative_collapse)
+    RelativeLayout relativeLayout;
 
     public static WeatherFragment newInstance() {
         return new WeatherFragment();
@@ -96,16 +92,8 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.setupViewPager(getChildFragmentManager());
-        tabLayout.setupWithViewPager(viewPager, true);
-        appBarLayout.addOnOffsetChangedListener(this);
-        maxScrollSize = appBarLayout.getTotalScrollRange();
-        alienIb.setOnClickListener(this);
-    }
+        swipeRefreshLayout.setOnRefreshListener(this);
 
-    @Override
-    public void setupViewPager(ViewPagerAdapter adapter) {
-        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -119,46 +107,15 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     }
 
     @Override
+    public void showForecast(List<Forecasts> forecast) {
+        initAdapter(forecast);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        appBarLayout.setVisibility(View.VISIBLE);
-        alienIb.setVisibility(View.VISIBLE);
+        appBarLayout.addOnOffsetChangedListener(this);
     }
-
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (maxScrollSize == VALUE)
-            maxScrollSize = appBarLayout.getTotalScrollRange();
-
-        int percentage = (Math.abs(verticalOffset)) * PERCENT / maxScrollSize;
-
-        if (percentage >= PERCENTAGE_TO_ANIMATE_AVATAR && mIsAvatarShown) {
-            mIsAvatarShown = false;
-
-            alienIb.animate()
-                    .scaleY(VALUE).scaleX(VALUE)
-                    .setDuration(DURATION)
-                    .start();
-        }
-
-        if (percentage <= PERCENTAGE_TO_ANIMATE_AVATAR && !mIsAvatarShown) {
-            mIsAvatarShown = true;
-
-            alienIb.animate()
-                    .scaleY(VALUE1).scaleX(VALUE1)
-                    .start();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.alien_iv:
-                presenter.loadWeatherFromInternet();
-                break;
-        }
-    }
-
 
     @Override
     public void showWeather(@NonNull Weather weather) {
@@ -168,12 +125,47 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
         temperature.setText(String.valueOf((int) weather.getTemperature()));
         humidityTv.setText(String.valueOf((int) weather.getHumidity()) + " %");
         windTv.setText(String.valueOf((int) weather.getWindSpeed()) + " " + getString(R.string.m_s));
-        weatherUpdateDate.setText(weather.getDateString().toUpperCase());
     }
     @Override
     public void showError(@StringRes int message) {
         if (getActivity() != null) {
             Toast.makeText(getActivity(), getString(message), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.loadForecastFromInternet();
+        presenter.loadWeatherFromInternet();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        appBarLayout.removeOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void hideSwipe() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+    public void initAdapter(List<Forecasts> forecastsList) {
+
+        recyclerView.setAdapter(new ForecastRecyclerViewAdapter(forecastsList));
+
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(manager);
+
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        if (i == 0) {
+            swipeRefreshLayout.setEnabled(true);
+        } else {
+            swipeRefreshLayout.setEnabled(false);
+        }
+        relativeLayout.setAlpha(1.0f - Math.abs(i / (float)
+                appBarLayout.getTotalScrollRange()));
     }
 }

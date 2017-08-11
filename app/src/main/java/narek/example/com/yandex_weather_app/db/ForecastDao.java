@@ -21,6 +21,6 @@ public interface ForecastDao {
     @Delete
     public void deleteForecast(ForecastEntity... forecastEntities);
 
-    @Query("SELECT * FROM forecast")
-    public Single<List<ForecastEntity>> loadForecast();
+    @Query("SELECT * FROM forecast WHERE city_id_in_forecast IS :cityId")
+    public Single<List<ForecastEntity>> loadForecast(int cityId);
 }

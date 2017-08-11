@@ -7,4 +7,5 @@
     <color name="white">#ffff</color>
     <color name="forecast">#FFECB8</color>
     <color name="forecast_item">#caeaec</color>
+    <color name="city">#fffd99</color>
 </resources>

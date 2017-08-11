@@ -66,7 +66,7 @@ public class WeatherNestedFragment extends MvpBaseFragment implements WeatherNes
     }
     public void initAdapter(List<Forecasts> forecastsList) {
 
-        recyclerView.setAdapter(new ForecastRecyclerViewAdapter(forecastsList, new OnItemClickListener() {
+        /*recyclerView.setAdapter(new ForecastRecyclerViewAdapter(forecastsList, new OnItemClickListener() {
             @Override
             public void onItemClick(Object item, int layoutPosition) {
 
@@ -74,7 +74,7 @@ public class WeatherNestedFragment extends MvpBaseFragment implements WeatherNes
         }));
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(manager);*/
 
     }
 

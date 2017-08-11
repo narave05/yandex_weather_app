@@ -7,26 +7,6 @@
     android:layout_height="match_parent"
     android:id="@+id/container_city">
 
-    ​<android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <ImageButton
-        android:id="@+id/alien_iv"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:clickable="true"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/alien_or"
-        app:layout_anchor="@+id/title_container_ll"
-        android:elevation="8dp"
-        android:background="?selectableItemBackgroundBorderless"
-        app:layout_scrollFlags="scroll"
-        android:layout_marginRight="16dp"
-        app:layout_anchorGravity="bottom|right"/>
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_weather"
         android:layout_width="match_parent"
@@ -37,171 +17,128 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_weather"
             android:layout_width="match_parent"
-            android:layout_height="270dp"
+            android:layout_height="230dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|snap">
-            ​
-
-            <LinearLayout
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/relative_collapse"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="10">
+                android:background="@color/city"
+                app:layout_collapseMode="parallax">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/temperature_tv"
+                    style="@style/TextViewTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="115dp"
+                    android:layout_marginStart="115dp"
+                    android:text="+23"/>
+
+                <ImageView
+                    android:id="@+id/celcies_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="@dimen/padding_16"
+                    android:layout_toEndOf="@+id/temperature_tv"
+                    android:layout_toRightOf="@+id/temperature_tv"
+                    app:srcCompat="@drawable/temperature_celsius"/>
+
+                <narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView
+                    android:id="@+id/weatherImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/temperature_tv"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/cloud"/>
+
+                <ImageView
+                    android:id="@+id/humidity_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/water_percent"
+                    android:layout_alignBottom="@+id/wind_speed_tv"
+                    android:layout_toLeftOf="@+id/humidity_tv"
+                    android:layout_toStartOf="@+id/humidity_tv"
+                    android:layout_alignTop="@+id/wind_iv"/>
+
+
+                <TextView
+                    android:id="@+id/humidity_tv"
+                    style="@style/TvWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:layout_alignBottom="@+id/humidity_iv"
+                    android:layout_toRightOf="@+id/celcies_iv"
+                    android:layout_toEndOf="@+id/celcies_iv"/>
+
+                <TextView
+                    android:id="@+id/city_name_tv"
+                    style="@style/TvWind"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="8.5"
-                    android:background="@drawable/background"
-                    android:orientation="vertical"
-                    app:layout_collapseMode="parallax">
-
-
-                    <TextView
-                        android:id="@+id/temperature_tv"
-                        style="@style/TextViewTemp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginStart="30dp"
-                        android:text="23"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"/>
-                    <ImageView
-                        android:id="@+id/celcies_iv"
-                        app:srcCompat="@drawable/temperature_celsius"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/textView"
-                        android:layout_toRightOf="@+id/temperature_tv"
-                        android:layout_toEndOf="@+id/temperature_tv"
-                        android:layout_marginBottom="12dp"/>
-
-                    <narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView
-                        android:id="@+id/weatherImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/padding_8"
-                        android:layout_alignEnd="@+id/temperature_tv"
-                        android:layout_alignRight="@+id/temperature_tv"
-                        android:layout_centerVertical="true"
-                        app:srcCompat="@drawable/cloud"/>
-
-                    <TextView
-                        android:id="@+id/textView"
-                        style="@style/TvSpeech"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:text="@string/hi"/>
-                    <ImageView
-                        android:id="@+id/humidity_iv"
-                        app:srcCompat="@drawable/water_percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/humidity_tv"
-                        android:layout_toLeftOf="@+id/humidity_tv"
-                        android:layout_toStartOf="@+id/humidity_tv"/>
-
-
-                    <TextView
-                        android:id="@+id/humidity_tv"
-                        style="@style/TvWind"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/wind_speed_tv"
-                        android:layout_alignStart="@+id/wind_speed_tv"
-                        android:layout_below="@+id/wind_speed_tv"
-                        android:text="23"/>
-
-                    <TextView
-                        android:id="@+id/wind_speed_tv"
-                        style="@style/TvWind"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/weatherImageView"
-                        android:layout_alignRight="@+id/weatherImageView"
-                        android:layout_below="@+id/weatherImageView"
-                        android:text="23"/>
-
-                    <ImageView
-                        android:id="@+id/wind_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/weather_windy"
-                        android:layout_above="@+id/humidity_tv"
-                        android:layout_toLeftOf="@+id/wind_speed_tv"
-                        android:layout_toStartOf="@+id/wind_speed_tv"/>
-
-                    <ImageView
-                        android:id="@+id/umbrella_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/textView"
-                        android:layout_marginEnd="13dp"
-                        android:layout_marginRight="13dp"
-                        app:srcCompat="@drawable/umbrella"/>
-
-
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/title_container_ll"
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:layout_above="@+id/weather_update_date_tv"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/weather_update_date_tv"
+                    style="@style/TvWind"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1.5"
-                    android:gravity="start"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/padding_16"
-                    android:paddingTop="8dp"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
-                    >
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"/>
 
-                    <TextView
-                        android:id="@+id/city_name_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/padding_16"
-                        android:text="Moscow"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                        />
+                <TextView
+                    android:id="@+id/wind_speed_tv"
+                    style="@style/TvWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:layout_below="@+id/weatherImageView"
+                    android:layout_toLeftOf="@+id/weatherImageView"
+                    android:layout_toStartOf="@+id/weatherImageView"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"/>
 
-                    <TextView
-                        android:id="@+id/update_time_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center_vertical"
-                        android:text="Mon 23:45"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-                        android:textColor="@android:color/white"
-                        />
+                <ImageView
+                    android:id="@+id/wind_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/weather_windy"
+                    android:layout_alignBottom="@+id/wind_speed_tv"
+                    android:layout_toLeftOf="@+id/wind_speed_tv"
+                    android:layout_toStartOf="@+id/wind_speed_tv"/>
 
-                    ​
-                </LinearLayout>
-
-            </LinearLayout>
-
-
+            </RelativeLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
-        ​
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            app:tabBackground="@drawable/tab_selector"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"/>
     </android.support.design.widget.AppBarLayout>
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_forecast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@+id/app_bar_weather">
+    </android.support.v7.widget.RecyclerView>
+
+
 </android.support.design.widget.CoordinatorLayout>

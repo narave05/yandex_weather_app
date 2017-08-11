@@ -35,10 +35,14 @@
     <style name="TvWind">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">@dimen/text_size_20</item>
-        <item name="android:paddingTop">@dimen/padding_8</item>
         <item name="android:paddingLeft">@dimen/padding_8</item>
     </style>
 
-
+    <style name="ButtonSwipe">
+        <item name="android:text">@string/cancel</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
 
 </resources>

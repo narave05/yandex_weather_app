@@ -24,13 +24,12 @@ import narek.example.com.yandex_weather_app.util.UnitsConverter;
 
 public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRecyclerViewAdapter.ForecastViewHolder> {
 
+    public static final int MILLIS = 1000;
     private UnitsConverter unitsConverter = new UnitsConverter();
     private List<Forecasts> forecastsList = new ArrayList<>();
-    private static OnItemClickListener recyclerlistener;
 
-    public ForecastRecyclerViewAdapter(List<Forecasts> forecastsList, OnItemClickListener listener) {
+    public ForecastRecyclerViewAdapter(List<Forecasts> forecastsList) {
         this.forecastsList = forecastsList;
-        recyclerlistener = listener;
     }
 
     @Override
@@ -51,12 +50,12 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
     }
 
     private String showDate(long time) {
-        Date dNow = new Date(time);
+        Date dNow = new Date(time* MILLIS);
         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
         return ft.format(dNow);
     }
     private String showWeekday(long time) {
-        Date dNow = new Date(time);
+        Date dNow = new Date(time*MILLIS);
         SimpleDateFormat ft = new SimpleDateFormat("E", Locale.getDefault());
         return ft.format(dNow);
     }
@@ -78,13 +77,6 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    recyclerlistener.onItemClick(itemView, getLayoutPosition());
-                }
-            });
         }
     }
 }
