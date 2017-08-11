@@ -28,6 +28,7 @@ import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 import narek.example.com.yandex_weather_app.ui.find_city.FindCityPresenter;
 import narek.example.com.yandex_weather_app.ui.settings.SettingsFragment;
 import narek.example.com.yandex_weather_app.ui.weather.WeatherFragment;
+import narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment;
 import narek.example.com.yandex_weather_app.util.FragmentTag;
 import narek.example.com.yandex_weather_app.util.FragmentUtils;
 
@@ -100,6 +101,9 @@ public class RootActivity extends MvpBaseActivity
             case R.id.about_us_item:
                 presenter.onAboutUsItemClick();
                 break;
+            case R.id.cities:
+                presenter.onCitiesItemClick();
+                break;
         }
         navigationDrawer.closeDrawer(Gravity.START);
         return false;
@@ -130,6 +134,13 @@ public class RootActivity extends MvpBaseActivity
                 WeatherFragment.newInstance(),
                 fragmentManager,
                 FragmentTag.WEATHER);
+    }
+    @Override
+    public void openCitiesFragment() {
+        FragmentUtils.openFragment(
+                CitiesNestedFragment.newInstance(),
+                fragmentManager,
+                FragmentTag.CITIES, true);
     }
 
     @Override

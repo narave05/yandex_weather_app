@@ -14,11 +14,11 @@ public interface RootActivityView extends MvpBaseView {
 
     void openAboutUsFragment();
 
-
-
     void openSettingsFragment();
 
     void openWeatherFragment();
+
+    void openCitiesFragment();
 
     void lockDrawer();
 

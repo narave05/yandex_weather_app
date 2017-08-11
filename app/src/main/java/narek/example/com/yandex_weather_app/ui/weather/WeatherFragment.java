@@ -54,7 +54,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @BindView(R.id.city_name_tv)
     TextView cityName;
 
-    @BindView(R.id.swipe_refresh)SwipeRefreshLayout
+    @BindView(R.id.swipe_refresh_we)SwipeRefreshLayout
     swipeRefreshLayout;
 
     @BindView(R.id.weatherImageView)
@@ -167,5 +167,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
         }
         relativeLayout.setAlpha(1.0f - Math.abs(i / (float)
                 appBarLayout.getTotalScrollRange()));
+
+
     }
 }

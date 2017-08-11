@@ -5,7 +5,7 @@
                                     android:id="@+id/frame"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/city"
+                                    android:background="@drawable/back_l"
                                     android:layout_margin="@dimen/padding_8">
 
     <RelativeLayout

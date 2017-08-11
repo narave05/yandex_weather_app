@@ -40,6 +40,9 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
             case ABOUT:
                 navigateToAboutAs();
                 break;
+            case CITIES:
+                navigateToCities();
+                break;
         }
     }
 
@@ -69,7 +72,16 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         getViewState().openSettingsFragment();
         getViewState().setToolBarTitle(R.string.settings_title);
     }
+    public void onCitiesItemClick() {
+        navigateToCities();
+    }
 
+    private void navigateToCities() {
+        currentFragmentTag = FragmentTag.CITIES;
+        lockDrawerAndChangeIcon();
+        getViewState().openCitiesFragment();
+        getViewState().setToolBarTitle(R.string.cities);
+    }
     private void lockDrawerAndChangeIcon() {
         getViewState().lockDrawer();
         getViewState().changeToolbarIconToArrow();

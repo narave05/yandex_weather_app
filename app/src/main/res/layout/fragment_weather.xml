@@ -21,11 +21,7 @@
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|snap">
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh"
-                android:layout_width="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:layout_height="match_parent">
+
             <RelativeLayout
                 android:id="@+id/relative_collapse"
                 android:layout_width="match_parent"
@@ -125,12 +121,16 @@
                     android:layout_toStartOf="@+id/wind_speed_tv"/>
 
             </RelativeLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-
+<android.support.v4.widget.SwipeRefreshLayout
+android:id="@+id/swipe_refresh_we"
+android:layout_width="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_forecast"
@@ -140,5 +140,5 @@
             android:layout_below="@+id/app_bar_weather">
     </android.support.v7.widget.RecyclerView>
 
-
+</android.support.v4.widget.SwipeRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>

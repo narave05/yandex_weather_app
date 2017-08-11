@@ -4,6 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
                 android:id="@+id/relative"
+                android:background="@color/white"
              tools:context="narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment">
 
 
@@ -19,9 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
-        android:layout_marginTop="@dimen/padding_8"
+        android:layout_marginBottom="@dimen/padding_8"
         android:layout_marginRight="@dimen/padding_8"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         app:srcCompat="@drawable/ic_add_black_24dp"
         android:clickable="true"/>
 </RelativeLayout>

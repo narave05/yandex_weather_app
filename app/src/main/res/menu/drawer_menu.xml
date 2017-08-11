@@ -7,6 +7,11 @@
             android:icon="@drawable/weather_partlycloudy"
             android:title="@string/weather" />
         <item
+            android:id="@+id/cities"
+            android:checked="true"
+            android:icon="@drawable/ic_location_city_black_24dp"
+            android:title="@string/cities" />
+        <item
             android:id="@+id/settings_item"
             android:icon="@drawable/settings"
             android:checkable="false"
