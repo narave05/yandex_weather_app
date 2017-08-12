@@ -89,12 +89,24 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
 
     @Override
     public void setSwipeForRecyclerView(final CityEntity cityEntity, final List<City> cityList) {
+        final boolean[] isActive = {false};
+
         ItemTouchHelper.SimpleCallback callback = new SimpleCallbackItemTouchHelper(0, ItemTouchHelper.LEFT) {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                presenter.deleteCity(viewHolder.getAdapterPosition());
-                citiesAdapter.onDismiss(viewHolder.getAdapterPosition());
 
+                for (City ci:cityList) {
+                    if (cityEntity.getLat() == ci.getCoords().getLat() && cityEntity.getLon() == ci.getCoords().getLon()) {
+                        isActive[0] = true;
+                    }else {
+                        isActive[0] = false;
+                    }
+                }
+
+                if (!isActive[0]) {
+                    presenter.deleteCity(viewHolder.getAdapterPosition());
+                    citiesAdapter.onDismiss(viewHolder.getAdapterPosition());
+                }
             }
         };
 

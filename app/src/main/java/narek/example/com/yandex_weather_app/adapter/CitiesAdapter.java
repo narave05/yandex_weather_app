@@ -64,9 +64,9 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
 
 
         if (selectedPosition == holder.getAdapterPosition()) {
-            holder.cityNameTv.setTextColor(holder.accent);
+            holder.frameLayout.setBackgroundColor(holder.accent);
         }else {
-            holder.cityNameTv.setTextColor(holder.usual);
+            holder.frameLayout.setBackgroundColor(holder.usual);
         }
     }
 
@@ -86,9 +86,9 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
         @BindView(R.id.city_name_item_tv) TextView cityNameTv;
         @BindView(R.id.frame)
         FrameLayout frameLayout;
-        @BindColor(R.color.colorPrimaryDark)
+        @BindColor(R.color.colorAccent)
         int accent;
-        @BindColor(R.color.colorPrimary)
+        @BindColor(R.color.city)
         int usual;
 
         public CitiesViewHolder(final View itemView) {
