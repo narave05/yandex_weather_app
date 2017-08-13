@@ -64,10 +64,9 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
 
     @BindView(R.id.wind_speed_tv)TextView windTv;
 
+    @Nullable
     @BindView(R.id.app_bar_weather)AppBarLayout appBarLayout;
 
-    @BindView(R.id.container_city)
-    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.weather_update_date_tv)TextView updateTimeTV;
 
     @BindView(R.id.relative_collapse)
@@ -109,7 +108,9 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @Override
     public void onResume() {
         super.onResume();
-        appBarLayout.addOnOffsetChangedListener(this);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            appBarLayout.addOnOffsetChangedListener(this);
+        }
     }
 
     @Override
@@ -138,7 +139,9 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     @Override
     public void onPause() {
         super.onPause();
-        appBarLayout.removeOnOffsetChangedListener(this);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            appBarLayout.removeOnOffsetChangedListener(this);
+        }
     }
 
     @Override
@@ -156,13 +159,15 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        if (i == 0) {
-            swipeRefreshLayout.setEnabled(true);
-        } else{
-            swipeRefreshLayout.setEnabled(false);
-        }
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            if (i == 0) {
+                swipeRefreshLayout.setEnabled(true);
+            } else {
+                swipeRefreshLayout.setEnabled(false);
+            }
 
-        relativeLayout.setAlpha(1.0f - Math.abs(i / (float)
-                appBarLayout.getTotalScrollRange()));
+            relativeLayout.setAlpha(1.0f - Math.abs(i / (float)
+                    appBarLayout.getTotalScrollRange()));
+        }
     }
 }

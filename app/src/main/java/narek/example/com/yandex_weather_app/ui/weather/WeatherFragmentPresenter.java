@@ -24,9 +24,7 @@ import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
-import narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment;
-import narek.example.com.yandex_weather_app.ui.weather.weather_nested.WeatherNestedFragment;
-import narek.example.com.yandex_weather_app.ui.weather.weather_nested.WeatherNestedPresenter;
+
 import narek.example.com.yandex_weather_app.util.NetworkStatusChecker;
 import narek.example.com.yandex_weather_app.util.UnitsConverter;
 

@@ -1,8 +1,10 @@
 package narek.example.com.yandex_weather_app.ui.root;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -47,6 +49,7 @@ public class RootActivity extends MvpBaseActivity
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
 
+    @Nullable
     @BindView(R.id.drawer_container)
     DrawerLayout navigationDrawer;
 
@@ -62,6 +65,7 @@ public class RootActivity extends MvpBaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root_weather);
         fragmentManager = getSupportFragmentManager();
+
     }
 
     @Override
@@ -79,15 +83,18 @@ public class RootActivity extends MvpBaseActivity
     @Override
     public void setupToolbarAndDrawer() {
         setSupportActionBar(toolbar);
-        toggle = new ActionBarDrawerToggle(
-                this,
-                navigationDrawer,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        navigationDrawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            toggle = new ActionBarDrawerToggle(
+                    this,
+                    navigationDrawer,
+                    toolbar,
+                    R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close);
+            navigationDrawer.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+            navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -106,7 +113,10 @@ public class RootActivity extends MvpBaseActivity
                 presenter.onCitiesItemClick();
                 break;
         }
-        navigationDrawer.closeDrawer(Gravity.START);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            navigationDrawer.closeDrawer(Gravity.START);
+        }
+
         return false;
     }
 
@@ -146,13 +156,19 @@ public class RootActivity extends MvpBaseActivity
 
     @Override
     public void lockDrawer() {
-        navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
     }
 
 
     @Override
+
     public void unlockDrawer() {
-        navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
     }
 
     @Override
@@ -175,15 +191,19 @@ public class RootActivity extends MvpBaseActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navigationDrawer.openDrawer(GravityCompat.START);
-                }
-            });
+
+            if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        navigationDrawer.openDrawer(GravityCompat.START);
+                    }
+                });
+
+                toggle.setDrawerIndicatorEnabled(true);
+                navigationDrawer.addDrawerListener(toggle);
+            }
         }
-        toggle.setDrawerIndicatorEnabled(true);
-        navigationDrawer.addDrawerListener(toggle);
     }
 
     @Override
