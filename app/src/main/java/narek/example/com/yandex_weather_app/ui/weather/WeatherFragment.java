@@ -109,7 +109,10 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     public void onResume() {
         super.onResume();
         if (!getResources().getBoolean(R.bool.twoPaneMode)) {
-            appBarLayout.addOnOffsetChangedListener(this);
+            if (appBarLayout != null) {
+                appBarLayout.addOnOffsetChangedListener(this);
+            }
+
         }
     }
 
@@ -140,7 +143,10 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     public void onPause() {
         super.onPause();
         if (!getResources().getBoolean(R.bool.twoPaneMode)) {
-            appBarLayout.removeOnOffsetChangedListener(this);
+            if (appBarLayout != null) {
+                appBarLayout.removeOnOffsetChangedListener(this);
+            }
+
         }
     }
 

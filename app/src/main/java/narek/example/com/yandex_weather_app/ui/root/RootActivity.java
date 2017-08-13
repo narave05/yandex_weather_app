@@ -173,7 +173,9 @@ public class RootActivity extends MvpBaseActivity
 
     @Override
     public void changeToolbarIconToArrow() {
-        toggle.setDrawerIndicatorEnabled(false);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            toggle.setDrawerIndicatorEnabled(false);
+        }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

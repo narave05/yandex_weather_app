@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -81,9 +82,16 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
     @Override
     public void initAdapter(List<CityEntity> cityList) {
         recyclerView.setAdapter(setCityAdapter(cityList));
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
+
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+            manager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(manager);
+        }else {
+            GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+            recyclerView.setLayoutManager(manager);
+        }
+
 
         setSwipeForRecyclerView(cityList);
     }

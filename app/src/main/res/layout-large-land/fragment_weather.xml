@@ -5,11 +5,15 @@
     android:id="@+id/swipe_refresh_we"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container_city_coord">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/container_city"
         android:weightSum="10">
 
         <RelativeLayout
@@ -113,4 +117,5 @@
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
