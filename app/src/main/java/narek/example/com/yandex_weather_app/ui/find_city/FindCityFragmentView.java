@@ -19,5 +19,8 @@ public interface FindCityFragmentView extends MvpBaseView{
     void openKeyBoard();
     void showCitiesList(List<SuggestCity> cityList);
     void showError(int message);
+
+    void showProgress();
+    void hideProgress();
 }
 

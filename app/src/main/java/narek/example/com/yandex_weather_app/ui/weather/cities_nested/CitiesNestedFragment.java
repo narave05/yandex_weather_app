@@ -88,9 +88,7 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
         setSwipeForRecyclerView(cityList);
     }
 
-    @Override
-
-    public void setSwipeForRecyclerView(List<CityEntity> cityList) {
+    private void setSwipeForRecyclerView(List<CityEntity> cityList) {
         cityListField = cityList;
 
         ItemTouchHelper.SimpleCallback callback = new SimpleCallbackItemTouchHelper(0, ItemTouchHelper.LEFT) {

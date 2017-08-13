@@ -8,9 +8,20 @@
              tools:context="narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment">
 
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/yandex_eng_logo"
+        android:contentDescription="@string/header_image"
+        android:layout_centerInParent="true"
+        android:paddingBottom="@dimen/padding_28"
+        android:paddingTop="@dimen/padding_28"
+        android:layout_alignParentTop="true"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_cities"
         android:layout_width="match_parent"
+        android:layout_below="@+id/logo"
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>

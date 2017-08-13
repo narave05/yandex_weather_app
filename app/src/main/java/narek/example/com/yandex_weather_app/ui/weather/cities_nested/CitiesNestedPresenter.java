@@ -75,12 +75,6 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
         getViewState().showDialogCitySuggest(suggestDialog);
     }
 
-    public void setSwipe() {
-        if (listCities != null) {
-            getViewState().setSwipeForRecyclerView(listCities);
-        }
-    }
-
     public void deleteCity(int adapterPosition) {
         repository.deleteCity(listCities.get(adapterPosition));
     }

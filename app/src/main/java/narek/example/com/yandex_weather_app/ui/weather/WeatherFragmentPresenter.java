@@ -82,7 +82,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                             }
                         }));
     }
-    void loadWeather(CityEntity cityEntity) {
+    void loadWeather(final CityEntity cityEntity) {
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
                     repository.getWeatherData(cityEntity)
@@ -91,7 +91,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                             .subscribe(new Consumer<Weather>() {
                                 @Override
                                 public void accept(@NonNull Weather weather) throws Exception {
-                                    sendWeatherData(weather);
+                                    sendWeatherData(weather, cityEntity.getCityName());
                                 }
                             }, new Consumer<Throwable>() {
                                 @Override
@@ -119,7 +119,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                                 .subscribe(new Consumer<Weather>() {
                                     @Override
                                     public void accept(@NonNull Weather weather) throws Exception {
-                                        sendWeatherData(weather);
+                                        sendWeatherData(weather, currentCityEntity.getCityName());
                                         getViewState().hideSwipe();
                                     }
                                 }, new Consumer<Throwable>() {
@@ -138,10 +138,9 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
 
     }
 
-    private void sendWeatherData(@Nullable Weather weather) {
+    private void sendWeatherData(@Nullable Weather weather, String cityName) {
         if (weather != null) {
-            weather.setTemperature(Float.valueOf(unitsConverter.convertTemperature(weather.getTemperature())));
-            getViewState().showWeather(weather);
+            getViewState().showWeather(weather, cityName);
         }
     }
     private void loadForecast(CityEntity cityEntity) {

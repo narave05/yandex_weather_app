@@ -19,7 +19,7 @@ import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseView;
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface WeatherFragmentView extends MvpBaseView {
 
-    void showWeather(@NonNull Weather weather);
+    void showWeather(@NonNull Weather weather, String cityName);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showError(@StringRes int message);

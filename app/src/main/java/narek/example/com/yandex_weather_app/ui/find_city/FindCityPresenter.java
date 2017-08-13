@@ -61,6 +61,7 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
 
     private void citiesApiCall(final String s) {
         if (NetworkStatusChecker.isNetworkAvailable()) {
+            getViewState().showProgress();
             compositeDisposable.add(
                     repository.getPlacesSuggestion(s)
                             .subscribeOn(Schedulers.io())
@@ -70,11 +71,13 @@ public class FindCityPresenter extends MvpBasePresenter<FindCityFragmentView> {
                                 @Override
                                 public void accept(@NonNull List<SuggestCity> suggestCities) throws Exception {
                                     getViewState().showCitiesList(suggestCities);
+                                    getViewState().hideProgress();
                                 }
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
                                     getViewState().showError(R.string.data_not_updated);
+                                    getViewState().hideProgress();
                                 }
                             })
             );

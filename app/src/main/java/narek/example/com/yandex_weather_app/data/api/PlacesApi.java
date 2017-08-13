@@ -6,6 +6,8 @@ package narek.example.com.yandex_weather_app.data.api;
  */
 
 
+import java.util.Locale;
+
 import io.reactivex.Single;
 import narek.example.com.yandex_weather_app.model.rest.CoordsResponse;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
@@ -24,7 +26,7 @@ public class PlacesApi {
         return placesRestService.callPlacesByName( cityName, types, AppConfig.API_KEY_PLACES);
     }
     public Single<CoordsResponse> callCordsByCityId(String coords) {
-        return placesRestService.callCoordsByCityId(coords, AppConfig.API_KEY_PLACES);
+        return placesRestService.callCoordsByCityId(coords, AppConfig.API_KEY_PLACES, Locale.getDefault().getCountry());
     }
 
     interface PlacesRestService {
@@ -33,7 +35,7 @@ public class PlacesApi {
                                                 @Query("key") String key);
 
         @GET("details/json")
-        Single<CoordsResponse> callCoordsByCityId(@Query("placeid") String placeid, @Query("key") String key);
+        Single<CoordsResponse> callCoordsByCityId(@Query("placeid") String placeid, @Query("key") String key, @Query("language") String lang);
     }
 
 }

@@ -326,7 +326,9 @@ public class RepositoryImpl implements Repository {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                db.cityDao().deactivateCity(activeCityEntity.getCityName());
+                if (activeCityEntity != null) {
+                    db.cityDao().deactivateCity(activeCityEntity.getCityName());
+                }
             }
         })
                 .andThen(Completable.fromAction(new Action() {

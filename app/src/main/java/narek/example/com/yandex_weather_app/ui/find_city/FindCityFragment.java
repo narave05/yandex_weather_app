@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
@@ -41,7 +42,8 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
 
     @BindView(R.id.find_city_ed)EditText findViewEt;
     @BindView(R.id.recycle_view_cities)RecyclerView recyclerView;
-
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     @InjectPresenter
     FindCityPresenter presenter;
     Unbinder unbinder;
@@ -100,6 +102,16 @@ public class FindCityFragment extends MvpAppCompatDialogFragment implements Find
         if (getActivity() != null) {
             Toast.makeText(getActivity(), getString(message), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 
     public void initAdapter(List<SuggestCity> cityList) {

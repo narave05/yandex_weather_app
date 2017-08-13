@@ -7,18 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,13 +28,11 @@ import butterknife.BindView;
 import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.adapter.ForecastRecyclerViewAdapter;
-import narek.example.com.yandex_weather_app.adapter.OnItemClickListener;
-import narek.example.com.yandex_weather_app.adapter.ViewPagerAdapter;
 import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
-import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
+import narek.example.com.yandex_weather_app.util.UnitsConverter;
 
 
 public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentView, SwipeRefreshLayout.OnRefreshListener, AppBarLayout.OnOffsetChangedListener {
@@ -74,6 +68,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
 
     @BindView(R.id.container_city)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.weather_update_date_tv)TextView updateTimeTV;
 
     @BindView(R.id.relative_collapse)
     RelativeLayout relativeLayout;
@@ -118,13 +113,14 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     }
 
     @Override
-    public void showWeather(@NonNull Weather weather) {
+    public void showWeather(@NonNull Weather weather, String cityName) {
 
-        cityName.setText(weather.getCity().getName().toUpperCase());
+        this.cityName.setText(cityName);
         weatherImg.setWeatherImage(weather.getConditionCode());
-        temperature.setText(String.valueOf((int) weather.getTemperature()));
+        temperature.setText(new UnitsConverter().convertTemperature(weather.getTemperature()));
         humidityTv.setText(String.valueOf((int) weather.getHumidity()) + " %");
         windTv.setText(String.valueOf((int) weather.getWindSpeed()) + " " + getString(R.string.m_s));
+        updateTimeTV.setText(new UnitsConverter().convertTime());
     }
     @Override
     public void showError(@StringRes int message) {
@@ -162,12 +158,11 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
         if (i == 0) {
             swipeRefreshLayout.setEnabled(true);
-        } else {
+        } else{
             swipeRefreshLayout.setEnabled(false);
         }
+
         relativeLayout.setAlpha(1.0f - Math.abs(i / (float)
                 appBarLayout.getTotalScrollRange()));
-
-
     }
 }

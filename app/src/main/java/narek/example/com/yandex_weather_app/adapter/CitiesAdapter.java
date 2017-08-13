@@ -2,38 +2,29 @@ package narek.example.com.yandex_weather_app.adapter;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Handler;
-import android.support.v7.widget.CardView;
+import android.graphics.drawable.Drawable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindColor;
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.db.CityEntity;
-import narek.example.com.yandex_weather_app.model.clean.City;
-import narek.example.com.yandex_weather_app.model.clean.Forecasts;
-import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesViewHolder> implements ItemTouchHelperAdapter{
     private static List<CityEntity> cityList = new ArrayList<>();
     private static OnItemClickListener recyclerlistener;
     private Context context;
-    private static int selectedPosition = -1;
 
 
     public CitiesAdapter(List<CityEntity> cityList, OnItemClickListener listener) {
@@ -54,20 +45,19 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
         final CityEntity city = cityList.get(position);
 
         holder.cityNameTv.setText(city.getCityName());
-        holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+        holder.relLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     recyclerlistener.onItemClick(city, holder.getLayoutPosition());
-                    //selectedPosition = holder.getAdapterPosition();
                 }
             });
 
 
 
         if (city.isActive()) {
-            holder.frameLayout.setBackgroundColor(holder.accent);
+            holder.relLayout.setBackground(holder.accent);
         }else {
-            holder.frameLayout.setBackgroundColor(holder.usual);
+            holder.relLayout.setBackground(holder.usual);
         }
     }
 
@@ -86,11 +76,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
     public static class CitiesViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.city_name_item_tv) TextView cityNameTv;
         @BindView(R.id.frame)
-        FrameLayout frameLayout;
-        @BindColor(R.color.colorAccent)
-        int accent;
-        @BindColor(R.color.city)
-        int usual;
+        RelativeLayout relLayout;
+        @BindDrawable(R.drawable.back_active)
+        Drawable accent;
+        @BindDrawable(R.drawable.back_l)
+        Drawable usual;
 
         public CitiesViewHolder(final View itemView) {
             super(itemView);

@@ -17,5 +17,4 @@ public interface CitiesNestedView extends MvpBaseView{
 
     void initAdapter(List<CityEntity> cityList);
 
-    void setSwipeForRecyclerView(List<CityEntity> cityList);
 }
