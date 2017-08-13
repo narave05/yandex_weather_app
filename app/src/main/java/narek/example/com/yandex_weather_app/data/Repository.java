@@ -37,7 +37,7 @@ public interface Repository {
 
     Single<WeatherEntity> getWeather(City city);
 
-    void deleteCity(City city);
+    void deleteCity(CityEntity city);
 
     void updateCity(City city);
 
@@ -51,9 +51,9 @@ public interface Repository {
 
     void insertForecastInDb(List<ForecastEntity> list);
 
-    Flowable<List<City>> getAllCitiesFlowable();
+    Flowable<List<CityEntity>> getAllCitiesFlowable();
 
-    void updateActiveCity(City city);
+    void updateActiveCity(CityEntity city);
 
 
 }

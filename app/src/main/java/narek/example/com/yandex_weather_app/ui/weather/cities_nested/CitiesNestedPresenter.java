@@ -24,7 +24,7 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
     private Repository repository;
     private DialogFragment suggestDialog;
     private CityEntity currentCityEntity;
-    private List<City> listCities;
+    private List<CityEntity> listCities;
 
 
     @Inject
@@ -51,11 +51,13 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
                 repository.getAllCitiesFlowable()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<City>>() {
+                .subscribe(new Consumer<List<CityEntity>>() {
                     @Override
-                    public void accept(@NonNull List<City> cityList) throws Exception {
-                        getViewState().initAdapter(cityList);
+                    public void accept(@NonNull List<CityEntity> cityList) throws Exception {
+
                         listCities = cityList;
+                        getViewState().initAdapter(cityList);
+
                         if (suggestDialog != null) {
                             getViewState().dismissDialog(suggestDialog);
                         }
@@ -64,7 +66,7 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
         );
     }
 
-    public void upDateActiveCity(City item) {
+    public void updateActiveCity(CityEntity item) {
         repository.updateActiveCity(item);
     }
 
@@ -73,9 +75,9 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
         getViewState().showDialogCitySuggest(suggestDialog);
     }
 
-    public void geActiveCityId() {
-        if (currentCityEntity != null) {
-            getViewState().setSwipeForRecyclerView(currentCityEntity, listCities);
+    public void setSwipe() {
+        if (listCities != null) {
+            getViewState().setSwipeForRecyclerView(listCities);
         }
     }
 

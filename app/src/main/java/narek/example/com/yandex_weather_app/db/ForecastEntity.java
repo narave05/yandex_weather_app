@@ -9,11 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "forecast",
-
-        //foreignKeys = @ForeignKey(entity = CityEntity.class, parentColumns = "city_id", childColumns = "id", onDelete = CASCADE),
-
-        indices = {@Index(value = {"city_id_in_forecast", "time"}, unique = true)})
+@Entity(tableName = "forecast", indices = {@Index(value = {"city_id_in_forecast", "time"}, unique = true)})
 public class ForecastEntity {
 
     @PrimaryKey(autoGenerate = true)

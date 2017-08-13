@@ -273,12 +273,11 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public void deleteCity(City city) {
-        cityEntity = new CityModelToCityEntityConverter().makeCityFromCityEntity(city);
+    public void deleteCity(final CityEntity city) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                db.cityDao().deleteCity(cityEntity.getCityName(), cityEntity.getLat(), cityEntity.getLon());
+                db.cityDao().deleteCity(city.getCityName(), city.getLat(), city.getLon());
             }
         })
                 .subscribeOn(Schedulers.io())
@@ -316,43 +315,30 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Flowable<List<City>> getAllCitiesFlowable() {
+    public Flowable<List<CityEntity>> getAllCitiesFlowable() {
         return db.cityDao().getAllCities()
-                .map(new Function<List<CityEntity>, List<City>>() {
-                    @Override
-                    public List<City> apply(@NonNull List<CityEntity> cityEntities) throws Exception {
-                        List<City> list = new ArrayList<>();
-                        for (CityEntity ce : cityEntities) {
-                            list.add(new CityEntityToCityModelConverter().makeCityFromCityEntity(ce));
-                        }
-                        return list;
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public void updateActiveCity(final City city) {
+    public void updateActiveCity(final CityEntity city) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 db.cityDao().deactivateCity(activeCityEntity.getCityName());
             }
         })
-                .concatWith(Completable.fromAction(new Action() {
+                .andThen(Completable.fromAction(new Action() {
                     @Override
                     public void run() throws Exception {
-                        db.cityDao().updateCurrentCity(city.getName(), true, city.getCoords().getLat(), city.getCoords().getLon());
+                        db.cityDao().updateCurrentCity(city.getCityName(), true, city.getLat(), city.getLon());
                     }
-                })).concatWith(Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                getActiveCityEntity();
-            }
-        }))
+                }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+
+        getActiveCityEntity();
     }
 }

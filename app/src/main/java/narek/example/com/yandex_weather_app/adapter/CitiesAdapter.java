@@ -24,18 +24,19 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesViewHolder> implements ItemTouchHelperAdapter{
-    private static List<City> cityList = new ArrayList<>();
+    private static List<CityEntity> cityList = new ArrayList<>();
     private static OnItemClickListener recyclerlistener;
     private Context context;
     private static int selectedPosition = -1;
 
 
-    public CitiesAdapter(List<City> cityList, OnItemClickListener listener) {
+    public CitiesAdapter(List<CityEntity> cityList, OnItemClickListener listener) {
         CitiesAdapter.cityList = cityList;
         CitiesAdapter.recyclerlistener = listener;
     }
@@ -50,20 +51,20 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
     @Override
     public void onBindViewHolder(final CitiesViewHolder holder, final int position) {
 
-        final City city = cityList.get(position);
+        final CityEntity city = cityList.get(position);
 
-        holder.cityNameTv.setText(city.getName());
+        holder.cityNameTv.setText(city.getCityName());
         holder.frameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recyclerlistener.onItemClick(v, holder.getLayoutPosition());
-                    selectedPosition = holder.getAdapterPosition();
+                    recyclerlistener.onItemClick(city, holder.getLayoutPosition());
+                    //selectedPosition = holder.getAdapterPosition();
                 }
             });
 
 
 
-        if (selectedPosition == holder.getAdapterPosition()) {
+        if (city.isActive()) {
             holder.frameLayout.setBackgroundColor(holder.accent);
         }else {
             holder.frameLayout.setBackgroundColor(holder.usual);

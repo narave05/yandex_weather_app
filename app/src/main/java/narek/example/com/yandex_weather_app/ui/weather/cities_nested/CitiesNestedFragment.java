@@ -1,7 +1,6 @@
 package narek.example.com.yandex_weather_app.ui.weather.cities_nested;
 
 
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,11 +21,9 @@ import butterknife.BindView;
 import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.adapter.CitiesAdapter;
-import narek.example.com.yandex_weather_app.adapter.ItemTouchHelperAdapter;
 import narek.example.com.yandex_weather_app.adapter.OnItemClickListener;
 import narek.example.com.yandex_weather_app.adapter.SimpleCallbackItemTouchHelper;
 import narek.example.com.yandex_weather_app.db.CityEntity;
-import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseFragment;
 
 public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNestedView, View.OnClickListener {
@@ -35,20 +32,23 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
     @InjectPresenter
     CitiesNestedPresenter presenter;
 
-    @BindView(R.id.fab)FloatingActionButton fab;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     @BindView(R.id.recycler_cities)
     RecyclerView recyclerView;
     private CitiesAdapter citiesAdapter;
+    private List<CityEntity> cityListField;
 
     @ProvidePresenter
-    public CitiesNestedPresenter providePresenter(){
+    public CitiesNestedPresenter providePresenter() {
         return App.getInstance().getAppComponent().provideCitiesNestedPresenter();
     }
 
     public CitiesNestedFragment() {
         // Required empty public constructor
     }
+
     public static CitiesNestedFragment newInstance() {
         return new CitiesNestedFragment();
     }
@@ -79,34 +79,42 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
     }
 
     @Override
-    public void initAdapter(List<City> cityList) {
+    public void initAdapter(List<CityEntity> cityList) {
         recyclerView.setAdapter(setCityAdapter(cityList));
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        presenter.geActiveCityId();
+
+        setSwipeForRecyclerView(cityList);
     }
 
     @Override
-    public void setSwipeForRecyclerView(final CityEntity cityEntity, final List<City> cityList) {
-        final boolean[] isActive = {false};
+
+    public void setSwipeForRecyclerView(List<CityEntity> cityList) {
+        cityListField = cityList;
 
         ItemTouchHelper.SimpleCallback callback = new SimpleCallbackItemTouchHelper(0, ItemTouchHelper.LEFT) {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            }
 
-                for (City ci:cityList) {
-                    if (cityEntity.getLat() == ci.getCoords().getLat() && cityEntity.getLon() == ci.getCoords().getLon()) {
-                        isActive[0] = true;
-                    }else {
-                        isActive[0] = false;
+            @Override
+            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                int position = viewHolder.getAdapterPosition();
+
+                if (position != -1) {
+
+                    if (cityListField.get(position).isActive()) {
+                        return 0;
+                    } else {
+
+                        presenter.deleteCity(position);
+                        citiesAdapter.onDismiss(viewHolder.getAdapterPosition());
+
+                        return super.getSwipeDirs(recyclerView, viewHolder);
                     }
                 }
-
-                if (!isActive[0]) {
-                    presenter.deleteCity(viewHolder.getAdapterPosition());
-                    citiesAdapter.onDismiss(viewHolder.getAdapterPosition());
-                }
+                return 0;
             }
         };
 
@@ -114,11 +122,11 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private CitiesAdapter setCityAdapter(final List<City> cityList){
+    private CitiesAdapter setCityAdapter(final List<CityEntity> cityList) {
         citiesAdapter = new CitiesAdapter(cityList, new OnItemClickListener() {
             @Override
             public void onItemClick(Object item, int layoutPosition) {
-                presenter.upDateActiveCity(cityList.get(layoutPosition));
+                presenter.updateActiveCity(cityList.get(layoutPosition));
             }
         });
         return citiesAdapter;

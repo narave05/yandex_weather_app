@@ -15,7 +15,7 @@ public interface CitiesNestedView extends MvpBaseView{
 
     void dismissDialog(DialogFragment dialogFragment);
 
-    void initAdapter(List<City> cityList);
+    void initAdapter(List<CityEntity> cityList);
 
-    void setSwipeForRecyclerView(CityEntity cityEntity, List<City> cityList);
+    void setSwipeForRecyclerView(List<CityEntity> cityList);
 }
