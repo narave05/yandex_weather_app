@@ -24,7 +24,6 @@ import narek.example.com.yandex_weather_app.db.CityEntity;
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesViewHolder> implements ItemTouchHelperAdapter{
     private static List<CityEntity> cityList = new ArrayList<>();
     private static OnItemClickListener recyclerlistener;
-    private Context context;
 
 
     public CitiesAdapter(List<CityEntity> cityList, OnItemClickListener listener) {
@@ -34,7 +33,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
 
     @Override
     public CitiesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        Context context = parent.getContext();
         View v = LayoutInflater.from(context).inflate(R.layout.city_item, parent, false);
         return new CitiesAdapter.CitiesViewHolder(v);
     }
@@ -73,7 +72,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
     }
 
 
-    public static class CitiesViewHolder extends RecyclerView.ViewHolder{
+    static class CitiesViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.city_name_item_tv) TextView cityNameTv;
         @BindView(R.id.frame)
         RelativeLayout relLayout;
@@ -82,7 +81,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
         @BindDrawable(R.drawable.back_l)
         Drawable usual;
 
-        public CitiesViewHolder(final View itemView) {
+        CitiesViewHolder(final View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);

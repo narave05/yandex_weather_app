@@ -114,6 +114,48 @@ public class Forecasts {
         return rain;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Forecasts forecasts = (Forecasts) o;
+
+        if (time != forecasts.time) return false;
+        if (Double.compare(forecasts.dayTemp, dayTemp) != 0) return false;
+        if (Double.compare(forecasts.nightTemp, nightTemp) != 0) return false;
+        if (Double.compare(forecasts.pressure, pressure) != 0) return false;
+        if (humidity != forecasts.humidity) return false;
+        if (Double.compare(forecasts.speed, speed) != 0) return false;
+        if (degrees != forecasts.degrees) return false;
+        if (clouds != forecasts.clouds) return false;
+        if (Double.compare(forecasts.rain, rain) != 0) return false;
+        return iconId == forecasts.iconId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (time ^ (time >>> 32));
+        temp = Double.doubleToLongBits(dayTemp);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(nightTemp);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(pressure);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + humidity;
+        temp = Double.doubleToLongBits(speed);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + degrees;
+        result = 31 * result + clouds;
+        temp = Double.doubleToLongBits(rain);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + iconId;
+        return result;
+    }
+
     public static class ForecastsBuilder{
 
         private long time;

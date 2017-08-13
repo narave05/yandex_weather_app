@@ -14,8 +14,7 @@ import narek.example.com.yandex_weather_app.model.clean.Coords;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 
-@Entity(tableName = "weather", indices = {@Index(value = {"city_id_in_weather"}, unique = true)}
-        /*foreignKeys = @ForeignKey(onDelete=CASCADE, entity = CityEntity.class, parentColumns = "city_id", childColumns = "id")*/)
+@Entity(tableName = "weather", indices = {@Index(value = {"city_id_in_weather"}, unique = true)})
 
 public class WeatherEntity {
 

@@ -1,8 +1,6 @@
 package narek.example.com.yandex_weather_app.ui.weather;
 
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -17,7 +15,6 @@ import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.R;
-import narek.example.com.yandex_weather_app.adapter.ViewPagerAdapter;
 import narek.example.com.yandex_weather_app.data.Repository;
 import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.Forecasts;
@@ -60,7 +57,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                     }
                 }));
     }
-    public void getCityFromDb(){
+    private void getCityFromDb(){
         compositeDisposable.add(repository.getActiveCityFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,7 +77,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
                             }
                         }));
     }
-    void loadWeather(final CityEntity cityEntity) {
+    private void loadWeather(final CityEntity cityEntity) {
         if (NetworkStatusChecker.isNetworkAvailable()) {
             compositeDisposable.add(
                     repository.getWeatherData(cityEntity)
@@ -107,7 +104,7 @@ public class WeatherFragmentPresenter extends MvpBasePresenter<WeatherFragmentVi
         }
     }
 
-    public void loadWeatherFromInternet() {
+    void loadWeatherFromInternet() {
         if (currentCityEntity != null) {
             if (NetworkStatusChecker.isNetworkAvailable()) {
                 compositeDisposable.add(

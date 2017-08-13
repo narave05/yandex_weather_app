@@ -10,7 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 public abstract class SimpleCallbackItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    public SimpleCallbackItemTouchHelper(int dragDirs, int swipeDirs) {
+    protected SimpleCallbackItemTouchHelper(int dragDirs, int swipeDirs) {
         super(dragDirs, swipeDirs);
     }
 

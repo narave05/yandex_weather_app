@@ -124,7 +124,7 @@ public class WeatherFragment extends MvpBaseFragment implements WeatherFragmentV
         temperature.setText(new UnitsConverter().convertTemperature(weather.getTemperature()));
         humidityTv.setText(String.valueOf((int) weather.getHumidity()) + " %");
         windTv.setText(String.valueOf((int) weather.getWindSpeed()) + " " + getString(R.string.m_s));
-        updateTimeTV.setText(new UnitsConverter().convertTime());
+        updateTimeTV.setText(new UnitsConverter().convertTime(System.currentTimeMillis()));
     }
     @Override
     public void showError(@StringRes int message) {

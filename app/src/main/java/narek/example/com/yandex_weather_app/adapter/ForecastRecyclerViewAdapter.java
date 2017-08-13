@@ -24,7 +24,7 @@ import narek.example.com.yandex_weather_app.util.UnitsConverter;
 
 public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRecyclerViewAdapter.ForecastViewHolder> {
 
-    public static final int MILLIS = 1000;
+    private static final int MILLIS = 1000;
     private UnitsConverter unitsConverter = new UnitsConverter();
     private List<Forecasts> forecastsList = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
         return forecastsList.size();
     }
 
-    public static class ForecastViewHolder extends RecyclerView.ViewHolder{
+    static class ForecastViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.week_day_tv)
         TextView weekDayTv;
         @BindView(R.id.date_tv)TextView dateTv;
@@ -73,7 +73,7 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
         @BindView(R.id.day_temp_tv)TextView dayTempTv;
         @BindView(R.id.night_temp_tv)TextView nightTempTv;
 
-        public ForecastViewHolder(final View itemView) {
+        ForecastViewHolder(final View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);

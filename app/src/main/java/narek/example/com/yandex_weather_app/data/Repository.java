@@ -33,13 +33,7 @@ public interface Repository {
 
     void setWeather(Weather weather);
 
-    Flowable<List<WeatherEntity>> getAllWeather();
-
-    Single<WeatherEntity> getWeather(City city);
-
     void deleteCity(CityEntity city);
-
-    void updateCity(City city);
 
     Single<CityEntity> getActiveCityFromDb();
 

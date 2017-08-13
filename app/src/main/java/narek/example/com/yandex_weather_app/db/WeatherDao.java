@@ -20,13 +20,7 @@ public interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertWeather(WeatherEntity...weather);
 
-    @Delete
-    public void deleteWeather(WeatherEntity... weathers);
-
     @Query("SELECT * FROM weather WHERE city_id_in_weather IS :cityId")
     public Single<WeatherEntity> loadWeather(int cityId);
-
-    @Query("SELECT * FROM weather")
-    public Flowable<List<WeatherEntity>> loadAll();
 
 }

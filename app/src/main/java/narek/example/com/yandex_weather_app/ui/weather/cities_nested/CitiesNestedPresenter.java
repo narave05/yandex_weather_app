@@ -28,7 +28,7 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
 
 
     @Inject
-    public CitiesNestedPresenter(Repository repository) {
+    CitiesNestedPresenter(Repository repository) {
         this.repository = repository;
         getAllCities();
         getActiveCity();
@@ -66,16 +66,16 @@ public class CitiesNestedPresenter extends MvpBasePresenter<CitiesNestedView> {
         );
     }
 
-    public void updateActiveCity(CityEntity item) {
+    void updateActiveCity(CityEntity item) {
         repository.updateActiveCity(item);
     }
 
-    public void fabClicked() {
+    void fabClicked() {
         suggestDialog = FindCityFragment.newInstance();
         getViewState().showDialogCitySuggest(suggestDialog);
     }
 
-    public void deleteCity(int adapterPosition) {
+    void deleteCity(int adapterPosition) {
         repository.deleteCity(listCities.get(adapterPosition));
     }
 }

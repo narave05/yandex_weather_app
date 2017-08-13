@@ -17,8 +17,8 @@ public class UnitsConverter {
 
     }
 
-    public String convertTime(){
-        Date dNow = new Date(System.currentTimeMillis());
+    public String convertTime(long time){
+        Date dNow = new Date(time);
         SimpleDateFormat ft = new SimpleDateFormat("hh:mm");
         return ft.format(dNow);
     }

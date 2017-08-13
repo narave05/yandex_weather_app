@@ -19,14 +19,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.App;
-import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.data.Repository;
-import narek.example.com.yandex_weather_app.data.RepositoryImpl;
-import narek.example.com.yandex_weather_app.data.locale.WeatherStorage;
 import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
-import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
 
 public class WeatherTask extends GcmTaskService {
 
@@ -70,12 +66,10 @@ public class WeatherTask extends GcmTaskService {
                 .subscribe(new Consumer<List<Forecasts>>() {
                     @Override
                     public void accept(@NonNull List<Forecasts> forecastsList) throws Exception {
-                        Log.d(WeatherTask.this.getClass().getName(), "accept: Forecast delivered from internet");
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.d(WeatherTask.this.getClass().getName(), "accept: No city in db. " + throwable.getMessage());
                     }
                 });
     }
@@ -94,7 +88,6 @@ public class WeatherTask extends GcmTaskService {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                Log.d(WeatherTask.this.getClass().getName(), "accept: No city in db. " + throwable.getMessage());
                             }
                         });
         return city[0];
@@ -107,12 +100,10 @@ public class WeatherTask extends GcmTaskService {
                 .subscribe(new Consumer<Weather>() {
                     @Override
                     public void accept(@NonNull Weather weather) throws Exception {
-                        Log.d(WeatherTask.this.getClass().getName(), "accept: Weather delivered from internet");
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.d(WeatherTask.this.getClass().getName(), "accept: No city in db. " + throwable.getMessage());
                     }
                 });
     }

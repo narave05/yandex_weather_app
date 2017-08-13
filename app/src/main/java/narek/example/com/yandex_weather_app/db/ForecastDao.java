@@ -18,9 +18,6 @@ public interface ForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertForecast(List<ForecastEntity> forecastEntities);
 
-    @Delete
-    public void deleteForecast(ForecastEntity... forecastEntities);
-
     @Query("SELECT * FROM forecast WHERE city_id_in_forecast IS :cityId")
     public Single<List<ForecastEntity>> loadForecast(int cityId);
 }

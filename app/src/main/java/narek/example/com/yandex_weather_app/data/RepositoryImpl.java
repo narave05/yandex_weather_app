@@ -28,7 +28,6 @@ import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.Forecasts;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
-import narek.example.com.yandex_weather_app.model.mapper.CityEntityToCityModelConverter;
 import narek.example.com.yandex_weather_app.model.mapper.CityModelToCityEntityConverter;
 import narek.example.com.yandex_weather_app.model.mapper.CitySuggestionMapper;
 import narek.example.com.yandex_weather_app.model.mapper.CoordsMapper;
@@ -46,7 +45,7 @@ import narek.example.com.yandex_weather_app.model.rest.forecast.ListForecast;
 
 public class RepositoryImpl implements Repository {
 
-    public static final int SEC = 3600;
+    private static final int SEC = 3600;
     private WeatherApi api = new WeatherApi();
     private PlacesApi placesApi = new PlacesApi();
     private PreferenceHelper preferenceHelper = PreferenceHelper.getInstance();
@@ -151,7 +150,6 @@ public class RepositoryImpl implements Repository {
                                     .createForecastEntityFromModel(f, activeCityEntity.getCityId()));
                         }
                         insertForecastInDb(entityList);
-
                     }
                 });
     }
@@ -258,19 +256,6 @@ public class RepositoryImpl implements Repository {
                 .subscribe();
     }
 
-    @Override
-    public Flowable<List<WeatherEntity>> getAllWeather() {
-        return db.weatherDao().loadAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    @Override
-    public Single<WeatherEntity> getWeather(City city) {
-        return db.weatherDao().loadWeather(activeCityEntity.getCityId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
 
     @Override
     public void deleteCity(final CityEntity city) {
@@ -283,11 +268,6 @@ public class RepositoryImpl implements Repository {
                 .subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-    }
-
-    @Override
-    public void updateCity(City city) {
-
     }
 
     @Override

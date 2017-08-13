@@ -18,11 +18,11 @@ import retrofit2.http.Query;
 
 public class PlacesApi {
 
-    private final String types = "(cities)";
-    PlacesApi.PlacesRestService placesRestService = RestServiceGenerator.createService(PlacesApi.PlacesRestService.class,
+    private PlacesApi.PlacesRestService placesRestService = RestServiceGenerator.createService(PlacesApi.PlacesRestService.class,
             AppConfig.BASE_URL_API_PLACES);
 
     public Single<PlacesResponse> callPlacesSuggestions(String cityName) {
+        String types = "(cities)";
         return placesRestService.callPlacesByName( cityName, types, AppConfig.API_KEY_PLACES);
     }
     public Single<CoordsResponse> callCordsByCityId(String coords) {

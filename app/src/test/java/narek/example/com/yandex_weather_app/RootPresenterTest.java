@@ -49,9 +49,9 @@ public class RootPresenterTest {
     }
 
     @Test
-    public void isFindCityItemClicked(){
-       /* presenter.onFindCityItemClick();
-        verify(view, times(1)).openFindCityFragment();*/
+    public void isCitiesFragmentItemClicked(){
+        presenter.onCitiesItemClick();
+        verify(view, times(1)).openCitiesFragment();
     }
     @Test
     public void isSettingsItemClicked(){

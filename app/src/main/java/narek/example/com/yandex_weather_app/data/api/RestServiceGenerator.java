@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestServiceGenerator {
+class RestServiceGenerator {
 
     private static final int TIMEOUT_SECONDS = 20;
 
@@ -28,7 +28,7 @@ public class RestServiceGenerator {
                 .build();
     }
 
-    public static <S> S createService(Class<S> serviceClass, String baseUrl) {
+    static <S> S createService(Class<S> serviceClass, String baseUrl) {
         Retrofit retrofit = sBuilder
                 .baseUrl(baseUrl)
                 .build();
