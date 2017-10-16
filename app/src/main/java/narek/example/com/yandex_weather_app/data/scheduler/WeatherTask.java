@@ -1,7 +1,6 @@
 package narek.example.com.yandex_weather_app.data.scheduler;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
@@ -26,16 +25,18 @@ import narek.example.com.yandex_weather_app.model.clean.Weather;
 
 public class WeatherTask extends GcmTaskService {
 
-    public static final long FLEX = 30L;
-    public static final int PERIOD = 86400;
-    public static final int FLEX1 = 3600;
+    public static final long FLEX_WEATHER = 30L;
+    public static final int UPDATE_PERIOD = 86400;
+    public static final int FLEX_FORECAST = 3600;
     private Disposable disposable;
 
     @Inject
     public Repository repository;
+    private CityEntity cityEntity;
 
     public WeatherTask() {
         App.getInstance().getAppComponent().inject(this);
+        getActiveCityFromDb();
     }
 
     @Override
@@ -44,15 +45,17 @@ public class WeatherTask extends GcmTaskService {
         switch (taskParams.getTag()) {
             case ScheduleTag.WEATHER_TASK:
 
-                if (getActiveCityFromDb() != null) {
-                    getWeather(getActiveCityFromDb());
+                if (cityEntity != null) {
+                    getWeather(cityEntity);
                 }
+
                 return GcmNetworkManager.RESULT_SUCCESS;
             case ScheduleTag.FORECAST_TASK:
 
-                if (getActiveCityFromDb() != null) {
-                    getForecast(getActiveCityFromDb());
+                if (cityEntity != null) {
+                    getForecast(cityEntity);
                 }
+
                 return GcmNetworkManager.RESULT_SUCCESS;
             default:
                 return GcmNetworkManager.RESULT_FAILURE;
@@ -74,15 +77,14 @@ public class WeatherTask extends GcmTaskService {
                 });
     }
 
-    CityEntity getActiveCityFromDb(){
-        final CityEntity[] city = {null};
-            repository.getActiveCityFromDb()
+    void getActiveCityFromDb(){
+        repository.getActiveCityFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<CityEntity>() {
                                @Override
                                public void accept(@NonNull CityEntity cityEntity) throws Exception {
-                                   city[0] = cityEntity;
+                                   WeatherTask.this.cityEntity = cityEntity;
                                }
                            },
                         new Consumer<Throwable>() {
@@ -90,7 +92,6 @@ public class WeatherTask extends GcmTaskService {
                             public void accept(@NonNull Throwable throwable) throws Exception {
                             }
                         });
-        return city[0];
     }
 
     private void getWeather(CityEntity cityEntity) {
@@ -125,7 +126,7 @@ public class WeatherTask extends GcmTaskService {
                 .setService(WeatherTask.class)
                 .setUpdateCurrent(true)
                 .setPeriod(updateInterval)
-                .setFlex(FLEX)
+                .setFlex(FLEX_WEATHER)
                 .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
                 .setRequiresCharging(false)
                 .setPersisted(true)
@@ -134,8 +135,8 @@ public class WeatherTask extends GcmTaskService {
 
         Task forecastTask = new PeriodicTask.Builder()
                 .setService(WeatherTask.class)
-                .setPeriod(PERIOD)
-                .setFlex(FLEX1)
+                .setPeriod(UPDATE_PERIOD)
+                .setFlex(FLEX_FORECAST)
                 .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
                 .setTag(ScheduleTag.FORECAST_TASK)
                 .setPersisted(true)

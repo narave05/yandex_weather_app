@@ -266,7 +266,7 @@ public class RepositoryImpl implements Repository {
             }
         })
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 

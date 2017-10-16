@@ -47,11 +47,17 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
         holder.relLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recyclerlistener.onItemClick(city, holder.getLayoutPosition());
+                    if (holder.getAdapterPosition() != -1) {
+                        recyclerlistener.onItemClick(city, holder.getAdapterPosition());
+                        city.setActive(!city.isActive());
+                        if (city.isActive()) {
+                            holder.relLayout.setBackground(holder.accent);
+                        }else {
+                            holder.relLayout.setBackground(holder.usual);
+                        }
+                    }
                 }
             });
-
-
 
         if (city.isActive()) {
             holder.relLayout.setBackground(holder.accent);
@@ -73,7 +79,8 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
 
 
     static class CitiesViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.city_name_item_tv) TextView cityNameTv;
+        @BindView(R.id.city_name_item_tv)
+        TextView cityNameTv;
         @BindView(R.id.frame)
         RelativeLayout relLayout;
         @BindDrawable(R.drawable.back_active)

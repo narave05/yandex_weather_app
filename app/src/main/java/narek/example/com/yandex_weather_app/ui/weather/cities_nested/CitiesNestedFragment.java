@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,19 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
         ItemTouchHelper.SimpleCallback callback = new SimpleCallbackItemTouchHelper(0, ItemTouchHelper.LEFT) {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                Log.d(this.getClass().getName(), "onSwiped: ");
+                int position = viewHolder.getAdapterPosition();
+
+                if (position != -1) {
+
+                    if (cityListField.get(position).isActive()) {
+                    } else {
+
+                        presenter.deleteCity(position);
+                        citiesAdapter.onDismiss(viewHolder.getAdapterPosition());
+                    }
+                }
             }
 
             @Override
@@ -113,9 +127,6 @@ public class CitiesNestedFragment extends MvpBaseFragment implements CitiesNeste
                     if (cityListField.get(position).isActive()) {
                         return 0;
                     } else {
-
-                        presenter.deleteCity(position);
-                        citiesAdapter.onDismiss(viewHolder.getAdapterPosition());
 
                         return super.getSwipeDirs(recyclerView, viewHolder);
                     }

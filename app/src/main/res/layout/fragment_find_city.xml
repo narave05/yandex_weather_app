@@ -18,8 +18,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:focusable="true"
-        android:layout_alignParentTop="true"
         android:focusableInTouchMode="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="8dp"
         android:imeOptions="flagNoExtractUi"/>
 
