@@ -1,26 +1,34 @@
 package narek.example.com.yandex_weather_app.ui.root;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
+import com.facebook.stetho.inspector.elements.ShadowDocument;
 
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
+import narek.example.com.yandex_weather_app.data.Repository;
+import narek.example.com.yandex_weather_app.db.CityEntity;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBasePresenter;
 import narek.example.com.yandex_weather_app.util.FragmentTag;
 
-import static android.content.ContentValues.TAG;
-
 @InjectViewState
 public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
 
+    private Repository repository;
     private FragmentTag currentFragmentTag = FragmentTag.WEATHER;
 
+    @Inject
+    public RootActivityPresenter(Repository repository) {
+        this.repository = repository;
+    }
+
     void init() {
-        subscribeToRxBus();
         getViewState().setupToolbarAndDrawer();
         switch (currentFragmentTag) {
             case WEATHER:
@@ -32,22 +40,10 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
             case ABOUT:
                 navigateToAboutAs();
                 break;
-            case FIND:
-                navigateToFindCityFragment();
+            case CITIES:
+                navigateToCities();
                 break;
         }
-
-    }
-
-    private void subscribeToRxBus() {
-        App.getRxBus().getEvents().subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(@NonNull Object o) throws Exception {
-                if (o instanceof Coords) {
-                    onBackPressed();
-                }
-            }
-        });
     }
 
     public void onHomeItemClick() {
@@ -76,7 +72,16 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         getViewState().openSettingsFragment();
         getViewState().setToolBarTitle(R.string.settings_title);
     }
+    public void onCitiesItemClick() {
+        navigateToCities();
+    }
 
+    private void navigateToCities() {
+        currentFragmentTag = FragmentTag.CITIES;
+        lockDrawerAndChangeIcon();
+        getViewState().openCitiesFragment();
+        getViewState().setToolBarTitle(R.string.cities);
+    }
     private void lockDrawerAndChangeIcon() {
         getViewState().lockDrawer();
         getViewState().changeToolbarIconToArrow();
@@ -98,16 +103,5 @@ public class RootActivityPresenter extends MvpBasePresenter<RootActivityView> {
         unlockDrawerAndChengeIcon();
         getViewState().setToolBarTitle(R.string.weather_title);
         getViewState().hideKeyBoard();
-    }
-
-    public void onFindCityItemClick() {
-        navigateToFindCityFragment();
-    }
-
-    private void navigateToFindCityFragment() {
-        currentFragmentTag = FragmentTag.FIND;
-        lockDrawerAndChangeIcon();
-        getViewState().openFindCityFragment();
-        getViewState().setToolBarTitle(R.string.find_city);
     }
 }

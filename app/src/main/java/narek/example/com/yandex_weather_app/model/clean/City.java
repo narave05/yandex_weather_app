@@ -6,18 +6,16 @@ import java.io.Serializable;
 
 import narek.example.com.yandex_weather_app.util.Const;
 
-public class City implements Serializable{
+public class City implements Serializable {
+
     private final String name;
-    private final float lon;
-    private final float lat;
+    private Coords coords;
 
-    public City(String name, float lon, float lat) {
+
+    public City(String name, Coords coords) {
         this.name = name == null ? Const.EMPTY_STRING : name;
-        this.lon = lon;
-        this.lat = lat;
+        this.coords = coords;
     }
-
-
 
 
     @NonNull
@@ -25,13 +23,11 @@ public class City implements Serializable{
         return name;
     }
 
-    public float getLongitude() {
-        return lon;
+    @NonNull
+    public Coords getCoords(){
+        return coords;
     }
 
-    public float getLatitude() {
-        return lat;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -40,17 +36,38 @@ public class City implements Serializable{
 
         City city = (City) o;
 
-        if (Float.compare(city.lon, lon) != 0) return false;
-        if (Float.compare(city.lat, lat) != 0) return false;
-        return name.equals(city.name);
+        if (name != null ? !name.equals(city.name) : city.name != null) return false;
+        return coords != null ? coords.equals(city.coords) : city.coords == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + (lon != +0.0f ? Float.floatToIntBits(lon) : 0);
-        result = 31 * result + (lat != +0.0f ? Float.floatToIntBits(lat) : 0);
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (coords != null ? coords.hashCode() : 0);
         return result;
     }
+
+    public static class CityBuilder{
+        private String name;
+        private Coords coords;
+
+        public CityBuilder() {
+        }
+
+        public CityBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public CityBuilder coords(Coords coords) {
+            this.coords = coords;
+            return this;
+        }
+
+        public City createCity(){
+            return new City(name, coords);
+        }
+    }
+
 }

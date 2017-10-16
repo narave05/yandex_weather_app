@@ -1,11 +1,5 @@
 package narek.example.com.yandex_weather_app.model.mapper;
 
-/*
- * @author <a href="mailto: alyonamalchikhina@gmail.com">Alena Malchikhina</a>
- * @since 0.1
- */
-
-
 import android.support.annotation.NonNull;
 
 import narek.example.com.yandex_weather_app.model.clean.Coords;

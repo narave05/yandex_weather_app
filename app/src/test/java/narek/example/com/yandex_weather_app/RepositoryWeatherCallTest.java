@@ -5,19 +5,16 @@ import com.google.gson.Gson;
 import org.junit.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.TestObserver;
-import io.reactivex.subjects.SingleSubject;
-import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.data.api.WeatherApi;
 import narek.example.com.yandex_weather_app.model.clean.City;
+import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.Weather;
 import narek.example.com.yandex_weather_app.model.mapper.WeatherMapper;
 import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
@@ -39,8 +36,14 @@ public class RepositoryWeatherCallTest {
     public void init(){
         Gson json = new Gson();
         weatherDataRes = json.fromJson(jsonWeather, WeatherDataRes.class);
-        weather = new Weather.WeatherBuilder()
-                .city(new City(weatherDataRes.name, weatherDataRes.coordRes.lon, weatherDataRes.coordRes.lat))
+        weather = new Weather.WeatherEntityBuilder()
+                .city(new City.CityBuilder()
+                .name(weatherDataRes.name)
+                .coords(new Coords.CoordsBuilder()
+                .lat(weatherDataRes.coordRes.lat)
+                .lon(weatherDataRes.coordRes.lon)
+                .buildCoords())
+                .createCity())
                 .temperature(weatherDataRes.main.temp)
                 .pressure(weatherDataRes.main.pressure)
                 .humidity(weatherDataRes.main.humidity)

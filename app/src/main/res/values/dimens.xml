@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="header_top_padding">24dp</dimen>
+    <dimen name="header_top_padding">50dp</dimen>
     <dimen name="padding_8">8dp</dimen>
+    <dimen name="text_size_36">36sp</dimen>
+    <dimen name="text_size_54">54sp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_28">28dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="padding_32">32dp</dimen>
+    <dimen name="text_size_28">28sp</dimen>
+    <dimen name="text_size_64">64sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="margin_20">20dp</dimen>
 </resources>

@@ -35,7 +35,7 @@ public class FragmentUtils {
         }
     }
 
-    public static boolean isFragmentExist(FragmentManager manager, FragmentTag tag) {
+    private static boolean isFragmentExist(FragmentManager manager, FragmentTag tag) {
         Fragment activeFragment = manager.findFragmentByTag(tag.toString());
         return activeFragment != null;
     }

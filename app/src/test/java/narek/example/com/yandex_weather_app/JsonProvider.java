@@ -4,6 +4,273 @@ package narek.example.com.yandex_weather_app;
 public class JsonProvider {
     private static JsonProvider instance;
 
+    private String forecastJson = "{\n" +
+            "    \"city\": {\n" +
+            "        \"id\": 1851632,\n" +
+            "        \"name\": \"Shuzenji\",\n" +
+            "        \"coord\": {\n" +
+            "            \"lon\": 138.9333,\n" +
+            "            \"lat\": 34.9667\n" +
+            "        },\n" +
+            "        \"country\": \"JP\",\n" +
+            "        \"population\": 0\n" +
+            "    },\n" +
+            "    \"cod\": \"200\",\n" +
+            "    \"message\": 1.2860205,\n" +
+            "    \"cnt\": 10,\n" +
+            "    \"list\": [\n" +
+            "        {\n" +
+            "            \"dt\": 1502589600,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 297.15,\n" +
+            "                \"min\": 297.15,\n" +
+            "                \"max\": 297.15,\n" +
+            "                \"night\": 297.15,\n" +
+            "                \"eve\": 297.15,\n" +
+            "                \"morn\": 297.15\n" +
+            "            },\n" +
+            "            \"pressure\": 1012.12,\n" +
+            "            \"humidity\": 100,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 500,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"light rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 1.96,\n" +
+            "            \"deg\": 81,\n" +
+            "            \"clouds\": 100,\n" +
+            "            \"rain\": 0.96\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1502676000,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 298.98,\n" +
+            "                \"min\": 297.57,\n" +
+            "                \"max\": 299.3,\n" +
+            "                \"night\": 298.65,\n" +
+            "                \"eve\": 298.88,\n" +
+            "                \"morn\": 297.57\n" +
+            "            },\n" +
+            "            \"pressure\": 1011.61,\n" +
+            "            \"humidity\": 100,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 500,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"light rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 1.86,\n" +
+            "            \"deg\": 175,\n" +
+            "            \"clouds\": 48,\n" +
+            "            \"rain\": 1.06\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1502762400,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 299.01,\n" +
+            "                \"min\": 298.43,\n" +
+            "                \"max\": 299.17,\n" +
+            "                \"night\": 298.43,\n" +
+            "                \"eve\": 298.89,\n" +
+            "                \"morn\": 298.56\n" +
+            "            },\n" +
+            "            \"pressure\": 1009.15,\n" +
+            "            \"humidity\": 99,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 500,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"light rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 1.84,\n" +
+            "            \"deg\": 60,\n" +
+            "            \"clouds\": 48,\n" +
+            "            \"rain\": 0.57\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1502848800,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 298.44,\n" +
+            "                \"min\": 297.37,\n" +
+            "                \"max\": 298.44,\n" +
+            "                \"night\": 297.92,\n" +
+            "                \"eve\": 298.06,\n" +
+            "                \"morn\": 297.37\n" +
+            "            },\n" +
+            "            \"pressure\": 1010.04,\n" +
+            "            \"humidity\": 100,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 501,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"moderate rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 3.56,\n" +
+            "            \"deg\": 40,\n" +
+            "            \"clouds\": 76,\n" +
+            "            \"rain\": 4.12\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1502935200,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 298.26,\n" +
+            "                \"min\": 296.58,\n" +
+            "                \"max\": 299.52,\n" +
+            "                \"night\": 297.52,\n" +
+            "                \"eve\": 299.52,\n" +
+            "                \"morn\": 296.58\n" +
+            "            },\n" +
+            "            \"pressure\": 988.26,\n" +
+            "            \"humidity\": 0,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 501,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"moderate rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 3.29,\n" +
+            "            \"deg\": 30,\n" +
+            "            \"clouds\": 37,\n" +
+            "            \"rain\": 3.17\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1503021600,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 298.11,\n" +
+            "                \"min\": 296.85,\n" +
+            "                \"max\": 299.73,\n" +
+            "                \"night\": 297.51,\n" +
+            "                \"eve\": 299.73,\n" +
+            "                \"morn\": 296.85\n" +
+            "            },\n" +
+            "            \"pressure\": 991.84,\n" +
+            "            \"humidity\": 0,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 501,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"moderate rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 2.99,\n" +
+            "            \"deg\": 47,\n" +
+            "            \"clouds\": 7,\n" +
+            "            \"rain\": 6.47\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1503108000,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 298.23,\n" +
+            "                \"min\": 296.61,\n" +
+            "                \"max\": 299.55,\n" +
+            "                \"night\": 297.23,\n" +
+            "                \"eve\": 299.55,\n" +
+            "                \"morn\": 296.61\n" +
+            "            },\n" +
+            "            \"pressure\": 994.39,\n" +
+            "            \"humidity\": 0,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 501,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"moderate rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 2.93,\n" +
+            "            \"deg\": 58,\n" +
+            "            \"clouds\": 25,\n" +
+            "            \"rain\": 3.06\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1503194400,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 296.92,\n" +
+            "                \"min\": 296.32,\n" +
+            "                \"max\": 298.25,\n" +
+            "                \"night\": 296.76,\n" +
+            "                \"eve\": 298.25,\n" +
+            "                \"morn\": 296.32\n" +
+            "            },\n" +
+            "            \"pressure\": 995.26,\n" +
+            "            \"humidity\": 0,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 501,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"moderate rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 2.93,\n" +
+            "            \"deg\": 78,\n" +
+            "            \"clouds\": 54,\n" +
+            "            \"rain\": 7.83\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1503280800,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 298.23,\n" +
+            "                \"min\": 296.4,\n" +
+            "                \"max\": 299.2,\n" +
+            "                \"night\": 297.58,\n" +
+            "                \"eve\": 299.2,\n" +
+            "                \"morn\": 296.4\n" +
+            "            },\n" +
+            "            \"pressure\": 996.13,\n" +
+            "            \"humidity\": 0,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 500,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"light rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 2.32,\n" +
+            "            \"deg\": 213,\n" +
+            "            \"clouds\": 41,\n" +
+            "            \"rain\": 2.96\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"dt\": 1503367200,\n" +
+            "            \"temp\": {\n" +
+            "                \"day\": 299.25,\n" +
+            "                \"min\": 296.87,\n" +
+            "                \"max\": 300.47,\n" +
+            "                \"night\": 297.86,\n" +
+            "                \"eve\": 300.47,\n" +
+            "                \"morn\": 296.87\n" +
+            "            },\n" +
+            "            \"pressure\": 997.47,\n" +
+            "            \"humidity\": 0,\n" +
+            "            \"weather\": [\n" +
+            "                {\n" +
+            "                    \"id\": 500,\n" +
+            "                    \"main\": \"Rain\",\n" +
+            "                    \"description\": \"light rain\",\n" +
+            "                    \"icon\": \"10d\"\n" +
+            "                }\n" +
+            "            ],\n" +
+            "            \"speed\": 3.39,\n" +
+            "            \"deg\": 231,\n" +
+            "            \"clouds\": 18,\n" +
+            "            \"rain\": 1.44\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
     private String citiesJson = "{\"predictions\": [{\"description\": \"Москва, Россия\",\"id\": \"1a0f08fcbc047354782f00ab52e66fb56d1aadf7\",\"matched_substrings\": [{\"length\": 6,\"offset\": 0 } ],\"place_id\": \"ChIJybDUc_xKtUYRTM9XV8zWRD0\",\"reference\": \"CkQyAAAA7eQ5ECa4OJUwLSoI_X7GTgi2aIdZUeOgSmQ7ifm83gEBVJgu_QxXewNtbw6cb9iQxTSI5rG8FEEjN_sVOoULYBIQmojcyg4kYoUfpqkwozDWkRoUafJMEqVeo8MNx-1Q-7SI6RtjFk4\",\"structured_formatting\": {\"main_text\": \"Москва\",\"main_text_matched_substrings\": [{\"length\": 6,\"offset\": 0}],\"secondary_text\": \"Россия\"},\"terms\": [{\"offset\": 0,\"value\": \"Москва\"},{\"offset\": 8,\"value\": \"Россия\"}],\"types\": [\"locality\",\"political\",\"geocode\"]},{\"description\": \"Москва, Польша\",\"id\": \"e313a843c24f2a5643bdb828172875ea3e73556c\",\"matched_substrings\": [{\"length\": 6,\"offset\": 0}],\"place_id\": \"ChIJEXOLWN7NG0cRSDtN82dF1Ww\",\"reference\": \"CkQyAAAARjhpxJ9yDY28XmDiMV8ZqPxkouN4awRGLhCMFpQg9jXae7lPd5EPCjzPDB0iD7YZ03PCwOgimAv4UibnqkWXvxIQsJLj8tzwGafBEjSbcDam_xoUu3k6BOONJ1aVSvWjT9MK9VMcHHY\",\"structured_formatting\": {\"main_text\": \"Москва\",\"main_text_matched_substrings\": [{\"length\": 6,\"offset\": 0}],\"secondary_text\": \"Польша\"},\"terms\": [{\"offset\": 0,\"value\": \"Москва\"},{\"offset\": 8,\"value\": \"Польша\"}],\"types\": [\"locality\",\"political\",\"geocode\"]},{\"description\": \"Троицк, Московская область, Россия\",\"id\": \"3bbc9d955bc707908c65a344ac6a632efe4497e6\",\"matched_substrings\": [{\"length\": 6,\"offset\": 0}],\"place_id\": \"ChIJS-TmTk9VNUER1byWbctR5B4\",\"reference\": \"CmRXAAAAv2IO57ZSJzPfjbi0_6ql8G5HbIm93Az8EMUXESqLxFDa0bZcwRPvw8rdPRYXzV-rPCmCvSwFwmmk1jTRYrkXJRIDOu8aXVwLlK0N1tgiATGakUF9xN5tt3C6T7PqsgSyEhBn_X5oarlrRG5-Wkg-vTG3GhTEqsi13VDk5oohoFy831ReuyzIcw\",\"structured_formatting\": {\"main_text\": \"Троицк\",\"main_text_matched_substrings\": [{\"length\": 6,\"offset\": 0}],\"secondary_text\": \"Московская область, Россия\"},\"terms\": [{\"offset\": 0,\"value\": \"Троицк\"},{\"offset\": 8,\"value\": \"Московская область\"        },        {            \"offset\": 28,                \"value\": \"Россия\"        }            ],        \"types\": [        \"locality\",                \"political\",                \"geocode\"            ]    },    {        \"description\": \"Саларьево, Московская область, Россия\",            \"id\": \"f1fe1fe30a0c0fcece5099ba58ac82bc4ddf70f1\",            \"matched_substrings\": [        {            \"length\": 9,                \"offset\": 0        }            ],        \"place_id\": \"ChIJR6lRu_NStUYRq4SD6aOJa_0\",            \"reference\": \"CmRdAAAASikT4xz5Ep4L5h7chOWly6JuejPCVDhgA6BvV3cixBAWCKTxxwpExr-1wJlqy5lcFML20Ie_NP8H73paPx5fklN7u05oFcAt70D-rk6BG8OCXvGvsb_zvAEc_EKBuX2vEhD3icdEaZ9rc4P5pBTwK3WJGhR29szuucwpkwRhDzCANFtY1xaT6w\",            \"structured_formatting\": {     \"main_text\": \"Саларьево\",                \"main_text_matched_substrings\": [        {            \"length\": 9,                \"offset\": 0        }                ],        \"secondary_text\": \"Московская область, Россия\"    },        \"terms\": [        {            \"offset\": 0,                \"value\": \"Саларьево\"        },        {            \"offset\": 11,                \"value\": \"Московская область\"        },        {            \"offset\": 31,                \"value\": \"Россия\"        }            ],        \"types\": [        \"locality\",                \"political\",                \"geocode\"            ]    },    {        \"description\": \"Коммунарка, Россия\",            \"id\": \"8276b6462fd1f22e69b6479a806622a78c073102\",            \"matched_substrings\": [        {            \"length\": 10,                \"offset\": 0        }            ],        \"place_id\": \"ChIJD9s7IeisSkERVyaPm1VM310\",            \"reference\": \"CkQ6AAAAMCqJnlk_VhQDY1JcAqlBwMYEZZCp62wcoAJ9_hzG5B-V5ruKR0fgJWpShYSnoBO1egHfZ3rmhL-6-14U2vO6CRIQ_E8SXtLhWmomQkwPvprp6xoUcmDhhUx7KKgjOKNKKrbzKtSosY0\",            \"structured_formatting\": {        \"main_text\": \"Коммунарка\",                \"main_text_matched_substrings\": [        {            \"length\": 10,                \"offset\": 0        }                ],        \"secondary_text\": \"Россия\"    },        \"terms\": [        {            \"offset\": 0,                \"value\": \"Коммунарка\"        },        {            \"offset\": 12,                \"value\": \"Россия\"        }            ],        \"types\": [        \"locality\",                \"political\",                \"geocode\"            ]    }    ],            \"status\": \"OK\"}";
     private String coordsJson = "{\n" +
             "    \"html_attributions\": [],\n" +
@@ -161,6 +428,10 @@ public class JsonProvider {
             instance = new JsonProvider();
         }
         return instance;
+    }
+
+    public String getForecastJson() {
+        return forecastJson;
     }
 
     public String getCitiesJson() {

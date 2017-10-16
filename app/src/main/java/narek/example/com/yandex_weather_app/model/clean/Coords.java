@@ -1,12 +1,9 @@
 package narek.example.com.yandex_weather_app.model.clean;
 
-/*
- * @author <a href="mailto: alyonamalchikhina@gmail.com">Alena Malchikhina</a>
- * @since 0.1
- */
 
+import java.io.Serializable;
 
-public class Coords {
+public class Coords implements Serializable{
     private final double lat;
     private final double lon;
 

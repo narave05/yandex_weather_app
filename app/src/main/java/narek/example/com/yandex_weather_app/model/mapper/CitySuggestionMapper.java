@@ -11,7 +11,7 @@ import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.model.rest.Prediction;
 
-public class CityMapper implements Serializable {
+public class CitySuggestionMapper implements Serializable {
     @NonNull
     public List<SuggestCity> buildCity(@NonNull PlacesResponse placesResponse) {
         List<SuggestCity> list = new ArrayList<>();
@@ -25,5 +25,4 @@ public class CityMapper implements Serializable {
         }
         return list;
     }
-
 }

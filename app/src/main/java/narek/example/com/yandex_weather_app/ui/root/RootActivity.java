@@ -1,8 +1,10 @@
 package narek.example.com.yandex_weather_app.ui.root;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -17,14 +19,18 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
+import narek.example.com.yandex_weather_app.App;
 import narek.example.com.yandex_weather_app.R;
 import narek.example.com.yandex_weather_app.ui._common.base.MvpBaseActivity;
 import narek.example.com.yandex_weather_app.ui.abut_us.AbutUsFragment;
 import narek.example.com.yandex_weather_app.ui.find_city.FindCityFragment;
+import narek.example.com.yandex_weather_app.ui.find_city.FindCityPresenter;
 import narek.example.com.yandex_weather_app.ui.settings.SettingsFragment;
 import narek.example.com.yandex_weather_app.ui.weather.WeatherFragment;
+import narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment;
 import narek.example.com.yandex_weather_app.util.FragmentTag;
 import narek.example.com.yandex_weather_app.util.FragmentUtils;
 
@@ -35,9 +41,15 @@ public class RootActivity extends MvpBaseActivity
     @InjectPresenter
     RootActivityPresenter presenter;
 
+    @ProvidePresenter
+    public RootActivityPresenter providePresenter(){
+        return presenter = App.getInstance().getAppComponent().provideRootActivityPresenter();
+    }
+
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
 
+    @Nullable
     @BindView(R.id.drawer_container)
     DrawerLayout navigationDrawer;
 
@@ -49,29 +61,40 @@ public class RootActivity extends MvpBaseActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root_weather);
         fragmentManager = getSupportFragmentManager();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.init();
     }
 
     @Override
     public void setupToolbarAndDrawer() {
         setSupportActionBar(toolbar);
-        toggle = new ActionBarDrawerToggle(
-                this,
-                navigationDrawer,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        navigationDrawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            toggle = new ActionBarDrawerToggle(
+                    this,
+                    navigationDrawer,
+                    toolbar,
+                    R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close);
+            navigationDrawer.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+            navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -86,11 +109,14 @@ public class RootActivity extends MvpBaseActivity
             case R.id.about_us_item:
                 presenter.onAboutUsItemClick();
                 break;
-            case R.id.find_city_item:
-                presenter.onFindCityItemClick();
+            case R.id.cities:
+                presenter.onCitiesItemClick();
                 break;
         }
-        navigationDrawer.closeDrawer(Gravity.START);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            navigationDrawer.closeDrawer(Gravity.START);
+        }
+
         return false;
     }
 
@@ -103,14 +129,6 @@ public class RootActivity extends MvpBaseActivity
                 true);
     }
 
-    @Override
-    public void openFindCityFragment() {
-        FragmentUtils.openFragment(
-                FindCityFragment.newInstance(),
-                fragmentManager,
-                FragmentTag.FIND,
-                true);
-    }
 
     @Override
     public void openSettingsFragment() {
@@ -128,21 +146,36 @@ public class RootActivity extends MvpBaseActivity
                 fragmentManager,
                 FragmentTag.WEATHER);
     }
+    @Override
+    public void openCitiesFragment() {
+        FragmentUtils.openFragment(
+                CitiesNestedFragment.newInstance(),
+                fragmentManager,
+                FragmentTag.CITIES, true);
+    }
 
     @Override
     public void lockDrawer() {
-        navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
     }
 
 
     @Override
+
     public void unlockDrawer() {
-        navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            navigationDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
     }
 
     @Override
     public void changeToolbarIconToArrow() {
-        toggle.setDrawerIndicatorEnabled(false);
+        if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+            toggle.setDrawerIndicatorEnabled(false);
+        }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -160,15 +193,19 @@ public class RootActivity extends MvpBaseActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navigationDrawer.openDrawer(GravityCompat.START);
-                }
-            });
+
+            if (!getResources().getBoolean(R.bool.twoPaneMode)) {
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        navigationDrawer.openDrawer(GravityCompat.START);
+                    }
+                });
+
+                toggle.setDrawerIndicatorEnabled(true);
+                navigationDrawer.addDrawerListener(toggle);
+            }
         }
-        toggle.setDrawerIndicatorEnabled(true);
-        navigationDrawer.addDrawerListener(toggle);
     }
 
     @Override
@@ -181,10 +218,8 @@ public class RootActivity extends MvpBaseActivity
 
     @Override
     public void hideKeyBoard() {
-
-        InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-
+            InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override
@@ -193,6 +228,4 @@ public class RootActivity extends MvpBaseActivity
 
         super.onBackPressed();
     }
-
-
 }

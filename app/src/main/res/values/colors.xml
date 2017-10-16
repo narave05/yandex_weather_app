@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5ebdf5</color>
-    <color name="colorPrimaryDark">#5ebdf5</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#90d2d8</color>
+    <color name="colorPrimaryDark">#4B6A88</color>
+    <color name="colorAccent">#fffb37</color>
+    <color name="radYandex">#1700FD</color>
+    <color name="white">#ffff</color>
+    <color name="forecast">#FFECB8</color>
+    <color name="forecast_item">#caeaec</color>
+    <color name="city">#fffd99</color>
 </resources>

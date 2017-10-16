@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import narek.example.com.yandex_weather_app.data.RepositoryImpl;
 import narek.example.com.yandex_weather_app.ui.root.RootActivityPresenter;
 import narek.example.com.yandex_weather_app.ui.root.RootActivityView;
 
@@ -19,10 +20,13 @@ public class RootPresenterTest {
 
     private RootActivityPresenter presenter;
 
+    @Mock
+    RepositoryImpl repository;
+
     @Before
     public void init(){
         MockitoAnnotations.initMocks(this);
-        presenter = new RootActivityPresenter();
+        presenter = new RootActivityPresenter(repository);
         presenter.attachView(view);
     }
 
@@ -45,9 +49,9 @@ public class RootPresenterTest {
     }
 
     @Test
-    public void isFindCityItemClicked(){
-        presenter.onFindCityItemClick();
-        verify(view, times(1)).openFindCityFragment();
+    public void isCitiesFragmentItemClicked(){
+        presenter.onCitiesItemClick();
+        verify(view, times(1)).openCitiesFragment();
     }
     @Test
     public void isSettingsItemClicked(){

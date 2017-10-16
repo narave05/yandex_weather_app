@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="@dimen/padding_8"
+                                    android:backgroundTint="@color/forecast_item"
+                                    android:layout_margin="@dimen/padding_8">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_8">
+
+        <TextView
+            android:id="@+id/date_tv"
+            style="@style/TvWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="23.06.17"
+            />
+
+        <TextView
+            android:id="@+id/week_day_tv"
+            style="@style/TvWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/date_tv"
+            android:text="Monday"/>
+
+        <TextView
+            android:id="@+id/day_temp_tv"
+            style="@style/TextViewForecast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:text="+23"/>
+
+        <TextView
+            android:id="@+id/night_temp_tv"
+            style="@style/TextViewForecast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+23"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/day_temp_tv"
+            android:layout_toStartOf="@+id/day_temp_tv"/>
+
+        <narek.example.com.yandex_weather_app.ui._common.widget.WeatherImageView
+            android:id="@+id/forecast_icon_wiv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

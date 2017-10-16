@@ -52,10 +52,10 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Su
         return cityList.size();
     }
 
-    public static class SuggestionViewHolder extends RecyclerView.ViewHolder{
+    static class SuggestionViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.city_tv)TextView cityTv;
 
-        public SuggestionViewHolder(final View itemView) {
+        SuggestionViewHolder(final View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);

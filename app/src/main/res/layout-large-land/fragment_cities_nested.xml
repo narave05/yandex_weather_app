@@ -1,0 +1,53 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/relative"
+android:orientation="vertical"
+android:background="@color/white"
+android:weightSum="10"
+tools:context="narek.example.com.yandex_weather_app.ui.weather.cities_nested.CitiesNestedFragment">
+
+
+<ImageView
+    android:id="@+id/logo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:srcCompat="@drawable/yandex_eng_logo"
+    android:contentDescription="@string/header_image"
+    android:layout_centerInParent="true"
+    android:paddingBottom="@dimen/padding_28"
+    android:paddingTop="@dimen/padding_28"
+    android:layout_weight="1"
+    android:layout_alignParentTop="true"/>
+
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/recycler_cities"
+    android:layout_width="match_parent"
+    android:layout_weight="9"
+    android:layout_below="@+id/logo"
+    android:layout_height="wrap_content">
+
+</android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:layout_marginBottom="@dimen/padding_16"
+        android:layout_marginRight="@dimen/padding_16"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="right"
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        android:clickable="true"/>
+
+</RelativeLayout>

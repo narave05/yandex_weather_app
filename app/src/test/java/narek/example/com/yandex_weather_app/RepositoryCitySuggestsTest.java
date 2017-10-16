@@ -16,19 +16,14 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.TestObserver;
 import narek.example.com.yandex_weather_app.data.api.PlacesApi;
-import narek.example.com.yandex_weather_app.model.clean.City;
 import narek.example.com.yandex_weather_app.model.clean.Coords;
 import narek.example.com.yandex_weather_app.model.clean.SuggestCity;
-import narek.example.com.yandex_weather_app.model.clean.Weather;
-import narek.example.com.yandex_weather_app.model.mapper.CityMapper;
+import narek.example.com.yandex_weather_app.model.mapper.CitySuggestionMapper;
 import narek.example.com.yandex_weather_app.model.mapper.CoordsMapper;
 import narek.example.com.yandex_weather_app.model.rest.CoordsResponse;
 import narek.example.com.yandex_weather_app.model.rest.PlacesResponse;
 import narek.example.com.yandex_weather_app.model.rest.Prediction;
-import narek.example.com.yandex_weather_app.model.rest.WeatherDataRes;
 
-import static narek.example.com.yandex_weather_app.R.string.weather;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -72,7 +67,7 @@ public class RepositoryCitySuggestsTest {
                 .map(new Function<PlacesResponse, List<SuggestCity>>() {
                     @Override
                     public List<SuggestCity> apply(@NonNull PlacesResponse placesResponse) throws Exception {
-                        return new CityMapper().buildCity(placesResponse);
+                        return new CitySuggestionMapper().buildCity(placesResponse);
                     }
                 }).test();
         observer.assertNoErrors().assertValue(suggestCityList);

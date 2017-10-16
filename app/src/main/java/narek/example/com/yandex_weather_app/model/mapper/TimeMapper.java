@@ -12,11 +12,6 @@ public class TimeMapper implements Serializable {
     private SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
 
     @NonNull
-    public String transformToString(long timestamp) {
-        return format.format(new Date(timestamp));
-    }
-
-    @NonNull
     public String transformToString(@NonNull Date date) {
         return format.format(date);
     }

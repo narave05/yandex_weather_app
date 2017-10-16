@@ -12,13 +12,10 @@ import narek.example.com.yandex_weather_app.util.Const;
 public class PreferenceHelper {
 
     private static final Object lock = new Object();
-    public static final String CITY_LAT = "CITY_LAT";
-    public static final String CITY_LON = "CITY_LON";
-    public static final String MOSCOW_LON = String.valueOf(Const.moscowLon);
-    public static final String MOSCOW_LAT = String.valueOf(Const.moscowLat);
+    private static final int INT = 3600;
 
     private static PreferenceHelper instance;
-    public static final String INTERVAL_KEY = "INTERVAL_KEY";
+    private static final String INTERVAL_KEY = "INTERVAL_KEY";
     private SharedPreferences preferences = App.getInstance().getPreferences();
     private SharedPreferences.Editor editor = preferences.edit();
 
@@ -41,23 +38,7 @@ public class PreferenceHelper {
     }
 
     public int getIntervalHoursInSeconds() {
-        return preferences.getInt(INTERVAL_KEY, 1) * 3600;
+        return preferences.getInt(INTERVAL_KEY, 1) * INT;
     }
 
-    public void saveCityLat(String lat) {
-        editor.putString(CITY_LAT, lat)
-                .apply();
-    }
-
-    public String getCityLat() {
-        return preferences.getString(CITY_LAT, MOSCOW_LAT);
-    }
-    public void saveCityLon(String lon) {
-        editor.putString(CITY_LON, lon)
-                .apply();
-    }
-
-    public String getCityLon() {
-        return preferences.getString(CITY_LON, MOSCOW_LON);
-    }
 }
